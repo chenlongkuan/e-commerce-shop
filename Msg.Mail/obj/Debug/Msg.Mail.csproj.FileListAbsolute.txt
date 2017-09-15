@@ -1,0 +1,13 @@
+D:\xk_Projects\Meisugou\Msg.Mail\bin\Debug\Msg.Mail.dll
+D:\xk_Projects\Meisugou\Msg.Mail\bin\Debug\Msg.Mail.pdb
+D:\xk_Projects\Meisugou\Msg.Mail\bin\Debug\Msg.Config.dll
+D:\xk_Projects\Meisugou\Msg.Mail\bin\Debug\Msg.Tools.dll
+D:\xk_Projects\Meisugou\Msg.Mail\bin\Debug\Msg.Utils.dll
+D:\xk_Projects\Meisugou\Msg.Mail\bin\Debug\NLog.dll
+D:\xk_Projects\Meisugou\Msg.Mail\bin\Debug\Msg.Config.pdb
+D:\xk_Projects\Meisugou\Msg.Mail\bin\Debug\Msg.Tools.pdb
+D:\xk_Projects\Meisugou\Msg.Mail\bin\Debug\Msg.Utils.pdb
+D:\xk_Projects\Meisugou\Msg.Mail\bin\Debug\NLog.xml
+D:\xk_Projects\Meisugou\Msg.Mail\obj\Debug\Msg.Mail.dll
+D:\xk_Projects\Meisugou\Msg.Mail\obj\Debug\Msg.Mail.pdb
+D:\xk_Projects\Meisugou\Msg.Mail\obj\Debug\Msg.Mail.csprojResolveAssemblyReference.cache

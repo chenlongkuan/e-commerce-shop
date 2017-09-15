@@ -1,0 +1,215 @@
+﻿@using Msg.Web.App_Start
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewBag.Title-美速购后台管理系统</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="@Url.Content("~/Content/AdminTemplate/bower_components/bootstrap/dist/css/bootstrap.min.css")" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="@Url.Content("~/Content/AdminTemplate/bower_components/metisMenu/dist/metisMenu.min.css")" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="@Url.Content("~/Content/AdminTemplate/dist/css/sb-admin-2.css")" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="@Url.Content("~/Content/AdminTemplate/bower_components/font-awesome/css/font-awesome.min.css")" rel="stylesheet" type="text/css">
+
+    <link href="@Url.Content("~/Content/bootstrapdialog/src/css/bootstrap-dialog.css")" rel="stylesheet" type="text/css">
+
+    <link href="@Url.Content("~/Content/ShowLoading/showLoading.css")" rel="stylesheet" type="text/css">
+
+    @RenderSection("Head", false)
+
+    <!-- jQuery -->
+    <script src="@Url.Content("/Scripts/jquery.2.1.3.js")"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        th {
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Home", new { area = "Admin" })">Meisugou Admin</a>
+                <span class="navbar-brand">欢迎你：@UserAuth.UserName</span>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="@Url.Action("LoginOut", "Account", new { area = "" })"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation" style="width: 10%">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+
+                        <li>
+                            <a href="@Url.Action("Index", "Home", new {area = "Admin"})"><i class="fa fa-dashboard fa-fw"></i>Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> 系统设置<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse in" aria-expanded="true">
+                                <li>
+                                    <a href="@Url.Action("Regions", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>区域管理<span class="fa arrow"></span></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Schools", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>学校管理<span class="fa arrow"></span></a>
+                                </li>
+                                
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="@Url.Action("AdManage", "AdManage", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>广告管理<span class="fa arrow"></span></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Brands", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>品牌管理<span class="fa arrow"></span></a>
+
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Categories", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>类目管理<span class="fa arrow"></span></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Users", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>会员管理<span class="fa arrow"></span></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Products", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>库存管理<span class="fa arrow"></span></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Goods", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>上下架管理<span class="fa arrow"></span></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Comments", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>评论管理<span class="fa arrow"></span></a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Orders", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>订单管理<span class="fa arrow"></span></a>
+
+                        </li>
+                                                   <li>
+                            <a href="@Url.Action("coupons", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>优惠券<span class="fa arrow"></span></a>
+
+                        </li>
+                        <li>
+                            <a href="@Url.Action("CreditGoods", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>积分商品<span class="fa arrow"></span></a>
+
+                        </li>
+                        <li>
+                            <a href="@Url.Action("CreditsExchangeLogs", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>积分兑换<span class="fa arrow"></span></a>
+
+                        </li>
+                        <li class="active">
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> 创业集市<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse in" aria-expanded="true">
+                                <li>
+                                    <a href="@Url.Action("SuppliersEntity", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>创业者管理<span class="fa arrow"></span></a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Schools", "Home", new { area = "Admin" })"><i class="fa fa-bar-chart-o fa-fw"></i>商品审核<span class="fa arrow"></span></a>
+                                </li>
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                      
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper" style="margin: 0px 0px 0px 10%; height: 1500px; min-height: 247px;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">@ViewBag.InnerTopTitle</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                @RenderBody()
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="@Url.Content("~/Content/AdminTemplate/bower_components/bootstrap/dist/js/bootstrap.min.js")"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="@Url.Content("~/Content/AdminTemplate/bower_components/metisMenu/dist/metisMenu.min.js")"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="@Url.Content("~/Content/AdminTemplate/dist/js/sb-admin-2.js")"></script>
+
+    <script src="@Url.Content("~/Content/ShowLoading/jquery.showLoading.min.js")"></script>
+
+    <script src="@Url.Content("~/Content/bootstrapdialog/src/js/bootstrap-dialog.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/Common.js")"></script>
+
+    <script src="@Url.Content("~/Content/My97DatePicker/WdatePicker.js")"></script>
+
+    @RenderSection("Scripts", false)
+
+</body>
+</html>

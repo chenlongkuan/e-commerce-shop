@@ -1,0 +1,6 @@
+D:\xk_Projects\Meisugou\WCF.Lib.File\bin\Debug\WCF.Lib.File.dll.config
+D:\xk_Projects\Meisugou\WCF.Lib.File\bin\Debug\WCF.Lib.File.dll
+D:\xk_Projects\Meisugou\WCF.Lib.File\bin\Debug\WCF.Lib.File.pdb
+D:\xk_Projects\Meisugou\WCF.Lib.File\obj\Debug\WCF.Lib.File.dll
+D:\xk_Projects\Meisugou\WCF.Lib.File\obj\Debug\WCF.Lib.File.pdb
+D:\xk_Projects\Meisugou\WCF.Lib.File\obj\Debug\WCF.Lib.File.csprojResolveAssemblyReference.cache

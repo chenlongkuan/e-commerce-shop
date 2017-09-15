@@ -1,0 +1,200 @@
+﻿@using Msg.Bll
+@using Msg.Entities
+@model Msg.Entities.GoodsEntity
+
+@{
+
+    ViewBag.Title = "上架商品";
+    ViewBag.InnerTopTitle = "上架商品";
+    var product = ViewBag.Product as ProductsEntity ?? new ProductsEntity();
+}
+
+@section Head{
+    <link href="@Url.Content("~/Content/ueditor/themes/default/ueditor.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/My97DatePicker/skin/WdatePicker.css")" rel="stylesheet" />
+}
+
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            &nbsp;
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <form role="form" id="form1" method="POST" action="@Url.Action("GoodsUpSave", "Home", new { area = "Admin" })">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" value="@product.Id" name="productId" />
+                        @Html.HiddenFor(f => f.Id)
+                        <div class="form-group">
+                            <label>产品名称</label>
+                            @Html.TextBoxFor(f => f.Product.Name, new { @class = "form-control", disabled = "disabled" })
+                        </div>
+                        <div class="form-group">
+                            <label>短标题</label>
+                            @Html.TextBoxFor(f => f.ShortTitle, new { @class = "form-control", maxlength = "200", placeholder = "请输入短标题，200字以内" })
+                        </div>
+                        <div class="form-group">
+                            <label>长标题</label>
+                            @Html.TextBoxFor(f => f.LongTitle, new { @class = "form-control", maxlength = "500", placeholder = "请输入长标题，500字以内" })
+                        </div>
+                        <div class="form-group input-group">
+                            <label>售价</label>
+                            @Html.TextBoxFor(f => f.SellPrice, new {@class = "form-control", maxlength = 10})
+                        </div>
+                        <div class="form-group input-group">
+                            <label>市场价格</label>
+                            @Html.TextBoxFor(f => f.MarketPrice, new { @class = "form-control", maxlength = 10 })
+                        </div>
+                        <div class="form-group input-group">
+                            <label>单品限购数量</label>
+                            <input type="text" value="@(Model.LimitBuyCount > 0 ? Model.LimitBuyCount.ToString() : "")" id="LimitBuyCount" name="LimitBuyCount" class="form-control" maxlength="10" placeholder="0 表示不限，最大99" />
+
+                        </div>
+                        <div class="form-group input-group">
+                            <label>邮费</label>
+                            <input type="text" value="@(ConfigModel.DefaultExpressCost)" id="ExpressCost" name="ExpressCost" class="form-control" maxlength="3" />
+
+                        </div>
+                        <div class="form-group">
+                            <label>支付方式</label>
+                            <label class="checkbox-inline">
+                                @Html.CheckBoxFor(f => f.IsCashOnline, new { @id = "cbx_cashOnline", @checked = "checked" })线上支付
+                            </label>
+                            <label class="checkbox-inline">
+                                @Html.CheckBoxFor(f => f.IsCashDelivery, new { @id = "cbx_cashDelivery" })货到付款
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>是否特卖</label>
+                            <label class="radio-inline">
+                                <input type="radio" name="IsSale" onchange=" saleRadioChangeEvent(); " value="true" id="rd_IsSale_true">是
+
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="IsSale" onchange=" saleRadioChangeEvent(); " value="false" id="rd_IsSale_false" checked="checked">否
+                            </label>
+                        </div>
+                        <div class="well" id="div_saleTime" style="display: none;">
+
+                            <div class="form-group input-group">
+                                <label>特卖价格</label>
+                                @Html.TextBoxFor(f => f.SalePrice, new { @class = "form-control", maxlength = 10 })
+                            </div>
+                            <div class="form-group">
+
+                                <span>开始时间</span>
+                                <input type="text" id="txt_startTime" name="SaleStartTime" class="Wdate" onclick=" WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_endTime\')||\'2020-10-01\'}', alwaysUseStartDate: true }) ">
+
+                                <span>&nbsp;&nbsp;--&nbsp;&nbsp;</span>
+                                <span>结束时间</span>
+                                <input type="text" id="txt_endTime" name="SaleEndTime" class=" Wdate" onclick=" WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '2020-10-01' }) ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>虚假已售数量</label>
+                            @Html.TextBoxFor(f => f.FakeSoldCount, new { @class = "form-control", maxlength = "5", placeholder = "此数量将在用户页面与实际销售数量叠加显示" })
+                        </div>
+                        <div class="form-group">
+                            <label>是否推荐到首页</label>
+                            <label class="radio-inline">
+                                <input type="radio" name="IsForIndex" value="true" >是
+
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="IsForIndex" value="false"  checked="checked">否
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>描述</label>
+                            <div id="txt_Desc"></div>
+                            @Html.HiddenFor(f => f.Desc)
+                        </div>
+
+                        <button type="button" id="btn_submit" class="btn btn-default">提交</button>
+                        <input type="reset" class="btn btn-default" />
+                    </form>
+                    @if (ViewBag.ErrMsg is string && !string.IsNullOrEmpty(ViewBag.ErrMsg))
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.ErrMsg
+                        </div>
+                    }
+                </div>
+            </div>
+            <!-- /.row (nested) -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+@section Scripts{
+    <script src="@Url.Content("~/Content/My97DatePicker/WdatePicker.js")"></script>
+    <script src="@Url.Content("~/Content/ueditor1_2_6_0-utf8-net/ueditor.all.min.js")"></script>
+    <script src="@Url.Content("~/Content/ueditor1_2_6_0-utf8-net/ueditor.config.js")"></script>
+
+    <script type="text/javascript">
+        var detailOption = {
+            //这里可以选择自己需要的工具按钮名称,此处仅选择如下
+            toolbars: [['Undo', 'Redo', 'Source', '|', 'Bold', 'Italic', 'Underline', '|', 'ForeColor', 'BackColor', 'FontFamily', 'FontSize', '|', 'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|', 'Link', 'Unlink', '|', 'InsertImage', 'Emotion', 'InsertVideo', 'Map', '|', 'wordimage', 'Preview']],
+            initialContent: '@Html.Raw(string.IsNullOrEmpty(Model.Desc)?product.Desc:Model.Desc)',
+            autoHeightEnabled: true //是否自动长高
+        };
+        ue_edit_detail = new baidu.editor.ui.Editor(detailOption);
+        ue_edit_detail.render('txt_Desc');
+
+        $(function () {
+
+            //提交按钮
+            $("#btn_submit").bind("click", function () {
+                var shortTitle = $("#ShortTitle").val();
+                var longTitle = $("#LongTitle").val();
+                var sellPrice = $("#SellPrice").val();
+                var isSale = $("#rd_IsSale_true").is(":checked");
+                var saleStartTime = $("#txt_startTime").val();
+                var saleEndTime = $("#txt_endTime").val();
+                if (isEmpty(shortTitle)) {
+                    MsgDialog.Alert(false, "请填写短标题！");
+                    return;
+                }
+                if (isEmpty(longTitle)) {
+                    MsgDialog.Alert(false, "请填写长标题！");
+                    return;
+                }
+                if (isEmpty(sellPrice) || isNaN(sellPrice)) {
+                    MsgDialog.Alert(false, "价格填写错误！");
+                    return;
+                }
+                if (isSale) {
+                    if (isEmpty(saleEndTime) || isEmpty(saleStartTime)) {
+                        MsgDialog.Alert(false, "请选择特卖开始/结束时间！");
+                        return;
+                    }
+                }
+                $("#btn_submit").disabledButton(true);
+                $("#IsSale").val(isSale);
+                $("#IsCashOnline").val($("#cbx_cashOnline").is(":checked"));
+                $("#IsCashDelivery").val($("#cbx_cashDelivery").is(":checked"));
+                $("#Desc").val(ue_edit_detail.getContent());
+             
+                $("form").submit();
+            });
+
+        });
+
+        function saleRadioChangeEvent() {
+            var isSale = $("#rd_IsSale_true").is(":checked");
+            $("#txt_startTime").val("");
+            $("#txt_endTime").val("");
+            $("#SalePrice").val("");
+            if (isSale) {
+                $("#div_saleTime").show();
+            } else {
+                $("#div_saleTime").hide();
+            }
+        }
+
+    </script>
+
+}

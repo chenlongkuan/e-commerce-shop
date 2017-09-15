@@ -1,0 +1,265 @@
+﻿@using Msg.Bll
+@using Msg.Entities
+@using Msg.Utils
+@using Msg.Web.App_Start
+@model Msg.Entities.GoodsEntity
+
+@section head{
+
+    <link href="@Url.Content("~/Content/ShowLoading/showLoading.css")" rel="stylesheet" />
+    <link href="~/Content/Css/base.css" rel="stylesheet" />
+}
+
+@{
+    ViewBag.Title = Model.ShortTitle + " :: 商品详情";
+    var path = "";
+    if (Model != null)
+    {
+        switch (Model.Product.Category.Id)
+        {
+            case (int)CategoriesEnum.Milk:
+                path = "<a href='" + Url.Action("Milk") + "'>小美奶客</a>";
+                break;
+            case (int)CategoriesEnum.Nuts:
+            case (int)CategoriesEnum.InstantFood:
+            case (int)CategoriesEnum.Drinks:
+            case (int)CategoriesEnum.Snacks:
+            case (int)CategoriesEnum.Specialty:
+                path = "<a href='" + Url.Action("Snacks") + "'>小美零食</a>";
+                break;
+            case (int)CategoriesEnum.Travel:
+            case (int)CategoriesEnum.Tickets:
+            case (int)CategoriesEnum.StuSupplies:
+            case (int)CategoriesEnum.Education:
+                path = "<a href='" + Url.Action("Live") + "'>小美生活</a>";
+                break;
+            case (int)CategoriesEnum.DayliUse:
+            case (int)CategoriesEnum.SkinCare:
+            case (int)CategoriesEnum.Integration:
+                path = "<a href='" + Url.Action("Market") + "'>创业集市</a>";
+                break;
+        }
+    }
+    var comments = ViewBag.Comments as IQueryable<CommentsEntity>;
+    var history = ViewBag.ViewHistory as IQueryable<GoodsEntity>;
+    var hotSelling = ViewBag.HotSelling as IQueryable<GoodsEntity>;
+}
+@if (Model != null)
+{
+
+    <div class="msg_w msg_details">
+        <div class="det_title"><a href="/" class="span">首页</a>&nbsp;&gt;&nbsp;@Html.Raw(path)&nbsp;&gt;&nbsp;@Model.ShortTitle</div>
+        <div class="det_t clearfix">
+            <div class="det_img">
+                <!--产品参数开始-->
+                <div id="preview" class="spec-preview"> <span class="jqzoom"><img jqimg="@Model.Product.MainLogo" src="@ImagesHelper.GetImgWidthHeight(Model.Product.MainLogo, 350, 350, false)" alt=""></span> </div>
+                <!--缩图开始-->
+                <div class="spec-scroll">
+                    <a class="prev">&lt;</a> <a class="next">&gt;</a>
+                    <div class="items">
+                        <ul>
+                            @foreach (var item in Model.Product.LogoList)
+                            {
+                                <li><img alt="" bimg="@item" src="@ImagesHelper.GetImgWidthHeight(item, 350, 350, false)" onmousemove="preview(this); "></li>
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+                <!--缩图结束-->
+                <!--产品参数结束-->
+            </div>
+            <div class="det_nav">
+                <div class="title">@Model.ShortTitle</div>
+                <div class="wor1">@Model.LongTitle</div>
+                <div class="wor2">
+                    市场价格：<span class="span1">￥@Model.MarketPrice.ToString("F")</span><br>
+                    美速购价：<span class="span2">￥@Model.SellPrice.ToString("F")</span>
+                </div>
+                <div class="wor3">
+                    美速购全场满@(ConfigModel.HowmuchToFreeExpressCost)元包邮，未满@(ConfigModel.HowmuchToFreeExpressCost)元收取运费@(ConfigModel.DefaultExpressCost)元<br>
+                    小美配送：<span class="cl_ff3300">由美速购快递送货</span><br>
+
+                    @if ((Model.Product.Quantity - Model.SoldCount) > 2)
+                    {
+                        <span>已 销 售：@(Model.SoldCount + Model.FakeSoldCount)件</span>
+                    }
+                    else
+                    {
+                        <span> 库存不足</span>
+                    }
+                    
+                </div>
+                <dl class="clearfix">
+                    <dd>购买数量：</dd>
+
+                    <dt class="clearfix stepper" data-trigger="spinner" id="spinner">
+                        <span class="dt1 calculate   down" data-spin="down">-</span>
+                        <div class="dt1" style="width: 50px;">
+                            <input class="stepper-input" data-rule="quantity" data-max="@(Model.LimitBuyCount==0?99:Model.LimitBuyCount)" min="1" id="txt_detail_buyCount" type="text" value="1">
+                        </div>
+                        <span class="dt1 calculate up" data-spin="up">+</span>
+                    </dt>
+                </dl>
+                <ul class="wor4 clearfix msg_b2">
+                    <li><a href="JavaScript:;" id="btn_buy_immediately"><img src="@Url.Content("~/Content/images/det_nav1.png")">&nbsp;立即购买</a></li>
+                    <li>
+                        <a href="javascript:;" img="@ImagesHelper.GetImgWidthHeight(Model.Product.MainLogo, 35, 35, false)" class="btnCart" onclick="updateCart(@Model.Id,0,'add',null,this);return false;"><img src="@Url.Content("~/Content/images/det_nav2.png")">&nbsp;加入购物车</a>
+               
+                    </li>
+                </ul>
+                <input type="hidden" id="h_detail_goodsId" value="@Model.Id" />
+            </div>
+        </div>
+        <div class="msg_shop" style="margin-top: 20px;" id="div_recommendforyou">
+            <ul class="shop_li clearfix">
+                <li shop_li="0">为你推荐</li>
+            </ul>
+            <div class="shop_dp" style="display: block;" id="div_recommendforyou_container">
+                <!--ajax加载-->
+            </div>
+        </div>
+        <div class="det_main clearfix">
+            <div class="main_left">
+                <div class="main_l_1" id="div_hot_Selling">
+                    <dl class="clearfix">
+                        <dd>热门销售</dd>
+                        <dt class="a2"><a href="javascript:;" id="btn_hotselling_change">换一批</a></dt>
+                    </dl>
+                    <div id="div_hot_Selling_container">
+                        @Html.Partial("_HotSellingGoods", hotSelling)
+
+                    </div>
+                </div>
+                <div class="main_l_1" style="margin-top: 20px;">
+                    <dl class="clearfix">
+                        <dd>最近浏览</dd>
+                    </dl>
+                    @if (history != null)
+                    {
+                        @Html.Partial("_HotSellingGoods", history)
+                    }
+
+
+                </div>
+            </div>
+            <div class="main_right">
+                <div class="main_r_1">
+                    <div class="main_r_2">商品详情&nbsp;&nbsp;<span class="cl_999999">Product details</span></div>
+                    @Html.Raw(Model.Desc)
+                </div>
+                <div class="main_r_1" style="margin-top: 10px;">
+                    <div class="main_r_2">用户评论&nbsp;&nbsp;<span class="cl_999999">User comments</span></div>
+                    <div id="div_detail_comments_container">
+                        @if (comments != null)
+                        {
+                            foreach (var parent in comments)
+                            {
+                                <div class="main_r_3 clearfix" id="comments_@(parent.Id)">
+                                    <div class="r_3_l">
+                                        <img src="@UserAuth.GetUsersAvatar(parent.User.Avatar)" width="70" height="70">
+                                        <div class="l_wor1">@parent.User.NickName</div>
+                                    </div>
+                                    <div class="r_3_r">
+                                        <div class="wor1">@parent.Content</div>
+                                        <div class="wor2">
+                                            @parent.CreateTime
+                                            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                                            <a href="javascript:;" onclick=" comments.ScrollToCommentBox(@parent.Id, @parent.User.Id);return false; "><img src="@Url.Content("~/Content/images/r_3_r.png")">&nbsp;&nbsp;回复</a>
+                                        </div>
+
+                                        @if (parent.FollowComments != null && parent.FollowComments.Any())
+                                        {
+                                            <div class="main_r_4">
+                                                @foreach (var item in parent.FollowComments)
+                                                {
+                                                    <div class="main_r_3 clearfix" id="comments_reply_@(item.Id)">
+                                                        <div class="r_3_l">
+                                                            <img src="@UserAuth.GetUsersAvatar(item.User.Avatar)" width="70" height="70">
+                                                            <div class="l_wor1">@item.User.NickName</div>
+                                                        </div>
+                                                        <div class="r_3_r">
+                                                            <div class="wor1">
+                                                                <b>回复@(item.BeReplyedUser.NickName):</b>&nbsp;@item.Content
+                                                            </div>
+                                                            <div class="wor2">
+                                                                @item.CreateTime
+                                                                <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                                                                <a href="javascript:;" onclick=" comments.ScrollToCommentBox(@parent.Id, @item.Id, @item.User.Id);return false; "><img src="@Url.Content("~/Content/images/r_3_r.png")">&nbsp;&nbsp;回复</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                    </div>
+                </div>
+                @Html.Raw(ViewBag.Pager)
+                
+                <div class="main_r_1" style="margin-top: 10px;" id="div_comment_reply">
+                    <input type="hidden" id="h_replyTo" value="0" />
+                    <input type="hidden" id="h_appendToFollowId" value="0" />
+                    <input type="hidden" id="h_pageNo" value="@ViewBag.PageNum" />
+                    <input type="hidden" id="h_beReplyedUserId" value="0" />
+                    <input type="hidden" id="h_goodsId" value="@Model.Id" />
+                    <div class="main_r_2">评论&nbsp;&nbsp;<span class="cl_999999">Comment</span></div>
+                    <div class="main_t">
+                        <textarea name="" id="txt_comment_content" cols="" rows=""></textarea>
+                    </div>
+                    <div class="main_a clearfix">
+                        @if (UserAuth.IsAuthenticated)
+                        {
+                            <a href="javascript:;" onclick=" comments.AddComment();return false; ">发表评论</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "Account", new {returnUrl = Request.Url.ToString()})">发表评论</a>
+                        }
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section scripts{
+        <script src="@Url.Content("~/Scripts/jquery.jqzoom.js")"></script>
+        <script src="@Url.Content("~/Content/Js/base.js")"></script>
+        <script src="@Url.Content("~/Content/ShowLoading/jquery.showLoading.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/jquery.spinner.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/Details.js")"></script>
+        <script type="text/javascript">
+            var hotSellingPage = 1;
+            $(function () {
+
+                //为你推荐
+                $("#div_recommendforyou").showLoading();
+                $.get("@Url.Action("_RecommendForyouGoods")", {}, function (data) {
+                    $("#div_recommendforyou_container").html(data);
+                    $("#div_recommendforyou").hideLoading();
+                });
+                //热销 换一批
+                $("#btn_hotselling_change").bind("click", function () {
+                    $("#div_hot_Selling").showLoading();
+                    var pageNoStr = $("#h_hotSelling_page").val();
+                    if (isEmpty(pageNoStr)) {
+                        pageNoStr = "1";
+                    }
+                    var pageNum = parseInt(pageNoStr);
+                    if (!isNaN(pageNum)) {
+                        $.get("@Url.Action("_HotSellingGoods")", { page: pageNum + 1 }, function (data) {
+                            $("#div_hot_Selling_container").html(data);
+                            $("#div_hot_Selling").hideLoading();
+                        });
+                    }
+                });
+            });
+        </script>
+    }
+}

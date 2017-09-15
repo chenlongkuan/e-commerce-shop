@@ -1,0 +1,25 @@
+﻿@using Msg.Web.App_Start
+@{
+    ViewBag.Title = "个人中心";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+}
+@if (!UserAuth.IsAuthenticated)
+{
+    <!--未登录状态-->
+    <div class="msg_gr">未登录，<a href="@Url.Action("Login", "Account", new { ReturnUrl = Request.Url.ToString() })">点击登录？</a></div>
+}
+else
+{
+    <!--登录状态-->
+    <div class="msg_gr3">
+        <img src="@UserAuth.GetUsersAvatar(UserAuth.Avatar)">
+        <div class="msg_gr4">欢迎您：@UserAuth.UserName</div>
+    </div>
+    <div class="msg_gr1">
+        <a href="@Url.Action("MyOrders")">我的订单<span class="cl_ff3300">（@ViewBag.orderCount）</span></a>
+        <a href="@Url.Action("Cart", "Home")">我的购物车<span class="cl_ff3300">（@UserAuth.CartCount）</span></a>
+        <a href="@Url.Action("MyAddresses")">收货地址管理</a>
+        <a href="@Url.Action("MyCoupons")">我的优惠劵</a>
+    </div>
+    <div class="msg_gr_b1"><a href="@Url.Action("LoginOut", "Account", new { returnUrl = Request.Url.ToString() })">退出登录</a></div>
+}

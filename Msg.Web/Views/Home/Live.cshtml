@@ -1,0 +1,125 @@
+﻿@using Msg.Entities
+@{
+    ViewBag.Title = "小美生活";
+    var travelsData = ViewBag.Travels as IQueryable<GoodsEntity>;
+    var ticketsData = ViewBag.Tickets as IQueryable<GoodsEntity>;
+    var stuSupplies = ViewBag.StuSupplies as IQueryable<GoodsEntity>;
+}
+
+<div class="sh_list">
+    <div class="sh_hea clearfix">
+        <div class="sh_hea_l">小美旅游&nbsp;&nbsp;<span>毕业前让自己走向远方走完那些想走的路</span></div>
+        <div class="sh_hea_r"><a href="@Url.Action("Travels")">查看全部&nbsp;<img src="@Url.Content("~/Content/images/sh_hea_r.png")" /></a></div>
+    </div>
+    <div class="sh_main">
+        <ul class="clearfix">
+            @if (travelsData != null && travelsData.Any())
+            {
+                var loopCount = 0;
+                foreach (var item in travelsData)
+                {
+                    loopCount++;
+                    var width = (loopCount == 1 || loopCount == 5) ? 584 : 280;
+                    <li class="@(width == 584 ? "li_c" : "")">
+                        <div class="li_img">
+                            <div class="li_wor">@item.Product.Destination</div>
+                            <a href="@Url.Action("Details", "Home", new {id = item.Id})" target="_blank">
+                                <img class="lazy" width="@width" height="177" data-original="@Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.SecondLogo, width, 177, false)" />
+                            </a>
+                        </div>
+                        <div class="li_t">
+                            <a href="@Url.Action("Details", "Home", new {id = item.Id})">@item.ShortTitle</a>
+                        </div>
+                        <div class="li1 clearfix">
+                            <div class="li1_l">￥@item.SellPrice.ToString("F")</div>
+                            <div class="li1_r">
+                                <a href="@Url.Action("Details", "Home", new {id = item.Id})">&nbsp;<img src="@Url.Content("~/Content/images/li1_r.png")" />&nbsp;去看看</a>
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+
+
+        </ul>
+    </div>
+    <div class="sh_hea clearfix">
+        <div class="sh_hea_l">小美票务&nbsp;&nbsp;<span>学子票务中心最快捷最放心</span></div>
+        <div class="sh_hea_r"><a href="@Url.Action("Tickets")">查看全部&nbsp;<img src="@Url.Content("~/Content/images/sh_hea_r.png")" /></a></div>
+    </div>
+    <div class="pw_mian">
+        <ul class="clearfix">
+            @if (ticketsData != null && ticketsData.Any())
+            {
+                foreach (var item in ticketsData)
+                {
+                    var sellingStatte = "销售中";
+                    if (!item.IsOnSelling)
+                    {
+                        sellingStatte = "已下架";
+                    }
+                    if (item.Product.Quantity <= item.SoldCount)
+                    {
+                        sellingStatte = "已售完";
+                    }
+
+                    <li class=" clearfix">
+                        <div class="li1">
+                            <a href="@Url.Action("Details", "Home", new {id = item.Id})" target="_blank">
+                                <img class="lazy" width="160" height="200" data-original="@Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 160, 200, false)" />
+                            </a>
+                        </div>
+                        <div class="li2">
+                            <div class="title">
+                                <a href="@Url.Action("Details", "Home", new {id = item.Id})" target="_blank">@item.ShortTitle</a>
+                            </div>
+                            <div class="wor">
+                                时间：@(item.Product.UsingDate.HasValue ? item.Product.UsingDate.Value.ToShortDateString() : "")<br />
+                                场馆：@item.Product.Venue<br />
+                                状态：@(sellingStatte)<br />
+                                价格：@item.SellPrice 元起
+                            </div>
+                            <div class="button">
+                                <a href="@Url.Action("Details", "Home", new {id = item.Id})" target="_blank">去看看</a>
+                            </div>
+                        </div>
+                    </li>
+                }
+
+            }
+
+
+        </ul>
+    </div>
+
+
+    <div class="sh_hea clearfix">
+        <div class="sh_hea_l">小美教育&nbsp;&nbsp;<span>学子票务中心最快捷最放心</span></div>
+        <div class="sh_hea_r"><a href="@Url.Action("StuSupplies", "Home")">查看全部&nbsp;<img src="@Url.Content("~/Content/images/sh_hea_r.png")" /></a></div>
+    </div>
+    <div class="jy_main">
+        <ul class="clearfix">
+            @if (stuSupplies != null && stuSupplies.Any())
+            {
+                foreach (var item in stuSupplies)
+                {
+                    <li>
+                        <div class="li1">
+                            <a href="@Url.Action("Details", "Home", new {id = item.Id})" target="_blank">
+                                <img class="lazy" width="380" height="215" data-original="@Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 380, 215, false)" />
+                            </a>
+                        </div>
+                        <div class="li3 clearfix">
+                            <div class="li3_l">￥@item.SellPrice.ToString("F")</div>
+                            <div class="li3_r">
+                                <span>@(item.SoldCount + item.FakeSoldCount)</span>人购买
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+
+
+        </ul>
+    </div>
+</div>

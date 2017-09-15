@@ -1,0 +1,91 @@
+﻿@model IQueryable<Msg.Entities.OrdersEntity>
+@{
+    ViewBag.Title = "我的订单";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+}
+@section Head
+{
+    <link href="@Url.Content("~/Content/bootstrapdialog/dist/css/bootstrap-dialog.min.css")" rel="stylesheet" />
+    <style>
+        body {
+            padding-bottom: 60px;
+        }
+    </style>
+}
+@section Scripts
+{
+    <script src="@Url.Content("~/Content/bootstrapdialog/dist/js/bootstrap-dialog.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.js")"></script>
+    <script src="~/Areas/Mobile/Scripts/app.js"></script>
+    <script src="@Url.Content("~/Scripts/me.js")"></script>
+    <script>
+        $(function () {
+            $("#js_appList").loadData({
+                url: "/mobile/me/_MyOrders",
+                page: 2,//下一页
+                type: "",
+                limit: 10,
+                ajaxType: "html",
+                funEnd: function (data) {
+                    $("#js_appList").append(data);
+                    if (data == "") {
+                        $("#js_appList").append("<div style='text-align: center; padding: 18px 0px;'><img src='/Content/images/load_end.png' /></div>");
+                    }
+                }
+            });
+            //全选
+            $("input[name='cbx_myOrder_all']").bind("change", function () {
+                var $checkAllBtn = $("input[name='cbx_myOrder_all']");
+                MsgFunc.CboxCheckAll($checkAllBtn, "cbx_myOrder_item");
+                $(".sp_cbx_myOrder_all_desc").html($checkAllBtn.attr("title"));
+                if ($checkAllBtn.is(":checked")) {
+                    $checkAllBtn.removeAttr("checked");
+                } else {
+                    $checkAllBtn.each(function () {
+                        $(this).prop("checked", "checked");
+                    });
+                }
+            });
+            //取消选中订单
+            $("#btnCancelSelOrders").bind("click", function () {
+                var parameter = "";
+                $("input[name='cbx_myOrder_item']:enabled").each(function () {
+                    if (this.checked) {
+                        var id = $(this).val();
+                        if (parameter == "") {
+                            parameter += id;
+                        } else {
+                            parameter += "," + id;
+                        }
+                    }
+                });
+                if (isEmpty(parameter)) {
+                    MsgDialog.Alert(false, "请至少选择一个订单");
+                    return;
+                }
+                MsgDialog.Confirm("确定要取消此订单吗?", function () {
+                    $.get("/mobile/Me/CancelOrders?t=" + Math.random(), { ids: parameter }, function (data) {
+                        MsgDialog.Alert(data.status, data.msg, function () {
+                            window.location.href = window.location.href;
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+}
+<div class="msg_g_m1">
+    <ul id="js_appList">
+        @Html.Partial("_MyOrders", Model)
+    </ul>
+</div>
+<!--加入购物车 开始-->
+<div class="msg_gwc clearfix">
+    <div class="msg_g_l1">
+        <input name="cbx_myOrder_all" type="checkbox" value="">&nbsp;<span class="sp_cbx_myOrder_all_desc">全选</span>
+    </div>
+    <div class="msg_g_r1">
+        <a href="javascript:;" id="btnCancelSelOrders">&nbsp;&nbsp;取消订单&nbsp;&nbsp;</a>
+    </div>
+</div>
+<!--加入购物车 结束-->

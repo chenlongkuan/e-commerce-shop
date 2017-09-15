@@ -1,0 +1,57 @@
+﻿@model System.Linq.IQueryable<Msg.Entities.NotifiesEntity>
+
+@{
+    ViewBag.Title = "站内信";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+}
+
+<div class="per_right per_order">
+    <div class="order_h">
+        <div class="h_left">站内信</div>
+    </div>
+    <div class="station_l">
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <tbody>
+                <tr>
+                    <th style="text-align: left;">内容</th>
+                    <th width="70">发件人</th>
+                    <th width="50">状态</th>
+                    <th width="100">发布时间</th>
+                    <th width="50">操作</th>
+                </tr>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="text-align: left;">
+                                @if (item.State == 1)
+                                {  <a href="javascript:;" onclick="myNotifies.readNotify(@item.Id, true);return false; " class="st_show" st_show="0">[@item.TypeDesc] @item.Title</a>
+                                }
+                                else
+                                {
+                                    <a href="javascript:;" onclick="myNotifies.readNotify(@item.Id,false);return false; " class="st_show" st_show="0">[@item.TypeDesc] @item.Title</a>
+                                }
+                            </td>
+                            <td>管理员</td>
+                            <td><span id="sp_notify_state">@(item.State == 0 ? "未读" : "已读")</span></td>
+                            <td>@(item.CreateTime.ToShortDateString())<br>@item.CreateTime.ToLongTimeString()</td>
+                            <td><a href="javascript:;" onclick="myNotifies.deleteNotify(@item.Id);return false;">删除</a></td>
+                        </tr>
+                        <tr class="st_hide">
+                            <td colspan="5" style="text-align:left;">
+                                <div>尊敬的用户：</div>
+                                <div class="td1">
+                                    @Html.Raw(item.Content)
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+    <div class="per_f">@Html.Raw(ViewBag.Pager)</div>
+</div>

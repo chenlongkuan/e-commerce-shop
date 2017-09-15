@@ -1,0 +1,158 @@
+﻿@using Msg.Bll.Helpers
+@using Msg.Entities
+@using Msg.Utils
+@model Msg.Entities.OrdersEntity
+
+@{
+    ViewBag.Title = "我的订单详情";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+}
+
+<div class="per_right per_order">
+    @if (Model != null)
+    {
+        <div class="order_h">
+            <div class="h_left">订单号：@Model.OrderNo</div>
+            @if (Model.Status == (int)OrderStatusEnum.UnPay)
+            {
+                <div class="h_right1 per_button">
+                    <a href="#">立即付款</a>
+                </div>
+            }
+
+        </div>
+        <div class="order_d">
+            <table cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <th colspan="4">
+                            <span class="cl_0093dd">@Model.StatusDesc</span>&nbsp;&nbsp;
+                            订单号：<a href="">@Model.OrderNo</a>
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <td class="td1">
+                            <ul>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <li class="clearfix">
+                                        <div class="li1">
+                                            <a href="@Url.Action("Details", "Home", new {id = item.Goods.Id})"><img src="@ImagesHelper.GetImgWidthHeight(item.Goods.Product.MainLogo, 80, 80, false)" width="80" height="80"></a>
+                                        </div>
+                                        <div class="li2">
+                                            <a href="@Url.Action("Details", "Home", new { id = item.Goods.Id })">@(item.Goods.ShortTitle)&nbsp;&nbsp; X@(item.Quantity)</a>
+                                            <br>@(item.SinglePrice)元
+                                        </div>
+                                    </li>
+                                }
+
+                            </ul>
+                        </td>
+                        <td width="90">@Model.StatusDesc</td>
+                        <td width="130">@Model.CreateTime.ToShortDateString()<br>@Model.CreateTime.ToLongTimeString()</td>
+                        <td width="150">
+                            @if (Model.Status == (int)OrderStatusEnum.UnPay)
+                            {
+                                <a href="javascript:;" onclick="myOrders.cancelOrder('@Model.Id');return false; ">取消订单</a>
+                            }
+                        
+                            <a href="@Url.Action("Details", "Home", new {id = Model.Items.FirstOrDefault().Goods.Id})">再次购买</a>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="td2" colspan="5">
+                            <ul class="clearfix">
+                                <li>
+                                    <div class="li1 over">下单</div>
+                                    <div class="li2">@Model.CreateTime.ToString("MM月dd日")<br>@Model.CreateTime.ToString("hh时mm分")</div>
+                                </li>
+                                <li>
+                                    <div class="li1 @(Model.Status == (int) OrderStatusEnum.Outputing ? "over" : "")">配货</div>
+                                    @if (Model.Status == (int)OrderStatusEnum.Outputing && Model.PayTime.HasValue)
+                                    {
+                                        <div class="li2">@Model.PayTime.Value.ToString("MM月dd日")<br>@Model.PayTime.Value.ToString("hh时mm分")</div>
+                                    }
+                                </li>
+                                <li>
+                                    <div class="li1 @(Model.Status == (int) OrderStatusEnum.Sended ? "over" : "")">送货</div>
+                                    @if (Model.Status == (int)OrderStatusEnum.Sended && Model.ConfirmTime.HasValue)
+                                    {
+                                        <div class="li2">@Model.ConfirmTime.Value.ToString("MM月dd日")<br>@Model.ConfirmTime.Value.ToString("hh时mm分")</div>
+                                    }
+                                </li>
+                                <li>
+                                    <div class="li1 @(Model.Status == (int) OrderStatusEnum.Done ? "over" : "")">交易完成</div>
+                                    @if (Model.Status == (int)OrderStatusEnum.Done)
+                                    {
+                                        <div class="li2">@Model.LastModifyTime.ToString("MM月dd日")<br>@Model.LastModifyTime.ToString("hh时mm分")</div>
+                                    }
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td3" colspan="5" align="right">
+                            <dl class="clearfix">
+                                <dd>
+                                    商品总价：<br>
+                                    优惠金额：<br>
+                                    运费：<br>
+                                    实付金额：
+                                </dd>
+                                <dt>
+                                    <span class="cl_0093dd">@(Model.OrderPrice.ToString("F"))&nbsp;&nbsp;元<br></span>
+
+                                    <span class="cl_0093dd">@(Model.SalePrice.ToString("F"))&nbsp;&nbsp;元<br></span>
+
+                                    <span class="cl_0093dd">@(Model.ExpressCost > 0 ? Model.ExpressCost.ToString("F") : "免邮费")<br></span>
+                                    <span class="cl_0093dd"><b>@(Model.DisplayPrice.ToString("F"))</b>&nbsp;&nbsp;元</span>
+                                </dt>
+                            </dl>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="order_xx">
+            <h4>收货信息</h4>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</td>
+                        <td>@Model.Address.ReciverName</td>
+                    </tr>
+                    <tr>
+                        <td>收货地址：</td>
+                        <td>@Model.Address.DetailAddress</td>
+                    </tr>
+                    <tr>
+                        <td>联系电话：</td>
+                        <td>@Model.Address.ReciverTel</td>
+                    </tr>
+                    <tr>
+                        <td>支付方式：</td>
+                        <td>@Model.PayWay</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4>送货时间</h4>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>送货时间：</td>
+                        <td>@Model.SendTimeDate.ToString("yyyy年MM月dd日")<span>&nbsp;&nbsp;</span> @Model.SendTimeBuckets</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrMsg <a href="@Url.Action("MyOrders")" class="alert-link">返回我的订单</a>.
+        </div>
+    }
+</div>

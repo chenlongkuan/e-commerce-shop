@@ -1,0 +1,44 @@
+﻿@model IQueryable<Msg.Entities.UserAddressEntity>
+@{
+    ViewBag.Title = "收货地址管理";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+}
+@section Head
+{
+    <link href="@Url.Content("~/Content/bootstrapdialog/dist/css/bootstrap-dialog.min.css")" rel="stylesheet" />
+    <style>
+        body {
+            padding-bottom: 60px;
+        }
+    </style>
+}
+@section Scripts
+{
+    <script src="@Url.Content("~/Content/bootstrapdialog/dist/js/bootstrap-dialog.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.js")"></script>
+    <script src="@Url.Content("/Areas/Mobile/Scripts/MobileAddress.js")"></script>
+}
+<div class="msg_zffs"><a href="@Url.Action("EditAddress")">添加收货地址></a></div>
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+    <div class='msg_zf @(item.IsDefult ? "msg_dz" : "")'>
+        <div class="clearfix">
+            <div class="zf_1">收货人：@item.ReciverName</div>
+            <div class="zf_2">@item.ReciverTel</div>
+        </div>
+        <div class="zf_3">@(item.CityName)&nbsp;&nbsp;@(item.RegionName)&nbsp;&nbsp;@(item.SchoolName)&nbsp;&nbsp;@(item.DetailAddress)</div>
+        <div class="zf_4 clearfix">
+            <div class="msg_left">
+                @if (!item.IsDefult)
+                {
+                    <a href="JavaScript:;" onclick="MobileAddress.setDefault(@item.Id);return false;">设为默认地址</a> <span>&nbsp; &nbsp;</span>
+                }
+            </div>
+            <div class="cl_ff3300 msg_right"><a href="@Url.Action("EditAddress", new { id = item.Id })">编辑</a>&nbsp;&nbsp;<a href="JavaScript:;" onclick="MobileAddress.deleteAddress(@item.Id);return false;" style="color: #ff3300;">删除</a></div>
+        </div>
+    </div>
+    }
+}
+<div class="msg_gr_b"><a href="@Url.Action("Index")">返回个人中心</a></div>

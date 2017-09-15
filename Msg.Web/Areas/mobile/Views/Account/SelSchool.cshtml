@@ -1,0 +1,50 @@
+﻿@model List<Msg.Bll.Models.SchoolModel>
+@{
+    ViewBag.Title = "选择学校";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+}
+@section Head
+{
+    <style>
+        body {
+            padding-bottom: 60px;
+            background: #fff;
+        }
+    </style>
+}
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#selRegion a").bind("click", function () {
+                var schoolId = $.trim($(this).attr("val"));
+                window.location.href = "/mobile/account/JumpSchool/" + schoolId;
+            });
+        })
+    </script>
+}
+<input type="hidden" id="regionId" value="@ViewBag.regionId"/>
+<div class="msg_sel" id="selRegion">
+    <div class="sel_title">选择学校</div>
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var item in Model)
+        {
+        <a href="javascript:;" val="@item.Id">
+            <dl>
+                <dd>@item.Name</dd>
+                <dt>
+                    @if (item.Id == ViewBag.schoolId)
+                    {
+                        <img src="@Url.Content("/Content/MobileTemplate/images/g.png")" />
+                    }
+                </dt>
+            </dl>
+        </a>
+        }
+    }
+</div>
+<div class="msg_gwc clearfix">
+    <div class="msg_gwc_l"><a href="javascript:window.history.go(-1);">返回</a></div>
+    @*<div class="msg_gwc_r"><a href="javascript:;" id="btnSelRegionOk">确认选择</a></div>*@
+</div>

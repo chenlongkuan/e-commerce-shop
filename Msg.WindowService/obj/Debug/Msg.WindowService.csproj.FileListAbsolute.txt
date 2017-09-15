@@ -1,0 +1,12 @@
+D:\xk_Projects\Meisugou\Msg.WindowService\bin\Debug\Msg.WindowService.exe.config
+D:\xk_Projects\Meisugou\Msg.WindowService\bin\Debug\Msg.WindowService.exe
+D:\xk_Projects\Meisugou\Msg.WindowService\bin\Debug\Msg.WindowService.pdb
+D:\xk_Projects\Meisugou\Msg.WindowService\bin\Debug\Msg.Entities.dll
+D:\xk_Projects\Meisugou\Msg.WindowService\bin\Debug\Msg.Tools.dll
+D:\xk_Projects\Meisugou\Msg.WindowService\bin\Debug\NLog.dll
+D:\xk_Projects\Meisugou\Msg.WindowService\bin\Debug\Msg.Entities.pdb
+D:\xk_Projects\Meisugou\Msg.WindowService\bin\Debug\Msg.Tools.pdb
+D:\xk_Projects\Meisugou\Msg.WindowService\bin\Debug\NLog.xml
+D:\xk_Projects\Meisugou\Msg.WindowService\obj\Debug\Msg.WindowService.csprojResolveAssemblyReference.cache
+D:\xk_Projects\Meisugou\Msg.WindowService\obj\Debug\Msg.WindowService.exe
+D:\xk_Projects\Meisugou\Msg.WindowService\obj\Debug\Msg.WindowService.pdb

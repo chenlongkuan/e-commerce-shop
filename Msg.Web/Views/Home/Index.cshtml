@@ -1,0 +1,469 @@
+﻿@using Msg.Entities
+@{
+    ViewBag.Title = "首页";
+    var yiliMilks = ViewBag.YiliMilks as IQueryable<GoodsEntity>;
+    var mengniuMilks = ViewBag.MengniuMilks as IQueryable<GoodsEntity>;
+    var tianyouMilks = ViewBag.TianyouMilks as IQueryable<GoodsEntity>;
+    var dreamMilks = ViewBag.DreamMilks as IQueryable<GoodsEntity>;
+    //var smashMilks = ViewBag.SmashMilks as IQueryable<GoodsEntity>;
+    var nutsFood = ViewBag.NutsFood as IQueryable<GoodsEntity>;
+    var instantFood = ViewBag.InstantFood as IQueryable<GoodsEntity>;
+    var drinks = ViewBag.Drinks as IQueryable<GoodsEntity>;
+    var snacks = ViewBag.Snacks as IQueryable<GoodsEntity>;
+    var dailyUse = ViewBag.DailyUse as IQueryable<GoodsEntity>;
+
+    var travels = ViewBag.Travels as IQueryable<GoodsEntity>;
+    var tickets = ViewBag.Tickets as IQueryable<GoodsEntity>;
+    var stuSupplies = ViewBag.StuSupplies as IQueryable<GoodsEntity>;
+}
+
+@helper OneAndTwoFloorLoopHtml(GoodsEntity item, int loopCount)
+{
+
+    var divWidth = 0;
+    var img = "";
+    <li>
+        <a href="@Url.Action("Details", "Home", new {id = item.Id})" target="_blank">
+
+            @if (loopCount < 2 || loopCount > 5)
+            {
+                divWidth = 494;
+                img = Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.SecondLogo, 494, 240, false);
+                <img class="lazy" width="494" height="240" data-original="@img" />
+            }
+            else
+            {
+                divWidth = 244;
+                img = Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 244, 240, false);
+                <img class="lazy" width="244" height="240" data-original="@img" />
+            }
+        </a>
+        <div class="li1" style="width: @(divWidth)px;">
+            <div class="li1_1">
+                <b>￥@(item.SellPrice.ToString("F"))</b>
+            </div>
+            <div class="li1_2">
+                <div class="title" style="width: @(divWidth)px;">@item.ShortTitle</div>
+                <div class="button">
+                    @if ((item.Product.Quantity - item.SoldCount) > 2)
+                    {
+                        <a href="javascript:;" img="@img" class="btnCart" onclick="updateCart(@item.Id, 1, 'add' , null, this);return false; ">加入购物车</a>
+                    }
+                    else
+                    {
+                        <a href="javascript:;" img="@img" class="btnCart over">库存不足</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </li>
+}
+
+@helper ThreeFloorLoopHtml(GoodsEntity item, int loopCount)
+{
+    var divWidth = 0;
+    var bottomDivClass = "";
+    var img = "";
+    <li>
+        <div class="@(loopCount>2?"li5":"li1") li_q">
+            <a href="@Url.Action("Details", "Home", new {id = item.Id})" target="_blank">
+                @if (loopCount == 1)
+                {
+                    divWidth = 750;
+                    bottomDivClass = "li2";
+                    img = Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.SecondLogo, 750, 283, false);
+                    <img class="lazy" width="750" height="283" data-original="@img" />
+                }
+                else if (loopCount == 2)
+                {
+                    divWidth = 236; bottomDivClass = "li3";
+                    img = Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 236, 283, false);
+                    <img class="lazy" width="236" height="283" data-original="@img" />
+                }
+                else
+                {
+                    divWidth = 493; bottomDivClass = "li6";
+                    img = Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.SecondLogo, 493, 117, false);
+                    <img class="lazy" width="493" height="117" data-original="@img" />
+                }
+
+            </a>
+            <div class="li4" style="width:@(divWidth)px;">
+                <div class="li1_1"><b>￥@item.SellPrice.ToString("F")</b></div>
+                <div class="li1_2">
+                    <div class="title" style="width: @(divWidth)px;">@item.ShortTitle</div>
+                    <div class="button">
+                        @if ((item.Product.Quantity - item.SoldCount) > 2)
+                        {
+                            <a href="javascript:;" img="@img" class="btnCart" onclick="updateCart(@item.Id, 1, 'add' , null, this);return false; ">加入购物车</a>
+                        }
+                        else
+                        {
+                            <a href="javascript:;" img="@img" class="btnCart over">库存不足</a>
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="@bottomDivClass" style="width: @(divWidth)px; word-wrap: break-word;"><a href="@Url.Action("Details", "Home", new {id = item.Id})" target="_blank">
+            @(item.LongTitle.Length > 30 ? item.LongTitle.Substring(0,30) + "..." : item.LongTitle)
+        </a></div>
+</li>
+}
+
+
+
+<div class="msg_w">
+    <!--小美奶客 开始-->
+    <div class="msg_nk">
+        <div class="msg_main_t clearfix">
+            <div class="main_t_l">1F</div>
+            <div class="main_t_z">
+                <b>小美奶客</b>&nbsp;&nbsp;放心牛奶·营养早餐·从小美奶客开始
+            </div>
+            <div class="main_t_r">
+                <a href="@Url.Action("Milk", "Home")" target="_blank">更多牛奶<img src="@Url.Content("~/Content/images/main_t_r.png")" /></a>
+            </div>
+        </div>
+    </div>
+    <div class="index_main clearfix" style="height: 500px;">
+        <div class="nk_left">
+            <ul>
+                <li>
+                    <div class="li1"></div><a href="javascript:;" class="a2 over"></a>
+                </li>
+                <li>
+                    <div class="li1"></div><a href="javascript:;" class="a1"></a>
+                </li>
+                <li>
+                    <div class="li1"></div><a href="javascript:;" class="a3"></a>
+                </li>
+                <li>
+                    <div class="li1"></div><a href="javascript:;" class="a4"></a>
+                </li>
+                @*<li style="border-bottom: 0px;">
+                        <div class="li1"></div><a href="javascript:;" class="a5"></a>
+                    </li>*@
+            </ul>
+        </div>
+        <div class="nk_right nk_qh" style="display: block;">
+            <ul>
+                @if (mengniuMilks != null && mengniuMilks.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in mengniuMilks)
+                    {
+                        loopCount++;
+                        @OneAndTwoFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div>
+        <div class="nk_right nk_qh">
+            <ul>
+                @if (yiliMilks != null && yiliMilks.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in yiliMilks)
+                    {
+                        loopCount++;
+                        @OneAndTwoFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div>
+        <div class="nk_right nk_qh">
+            <ul>
+                @if (tianyouMilks != null && tianyouMilks.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in tianyouMilks)
+                    {
+                        loopCount++;
+                        @OneAndTwoFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div>
+        <div class="nk_right nk_qh">
+            <ul>
+                @if (dreamMilks != null && dreamMilks.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in dreamMilks)
+                    {
+                        loopCount++;
+                        @OneAndTwoFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div>
+        @*<div class="nk_right nk_qh">
+                <ul>
+                    @if (smashMilks != null && smashMilks.Any())
+                    {
+                        var loopCount = 0;
+                        foreach (var item in smashMilks)
+                        {
+                            loopCount++;
+                            @OneAndTwoFloorLoopHtml(item, loopCount)
+                        }
+                    }
+                </ul>
+            </div>*@
+    </div>
+    <!--小美奶客 结束-->
+    <!--小美零食 开始-->
+    <div class="msg_nk">
+        <div class="msg_main_t clearfix">
+            <div class="main_t_l">2F</div>
+            <div class="main_t_z">
+                <b>小美零食</b>&nbsp;&nbsp;我就是你们的零食库·解馋解闷解风情
+            </div>
+            <div class="main_t_r">
+                <a href="@Url.Action("Snacks", "Home")" target="_blank">更多零食<img src="~/Content/images/main_t_r.png" /></a>
+            </div>
+        </div>
+    </div>
+    <div class="index_main clearfix" style="height: 500px;">
+        <div class="ls_left">
+            <ul>
+                <li class="li_h4 over" style="border-bottom: 0px;">
+                    <div class="li1"></div>
+                    <div class="li2">休闲食品</div>
+                    <div class="li3">
+                        凤爪 薯片 开心果<br />瓜子 果冻 小零嘴等
+                    </div>
+                </li>
+                <li class="li_h2">
+                    <div class="li1"></div>
+                    <div class="li2">方便食品</div>
+                    <div class="li3">
+                        方便面 蛋黄派<br />饼干 面包等
+                    </div>
+                </li>
+                <li class="li_h3">
+                    <div class="li1"></div>
+                    <div class="li2">冲泡饮料</div>
+                    <div class="li3">
+                        奶茶 咖啡 茶叶<br />果汁 蜂蜜等
+                    </div>
+                </li>
+                <li class="li_h1">
+                    <div class="li1"></div>
+                    <div class="li2">果干坚果</div>
+                    <div class="li3">
+                        核桃 枣子 葡萄干<br />杏仁 腰果等
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="nk_right ls_qh" style="display: block;">
+            <ul>
+                @if (snacks != null && snacks.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in snacks)
+                    {
+                        loopCount++;
+                        @OneAndTwoFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div>
+        <div class="nk_right ls_qh">
+            <ul>
+                @if (instantFood != null && instantFood.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in instantFood)
+                    {
+                        loopCount++;
+                        @OneAndTwoFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div>
+        <div class="nk_right ls_qh">
+            <ul>
+                @if (drinks != null && drinks.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in drinks)
+                    {
+                        loopCount++;
+                        @OneAndTwoFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div><div class="nk_right ls_qh">
+            <ul>
+                @if (nutsFood != null && nutsFood.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in nutsFood)
+                    {
+                        loopCount++;
+                        @OneAndTwoFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div>
+
+
+    </div>
+<!--小美零食 结束-->
+    <div class="msg_nk">
+        <div class="msg_main_t clearfix">
+            <div class="main_t_l">3F</div>
+            <div class="main_t_z">
+                <b>小美日用</b>&nbsp;&nbsp;洗洗涮涮的事·其实挺简单·性价比超好
+            </div>
+            <div class="main_t_r">
+                <a href="@Url.Action("DailyUse", "Home")" target="_blank">更多日用<img src="~/Content/images/main_t_r.png" /></a>
+            </div>
+        </div>
+    </div>
+    <div class="index_main">
+        <div class="js_main" id="div_index_dailyUse">
+            <ul class="clearfix">
+                @if (dailyUse != null && dailyUse.Any())
+                {
+                    foreach (var item in dailyUse)
+                    {
+                        <li>
+                            <a href="@Url.Action("Details", "Home", new { id = item.Id })"><img class="lazy" data-original="@Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 230, 230, false)" width="230" height="230" /></a>
+                            <dl class="clearfix">
+                                <dd>￥@item.SellPrice.ToString("F")</dd>
+                                <dt>已售出 @(item.SoldCount + item.FakeSoldCount)</dt>
+                            </dl>
+                            <div class="li1"><a href="@Url.Action("Details", "Home", new { id = item.Id })" target="_blank">@item.ShortTitle</a></div>
+                        </li>
+
+                    }
+                }
+
+            </ul>
+        </div>
+    </div>
+
+
+<!--小美生活 开始-->
+    <div class="msg_nk">
+        <div class="msg_main_t clearfix">
+            <div class="main_t_l">4F</div>
+            <div class="main_t_z">
+                <b>小美生活</b>&nbsp;&nbsp;年轻多彩青春多彩不多负担
+            </div>
+            <div class="main_t_r">
+                <a href="@Url.Action("Live", "Home")" target="_blank">更多生活<img src="@Url.Content("~/Content/images/main_t_r.png")" /></a>
+            </div>
+        </div>
+    </div>
+    <div class="index_main clearfix">
+        <div class="sh_left">
+            <ul>
+                <li class="li1 over">
+                    <div class="li4"></div>学子旅游
+                </li>
+                <li class="li2">
+                    <div class="li4"></div>学子票务
+                </li>
+                <li class="li3">
+                    <div class="li4"></div>学子用品
+                </li>
+            </ul>
+        </div>
+        <div class="sh_right" style="display: block;">
+            <ul class="clearfix">
+                @if (travels != null && travels.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in travels)
+                    {
+                        loopCount++;
+                        @ThreeFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div>
+        <div class="sh_right">
+            <ul class="clearfix">
+                @if (tickets != null && tickets.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in tickets)
+                    {
+                        loopCount++;
+                        @ThreeFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div>
+        <div class="sh_right">
+            <ul class="clearfix">
+                @if (stuSupplies != null && stuSupplies.Any())
+                {
+                    var loopCount = 0;
+                    foreach (var item in stuSupplies)
+                    {
+                        loopCount++;
+                        @ThreeFloorLoopHtml(item, loopCount)
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <!--小美生活 结束-->
+    <!--小美集市 开始-->
+    <div class="msg_nk">
+        <div class="msg_main_t clearfix">
+            <div class="main_t_l">5F</div>
+            <div class="main_t_z">
+                <b>创业集市</b>&nbsp;&nbsp;年轻就该拥有自己的梦·为敢于追梦的小伙伴支持
+            </div>
+            <div class="main_t_r">
+                <a href="@Url.Action("Market", "Home")" target="_blank">更多集市<img src="~/Content/images/main_t_r.png" /></a>
+            </div>
+        </div>
+    </div>
+    <div class="index_main">
+        <div class="js_main" id="div_index_market">
+            <!--创业集市数据由Ajax加载填充-->
+        </div>
+    </div>
+    <!--小美集市 结束-->
+
+    <!--积分兑换 开始-->
+    <div class="msg_nk">
+        <div class="msg_main_t clearfix">
+            <div class="main_t_l">6F</div>
+            <div class="main_t_z">
+                <b>积分兑换</b>&nbsp;&nbsp;积分当钱花·回家机票·电话费·小礼品·欢乐无极限
+            </div>
+            <div class="main_t_r">
+                <a href="@Url.Action("Index", "Exchanges")" target="_blank">更多兑换<img src="~/Content/images/main_t_r.png" /></a>
+            </div>
+        </div>
+    </div>
+    <div class="index_main clearfix" id="div_index_exchange_warpper">
+        <div class="jf_left">
+            <a href="javascript:;" onmouseover="LoadExchangeGoods(0, 1000,1); return false;" class="over"><span class="span"></span>0-1000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;积分</a>
+            <a href="javascript:;" onmouseover="LoadExchangeGoods(1001, 3000,2); return false;"><span class="span"></span>1001-3000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;积分</a>
+            <a href="javascript:;" onmouseover="LoadExchangeGoods(3001, 5000,3); return false;"><span class="span"></span>3001-5000&nbsp;&nbsp;&nbsp;&nbsp;积分</a>
+            <a href="javascript:;" onmouseover="LoadExchangeGoods(5001, 8000,4); return false;"><span class="span"></span>5001-8000&nbsp;&nbsp;&nbsp;&nbsp;积分</a>
+            <a href="javascript:;" onmouseover="LoadExchangeGoods(8001, 9999999, 5); return false;"><span class="span"></span>8000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;积分以上</a>
+        </div>
+        <div class="jf_right" style="display: block;" id="div_index_exchange_content_1">
+            @*积分兑换数据由Ajax加载填充*@
+        </div>
+        <div class="jf_right" id="div_index_exchange_content_2"></div>
+        <div class="jf_right" id="div_index_exchange_content_3"></div>
+        <div class="jf_right" id="div_index_exchange_content_4"></div>
+        <div class="jf_right" id="div_index_exchange_content_5"></div>
+    </div>
+    <!--积分兑换 结束-->
+</div>
+@section scripts{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/index.js")"></script>
+}

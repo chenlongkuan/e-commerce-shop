@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2876c24d-63b2-4e38-a35d-41a83945363b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://file.meisugou.com/UploadFile.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="UploadFile.xsd" MetadataType="Schema" ID="08a3b243-5f62-4508-a0a4-704bbb755823" SourceId="1" SourceUrl="http://file.meisugou.com/UploadFile.svc?xsd=xsd1" />
+    <MetadataFile FileName="UploadFile1.xsd" MetadataType="Schema" ID="6b977a3c-ae9b-4643-ba96-57f3aee7f1de" SourceId="1" SourceUrl="http://file.meisugou.com/UploadFile.svc?xsd=xsd2" />
+    <MetadataFile FileName="UploadFile2.xsd" MetadataType="Schema" ID="f8efd22d-436b-45b4-8d86-9001749d2685" SourceId="1" SourceUrl="http://file.meisugou.com/UploadFile.svc?xsd=xsd0" />
+    <MetadataFile FileName="Upload.wsdl" MetadataType="Wsdl" ID="905b3009-15a3-4aee-9296-7dce98fd4325" SourceId="1" SourceUrl="http://file.meisugou.com/UploadFile.svc?wsdl" />
+    <MetadataFile FileName="UploadFile.disco" MetadataType="Disco" ID="87824c28-78bb-4e03-b94f-afc2d5771694" SourceId="1" SourceUrl="http://file.meisugou.com/UploadFile.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

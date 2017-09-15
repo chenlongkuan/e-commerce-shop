@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "修改头像";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+}
+
+@section head
+{
+
+}
+
+<div class="per_right">
+    <div id="images"></div>
+</div>
+
+@section scripts{
+
+    <script src="@Url.Content("~/Scripts/jquery.swfobject.1-1-1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/upload_avatar.js")"></script>
+
+    <script type="text/javascript">
+        $(function() {
+            up = new SEXY_upload_one_file('up', {
+                id: 'images',
+                swf_src: '@Url.Content("~/Content/upload_head.swf")',
+                save_url: '@Url.Action("AvatarUpload")',
+                debug: function(str) {
+                    //$('#debug').append(str + '<br>');
+                },
+                error: function(error) {
+                    //$('#error').append(error + '<br>');
+                },
+                start: function() {
+                    //$('#debug').append('上传开始<br>');
+                    $(".per_right").showLoading();
+                },
+                complete: function(backstr) {
+                    $(".per_right").hideLoading();
+                    backstr = eval('(' + backstr + ')');
+                    MsgDialog.Alert(backstr.s, backstr.msg, function () {
+                        if (backstr.s) {
+                            window.location.href = '@Url.Action("Index")';
+                        }
+                    });
+
+                }
+            });
+
+        })
+    </script>
+}

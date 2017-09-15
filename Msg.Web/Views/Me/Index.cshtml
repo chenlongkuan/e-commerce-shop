@@ -1,0 +1,71 @@
+﻿@using Msg.Bll.Models
+@using Msg.Entities
+@using Msg.Utils
+@using Msg.Web.App_Start
+@{
+    ViewBag.Title = "首页";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+    var unpayOrders = ViewBag.UnPayOrders as IQueryable<OrdersEntity>;
+    var unReceivedOrders = ViewBag.UnReceivedOrders as IQueryable<OrdersEntity>;
+    var goodsInCart = ViewBag.Carts as List<CartModel>;
+}
+
+<div class="per_right">
+    <div class="per_info">
+        <div class="info_t clearfix">
+            <div class="info_t_img"><a href="@Url.Action("ModifyAvatar")"><img src="@Url.Content("~/Content/images/tx.png")" class="img"><img src="@UserAuth.GetUsersAvatar(UserAuth.Avatar)" width="80" height="80"></a></div>
+            <div class="info_t_w">
+                <span class="cl_333333">@UserAuth.UserName</span>&nbsp;&nbsp;欢迎您！
+                <br>
+                <span class="span">
+                    @*<a href="">未绑定手机</a><span class="cl_999999">|</span>*@
+                    <a href="@Url.Action("MyAddresses", "Me")">管理我的收货地址</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="@Url.Action("MyExchanges")">我的积分：@UserAuth.UserCache.Credits</a>
+                </span>
+            </div>
+        </div>
+        <div class="info_dd">未支付的订单</div>
+        <div id="div_me_unpay_container">@Html.Partial("_UnPayOrders", unpayOrders)</div>
+        <div class="info_dd">未收货的订单</div>
+        <div id="div_me_unreceived_container">@Html.Partial("_UnReceivedOrders", unReceivedOrders)</div>
+        <div class="info_dd">购物车</div>
+        @*<div id="div_me_cart_container"></div>*@
+        @if (goodsInCart != null && goodsInCart.Any())
+        {
+            <table cellpadding="0" cellspacing="0" width="100%" class="dd_list_tab">
+
+                @foreach (var item in goodsInCart)
+                {
+                    <tr>
+                        <td class="clearfix">
+                            <div class="td1">
+                                <a href="@Url.Action("Details", "Home", new {id = item.GoodsId})" target="_blank"><img src="@ImagesHelper.GetImgWidthHeight(item.GoodsLogo, 50, 50, false)" width="50" height="50"></a>
+                            </div>
+                        </td>
+                        <td width="40">&times;&nbsp;@item.Quantity</td>
+                        <td width="210">@item.GoodsShortTitle</td>
+                        <td width="110">
+                            ￥@item.SellPrice
+                        </td>
+                        <td width="120"><a href="@Url.Action("Details", "Home", new {id = item.GoodsId})" target="_blank">商品详情</a></td>
+                        <td width="150" class="per_button">
+                            @if (item.Buyable)
+                            {
+                                <a href="@Url.Action("CreateOrder", "Home", new {goodsId = item.GoodsId, quantity = item.Quantity})">立即下单</a>
+                            }
+                            else
+                            {
+                                <span class="dd_list_w">商品失效或库存不足</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <div class="dd_list_w">您的购物车是空的，<a href="/" target="_blank">赶快去挑选喜欢的商品吧！</a></div>
+        }
+
+    </div>
+</div>

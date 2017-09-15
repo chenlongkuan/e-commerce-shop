@@ -1,0 +1,140 @@
+﻿@using Msg.Bll
+@using Msg.Bll.Models
+@using Msg.Entities
+@using Msg.Tools.Extensions
+@model List<CartModel>
+@{
+    ViewBag.Title = "核对订单信息";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+
+    var address = ViewBag.Address as UserAddressEntity;
+    var coupons = ViewBag.Coupons as List<CouponSendLogModel>;
+    var addressId = 0;
+}
+
+@section Head
+{
+    <link href="@Url.Content("~/Content/bootstrapdialog/dist/css/bootstrap-dialog.min.css")" rel="stylesheet" />
+    <style>
+        body {
+            padding-bottom: 60px;
+        }
+    </style>
+}
+@section Scripts
+{
+    <script src="@Url.Content("~/Content/bootstrapdialog/dist/js/bootstrap-dialog.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.spinner.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/cart.js")"></script>
+}
+@if (Model != null && Model.Any())
+{
+    var sumPrice = Model.Sum(s => s.SellPrice);
+    var expressCost = Model.Sum(s => s.SellPrice) >= ConfigModel.HowmuchToFreeExpressCost ? 0 : ConfigModel.DefaultExpressCost;
+    decimal couponValue = 0;
+    <!--有收货地址情况-->
+    <div id="div_view_model_address_container">
+        @if (address != null && !string.IsNullOrEmpty(address.ReciverName))
+        {
+            <div class="msg_zf">
+                <div class="clearfix">
+                    <div class="zf_1">收货人：@address.ReciverName</div>
+                    <div class="zf_2">@address.ReciverTel</div>
+                </div>
+                <div class="zf_3">@(address.CityName)&nbsp;&nbsp;@(address.RegionName)&nbsp;&nbsp;@(address.SchoolName)&nbsp;&nbsp;@(address.DetailAddress) </div>
+                <div class="zf_4">
+                    <a href="@Url.Action("SelectAddresses", new { p = ViewBag.p, couponId = ViewBag.couponId })">修改收货地址></a>
+                </div>
+            </div>
+            addressId = address.Id;
+        }
+        else
+        {
+            <!--无收货地址情况-->
+            <div class="msg_zffs">
+                @*<a href="@Url.Action("SelectAddresses", new { p = ViewBag.p, couponId = ViewBag.couponId })">添加收货地址></a>*@
+                <a href="@Url.Action("EditAddress", "Me", new { id = 0, p = ViewBag.p, couponId = ViewBag.couponId })">添加收货地址></a>
+            </div>
+        }
+        <input type="hidden" id="h_cart_address_id" value="@addressId" />
+    </div>
+    
+    <div class="msg_zffs">支付方式：<span class="cl_ff3300">支付宝</span></div>
+    <input type="hidden" id="h_cart_coupons_count" value="@(coupons.Count)" />
+    <input type="hidden" id="h_currentCouponId" value="@ViewBag.couponId"/>
+        if (coupons.Any())
+        {
+    <div class="msg_zffs">
+        选择优惠劵：
+        @if (ViewBag.couponId <= 0)
+        {
+            <a href="@Url.Action("SelectCoupon", new { p = ViewBag.p })" style="color: #ff3300;">请选择</a>
+        }
+        else
+        {
+            foreach (var item in coupons)
+            {
+                if (item.Id == ViewBag.couponId)
+                {
+                    couponValue = item.CouponValue;
+            <a href="@Url.Action("SelectCoupon", new { p = ViewBag.p, id = item.Id })" style="color: #ff3300;">@item.CouponName</a>
+                }
+            }
+        }
+    </div>
+        }
+    
+    <input type="hidden" id="h_cart_payway" value="@PayWayEnum.CashOnline.ToString()" />
+    <input type="hidden" id="expressway" value="@ExpressWayEnum.MsgExpress.ToString()" />
+    
+    <input type="hidden" id="SendTimeBuckets" value="@ViewBag.SendTimeBuckets">
+    <input type="hidden" id="sel_send_date" value="@ViewBag.sendDateStr">
+    
+    <div class="msg_zffs">
+        <a href="@Url.Action("SelectTime", new { p = ViewBag.p, couponId = ViewBag.couponId, sendTimeType = ViewBag.sendTimeType, sendDate = ViewBag.sendDate })">选择收货时间：@ViewBag.sendDateStr @ViewBag.SendTimeBucketsStr</a>
+    </div>
+    <div class="msg_g_m1">
+        <ul>
+            @foreach (var item in Model)
+            {
+                <li>
+                    <div class="clearfix">
+                        <div class="li_left">
+                            <a href="@Url.Action("Details", "Home", new { id = item.GoodsId })">
+                                <img src="@item.GoodsLogo"></a>
+                        </div>
+                        <div class="li_right">
+                            <div class="right_t">
+                                <div class="wor1"><a href="@Url.Action("Details", "Home", new { id = item.GoodsId })">@item.GoodsShortTitle</a></div>
+                                <div class="wor2">￥@(item.SinglePrice.ToString("F"))</div>
+                                <div class="clearfix">
+                                    <div class="wor3"></div>
+                                    <div class="wor4">共@(item.Quantity)件商品&nbsp;&nbsp;<span class="cl_ff3300">合计：@((item.Quantity * item.SinglePrice).ToString("F"))元</span>&nbsp;&nbsp;@(item.Buyable ? "" : item.UnBuyableDesc)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="msg_gwc clearfix">
+        <div class="msg_g_l1"><span class="cl_ff3300">合计: <span id="sp_submitOrder_shouldpay">@((sumPrice + expressCost - couponValue).ToString("F"))</span>元</span></div>
+        <div class="msg_g_r1">
+            @if (Model.Any(f => !f.Buyable))
+            {
+                <a href="javascript:;" disabled="disabled" style="background: none repeat scroll 0 0 gray;">确认支付</a>
+            }
+            else
+            {
+                <a href="javascript:;" onclick="preOrder.submitMobileOrder();return false;">确认支付</a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="msg_fkcg">@ViewBag.ErrMsg</div>
+    <div class="msg_fkcg1"><a href="@Url.Action("Index")">继续购物&gt;&gt;</a></div>
+}

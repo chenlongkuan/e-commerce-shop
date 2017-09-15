@@ -1,0 +1,127 @@
+﻿@using Msg.Bll
+@using Msg.Utils
+@using Msg.Web.App_Start
+@model System.Collections.Generic.List<Msg.Bll.Models.CartModel>
+
+
+
+@{
+    ViewBag.Title = "我的购物车";
+    Layout = "~/Views/Shared/_CartLayout.cshtml";
+}
+
+<div class="msg_w" style="padding-bottom: 50px;">
+    <div class="msg_shop">
+        <div class="shop_m clearfix">
+            <div class="shop_m_left">
+                <img src="@Url.Content("~/Content/images/shop.png")">&nbsp;我的购物车
+            </div>
+
+            <div class="shop_m_right">
+                <div class="r_span" style="width: 33%;"></div>
+            </div>
+        </div>
+        <table cellpadding="0" cellspacing="0" width="100%" class="shop_tab">
+            <tbody>
+                <tr>
+                    <th width="65" style="text-align: left;">
+                        <input name="cbx_cart_all" type="checkbox" value="" title="全选">&nbsp;<span class="sp_cbx_cart_all_desc">全选</span>
+                    </th>
+                    <th width="82">商品</th>
+                    <th>&nbsp;</th>
+                    <th width="100">单价（元）</th>
+                    <th width="120">数量</th>
+                    <th width="80">操作</th>
+                </tr>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                    <tr id="tr_item_@(item.GoodsId)">
+                        <td style="text-align: left;">
+                            <input name="cbx_cart_item" type="checkbox" value="@item.GoodsId" @(item.Buyable ? "checked='checked'" : "disabled='disabled'")>
+                        </td>
+                        <td>
+                            <img class="lazy" data-original="@ImagesHelper.GetImgWidthHeight(item.GoodsLogo, 82, 82, false)" width="82" height="82"></td>
+                        <td style="text-align: left;"><a href="@Url.Action("Details", new { id = item.GoodsId })" target="_blank">@item.GoodsShortTitle</a></td>
+                        <td><span class="singlePrice" goodsid="@(item.GoodsId)" id="sp_single_price_goods_@(item.GoodsId)">@item.SinglePrice.ToString("F")</span></td>
+                        <td>
+
+                            @if (item.Buyable)
+                            {
+                                <div class="td clearfix stepper" data-trigger="spinner" id="spinner">
+                                    <span class="td1 calculate  up" data-spin="down" goodsid="@item.GoodsId">-</span>
+                                    <div class="td1" style="width: 50px">
+                                        <input value="@item.Quantity"  class="stepper-input" data-rule="quantity" goodsid="@(item.GoodsId)" data-max="@item.CouldBuyCount" min="1" id="txt_cart_buyCount_goods_@(item.GoodsId)" type="text">
+                                    </div>
+                                    <span class="td1 calculate  down" data-spin="up" goodsid="@item.GoodsId">+</span>
+                                    <br />
+                                </div>
+                                    
+                                if (item.LimitBuyCount < 99)
+                                {
+                                <div class="td clearfix stepper" style="border:0px;" data-trigger="spinner" id="spinner"><span style="color: darkgray">该商品限购@(item.LimitBuyCount)件，您目前可购数量为@(item.CouldBuyCount)</span></div>
+                                }
+
+                            }
+                            else
+                            {
+                                <div class="td clearfix stepper" style="border:0px;" data-trigger="spinner" id="spinner"><span style="color: darkgray">@item.UnBuyableDesc</span></div>
+                            }
+
+                        </td>
+                        <td class="td2"><a href="javascript:;" goodsid="@item.GoodsId" class="btn_cart_delete_goods">删除商品</a></td>
+                    </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+        <div class="shop_t clearfix">
+            <div class="t_left">
+                <input name="cbx_cart_all" type="checkbox" value="">&nbsp;<span class="sp_cbx_cart_all_desc">全选</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" id="btn_cart_delete_all_goods">删除所选商品</a></div>
+            <div class="t_b msg_b2">
+                @if (UserAuth.IsAuthenticated)
+                {
+                    <a href="javascript:;" id="btn_cart_gotally">去结算</a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Account", new { returnUrl = Request.Url.ToString() })">去结算</a>
+                }
+            </div>
+            <div class="t_b msg_b1"><a href="/">继续购物</a></div>
+            <div class="t_right">商品总价：<span>￥<span id="sp_cart_sumprice">@(Model != null ? Model.Sum(s => s.SellPrice).ToString("F") : "0")</span></span><br>
+                美速购全场满@(ConfigModel.HowmuchToFreeExpressCost)元包邮，未满@(ConfigModel.HowmuchToFreeExpressCost)元收取运费@(ConfigModel.DefaultExpressCost)元</div>
+        </div>
+    </div>
+    @Html.Partial("_GuessLikeAndViewHistory")
+</div>
+
+@section scripts {
+
+    <script type="text/javascript">
+
+        $(function () {
+            $("#btn_cart_gotally").bind("click", function () {
+                var parameter = "";
+                $("input[name='cbx_cart_item']:enabled").each(function () {
+                    if (this.checked) {
+                        var goodsId = $(this).val();
+                        if (parameter == "") {
+                            parameter += goodsId + "$" + $("#txt_cart_buyCount_goods_" + goodsId).val();
+                        } else {
+                            parameter += "," + goodsId + "$" + $("#txt_cart_buyCount_goods_" + goodsId).val();
+                        }
+                    }
+                });
+                if (isEmpty(parameter)) {
+                    MsgDialog.Alert(false, "请至少选择一个商品");
+                    return;
+                }
+
+                window.location.href = "@Url.Action("CheckOut")?p=" + encodeURIComponent(parameter);
+            });
+        });
+    </script>
+}

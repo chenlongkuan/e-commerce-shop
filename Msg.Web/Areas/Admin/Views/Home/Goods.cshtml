@@ -1,0 +1,158 @@
+﻿@using Msg.Bll.Models
+@model System.Linq.IQueryable<Msg.Entities.GoodsEntity>
+
+
+@{
+    ViewBag.Title = "已上架商品管理";
+    ViewBag.InnerTopTitle = "已上架商品管理";
+    var brands = ViewBag.Brands as List<BrandsModel>;
+    var cates = ViewBag.Categories as List<CategoryModel>;
+}
+
+<div class="col-lg-6" style="width: 100%">
+    <div class="panel panel-default">
+
+        <div class="panel-heading" style="height: 50px;">
+            @*<div style="float: left;">
+                    <a href="javascript:;" onclick="addOrModifyDialog(0);return false;" class="btn btn-default">添加库存</a>
+                </div>*@
+            <div class="form-group" style="float: left; margin-left: 25px;">
+                <label>名称</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" id="txt_search_Name">
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>品牌</label>
+                <label>
+                    <select class="form-control" id="sel_search_brands">
+                        <option value="" selected="selected">所有品牌</option>
+                        @if (brands != null && brands.Any())
+                        {
+                            foreach (var item in brands)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select>
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>品类</label>
+                <label>
+                    <select class="form-control" id="sel_search_cates">
+                        <option value="" selected="selected">所有品类</option>
+                        @if (cates != null && cates.Any())
+                        {
+                            foreach (var item in cates)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select>
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>排序字段</label>
+                <label>
+                    <select class="form-control" id="sel_search_sort">
+                        <option value="credit">库存数量</option>
+                        <option value="createtime">添加时间</option>
+                    </select>
+                </label>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <button type="button" class="btn btn-default" onclick="paging(1)">搜索</button>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <button type="button" class="btn btn-default" onclick="reset()">重置</button>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            @Html.Partial("_Goods", Model)
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<script type="text/javascript">
+    function paging(page) {
+        var pname = $("#txt_search_Name").val();
+        var brandId = $("#sel_search_brands").val();
+        var cateId = $("#sel_search_cates").val();
+        var sort = $("#sel_search_sort").val();
+        $(".panel-body").showLoading();
+        $.get("@Url.Action("_goods", "Home", new { area = "Admin" })?t=" + Math.random(), { brandId: brandId, cateId: cateId, name: pname, sortColumn: sort, page: page }, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+
+    function reset() {
+        $("#txt_search_Name").val("");
+        $("#sel_search_brands").val("");
+        $("#sel_search_sort").val("");
+        $("#sel_search_cates").val("");
+        $(".panel-body").showLoading();
+        $.get("@Url.Action("_goods", "Home", new { area = "Admin" })?t=" + Math.random(), {}, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+
+    function GoodsToIndex(id) {
+        $.get("@Url.Action("GoodsToIndex", "Home", new { area = "Admin" })?t=" + Math.random(), { goodsId: id }, function (data) {
+            MsgDialog.Alert(data.status, data.msg, function() {
+                window.location.href = window.location.href;
+            });
+        });
+    }
+
+    function GoodsDown(goodsId) {
+
+        var html = '<div class="form-group"><input type="text" class="form-control" id="txt_content"  maxlength="200" placeholder="请输入下架理由,200字以内" /></div>';
+
+        BootstrapDialog.show({
+            title: '商品下架',
+            message: $(html),
+            closable: false,
+            buttons: [{
+                id: "btn_submit",
+                icon: 'glyphicon glyphicon-send',
+                label: 'Save',
+                cssClass: 'btn-primary',
+                autospin: true,
+                action: function (dialogRef) {
+                    dialogRef.enableButtons(false);
+                    dialogRef.setClosable(false);
+                    var $button = dialogRef.getButton('btn_submit');
+                    var remark = $("#txt_content").val();
+
+                    var url = "@Url.Action("GoodsDown", "Home", new { area = "Admin" })?t=" + Math.random();
+
+                    $.get(url, { goodsId: goodsId, remark: remark }, function (data) {
+
+                        MsgDialog.Alert(data.status, data.msg, function () {
+                            if (data.status) {
+                                window.location.href = window.location.href;
+                            }
+                        });
+
+
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                    });
+                }
+            }, {
+                label: 'Close',
+                action: function (dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
+
+    }
+
+</script>

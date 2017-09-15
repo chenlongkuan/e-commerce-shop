@@ -1,0 +1,127 @@
+﻿@model List<Msg.Entities.CommentsEntity>
+
+@{
+    ViewBag.Title = "评论管理";
+    ViewBag.InnerTopTitle = "评论管理";
+}
+<div class="col-lg-6" style="width: 100%">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            &nbsp;
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>商品名称</th>
+                            <th>评论内容</th>
+                            <th>评论人</th>
+                            <th>评论时间</th>
+                            <th colspan="2">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+
+                            foreach (var item in Model)
+                            {
+  
+                            <tr>
+                                <td>@item.Id</td>
+                                <td><a href="@Url.Action("Details", "Home", new { area = "", Id = item.Goods.Id })" target="_blank">@item.Goods.ShortTitle</a></td>
+                                <td>
+                                    @item.Content
+                                </td>
+                                <td>@item.User.NickName</td>
+                                <td>@item.CreateTime</td>
+                                <td>
+                                    <a href="javascript:;" onclick="reply(@item.Id,@item.User.Id);return false;">回复</a>
+                                </td>
+                                <td>
+                                    <a href="javascript:;" onclick="deleteComment(@item.Id);return false; ">删除</a>
+                                </td>
+                            </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+                <div style="float: right">@Html.Raw(ViewBag.Pager)</div>
+                <!--/.pager-->
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+
+<script type="text/javascript">
+
+    function deleteComment(id) {
+        MsgDialog.Confirm("确定要删除此评论吗?", function () {
+            $.get("@Url.Action("DeleteComment", "Home", new { area = "Admin" })?t=" + Math.random(), { id: id }, function (data) {
+                MsgDialog.Alert(data.status, da.msg);
+            });
+        });
+    }
+
+    function reply(id,beReplyUserId) {
+        var html = '<div class="form-group"><textarea class="form-control" id="txt_content" style="resize: none" rows="3" maxlength="300" placeholder="请输入回复内容,300字以内"></textarea></div>';
+        BootstrapDialog.show({
+            title: '回复',
+            message: $(html),
+            closable: false,
+            buttons: [{
+                id: "btn_submit",
+                icon: 'glyphicon glyphicon-send',
+                label: 'Save',
+                cssClass: 'btn-primary',
+                autospin: true,
+                action: function (dialogRef) {
+                    dialogRef.enableButtons(false);
+                    dialogRef.setClosable(false);
+                    var $button = dialogRef.getButton('btn_submit');
+                    
+                    var content = $("#txt_content").val();
+                    if (isEmpty(content)) {
+                        MsgDialog.Alert(false, "请输入回复内容");
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                        return;
+                    }
+
+
+                    var url = "@Url.Action("ReplyComment", "Home", new { area = "Admin" })";
+
+                    $.post(url, { id: id, beReplyUserId: beReplyUserId, content: content }, function (data) {
+
+                        MsgDialog.Alert(data.status, data.msg, function () {
+                            if (data.status) {
+                                window.location.href = window.location.href;
+                            }
+                        });
+
+
+
+                    });
+                }
+            }, {
+                label: 'Close',
+                action: function (dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
+
+
+    }
+
+</script>

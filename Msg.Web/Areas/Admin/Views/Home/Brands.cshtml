@@ -1,0 +1,207 @@
+﻿@using Msg.Utils
+@model List<Msg.Bll.Models.BrandsModel>
+
+@{
+    ViewBag.Title = "品牌管理";
+    ViewBag.InnerTopTitle = "品牌管理";
+}
+
+<div class="col-lg-6" style="width: 100%">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a href="javascript:;" onclick="addOrModifyDialog(0);return false;" class="btn btn-default">添加品牌</a>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>品牌名称</th>
+                            <th>Logo</th>
+                            <th>是否可用</th>
+                            <th>添加时间</th>
+                            <th colspan="3">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+
+                            foreach (var item in Model)
+                            {
+  
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.Name</td>
+                                <td>
+                                    <a href="@item.Logo" target="_blank">
+                                        <img src="@ImagesHelper.GetImgWidthHeight(item.Logo, 25, 25, false)"  title="点击查看大图"></a>
+                                </td>
+                                <td>@(item.IsUseable ? "可用" : "不可用")</td>
+                                <td>@item.CreateTime</td>
+                                <td>
+                                    <a href="javascript:;" onclick="addOrModifyDialog(@item.Id, '@item.Name', '@item.Logo', '@(item.IsUseable.ToString())');return false; ">编辑</a>
+                                </td>
+                                <td><a href="javascript:;" onclick="disableBrand(@item.Id);return false; ">@(item.IsUseable ? "禁用" : "启用")</a></td>
+                                <td>
+                                    <a href="javascript:;" onclick="deleteBrand(@item.Id);return false; ">删除</a>
+                                </td>
+                            </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+                <div style="float: right">@Html.Raw(ViewBag.Pager)</div>
+                <!--/.pager-->
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<script src="@Url.Content("~/Scripts/jquery.swfobject.1-1-1.min.js")"></script>
+<script src="@Url.Content("~/Scripts/sexy_upload_one.js")"></script>
+
+<script type="text/javascript">
+    function disableBrand(id) {
+        MsgDialog.Confirm("确定要禁用/启用此品牌吗?", function () {
+            $.get("@Url.Action("DisableBrand", "Home", new { area = "Admin" })?t=" + Math.random(), { id: id }, function (data) {
+                MsgDialog.Alert(data.status, data.msg, function() {
+                    if (data.status) {
+                        window.location.href = window.location.href;
+                    }
+                });
+            });
+        });
+
+    }
+
+    function deleteBrand(id) {
+        MsgDialog.Confirm("确定要删除此品牌吗?", function () {
+            $.get("@Url.Action("DeleteBrand", "Home", new { area = "Admin" })?t=" + Math.random(), { id: id }, function (data) {
+                MsgDialog.Alert(data.status, data.msg), function () {
+                    if (data.status) {
+                        window.location.href = window.location.href;
+                    }
+                };
+            });
+        });
+    }
+
+    function addOrModifyDialog(id, name, logo, isUsable) {
+        var title = "编辑品牌";
+        if (id == 0) {
+            title = "新增品牌";
+        }
+        var html = '<div><div class="form-group"><div><a href="javascript:;" id="btn_upload">上传Logo</a></div></div>';
+        html += '<div class="form-group"><img src="" id="img_Cover" width="200" height="200" name="img_Cover" style="display: none" />';
+        html += '<input type="hidden" id="imageUrl" name="imageUrl" /></div><div class="form-group"><label>名称</label>';
+        html += '<input class="form-control" id="txt_brand_name" placeholder="输入品牌名称"></div><div class="form-group">';
+        html += '<label>是否可用</label><input type="radio" name="isUsable" value="true" id="rd_brand_useable" checked="checked">可用';
+        html += '<input type="radio" name="isUsable" id="rd_brand_unuseable" value="false">禁用</div></div>';
+        BootstrapDialog.show({
+            title: title,
+            message: $(html),
+            closable: false,
+            onshown: function () {
+                 up = new SEXY_upload_one_file('up', {
+                    id: 'btn_upload',
+                    swf_src: '@Url.Content("~/Content/upload_one_file.swf")',
+                    btn_src: '@Url.Content("~/Content/images/up_button.png")',
+                    up_url: '@Url.Action("RecivePhoto", "Common",new{area=""})',
+                    loading: 'true',
+                    btn_w: 131,
+                    btn_h: 40,
+                    complete: function (backstr) {
+                        
+                        backstr = eval('(' + backstr + ')');
+                        if (backstr.status) {
+                            $("#img_Cover").attr("src", backstr.filesSrc);
+                            $("#img_Cover").show();
+                            $("#imageUrl").val(backstr.filesSrc);
+                        } else {
+                            alert(backstr.msg);
+                        }
+                    }
+                });
+                if (id > 0) {
+                    $("#txt_brand_name").val(name);
+                    $("#imageUrl").val(logo);
+                    $("#img_Cover").attr("src", logo);
+                    $("#img_Cover").show();
+                    $("input[name='isUsable']:checked").removeAttr("checked");
+                    if (isUsable=="True") {
+                        $("#rd_brand_useable").prop("checked", true);
+                    } else {
+                        $("#rd_brand_unuseable").prop("checked", true);
+                    }
+
+                }
+            },
+            buttons: [{
+                id: "btn_submit",
+                icon: 'glyphicon glyphicon-send',
+                label: 'Save',
+                cssClass: 'btn-primary',
+                autospin: true,
+                action: function (dialogRef) {
+                    dialogRef.enableButtons(false);
+                    dialogRef.setClosable(false);
+                    var $button = dialogRef.getButton('btn_submit');
+                    
+                    name = $("#txt_brand_name").val();
+                    logo = $("#imageUrl").val();
+                    var isUseable = $("input[name='isUsable']:checked").val();
+
+                    if (name.length < 1) {
+                        MsgDialog.Alert(false, "请输入品牌名称！");
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                        return;
+                    }
+                    if (logo.length < 1) {
+                        MsgDialog.Alert(false, "请上传品牌Logo！");
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                        return;
+                    }
+
+                    var url = "@Url.Action("ModifyBrand", "Home", new { area = "Admin" })?t=" + Math.random();
+                    if (id == 0) {
+                        url = "@Url.Action("AddBrand", "Home", new { area = "Admin" })?t=" + Math.random();
+                    }
+
+                    $.get(url, { Id: id, Name: name, Logo: logo, IsUseable: isUseable }, function (data) {
+
+                        MsgDialog.Alert(data.status, data.msg, function () {
+                            if (data.status) {
+                                window.location.href = window.location.href;
+                            }
+                        });
+
+
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                    });
+                }
+            }, {
+                label: 'Close',
+                action: function (dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
+
+
+    }
+
+</script>
+

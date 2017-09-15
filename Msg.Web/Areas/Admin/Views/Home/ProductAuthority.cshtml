@@ -1,0 +1,156 @@
+﻿@using Msg.Bll.Models
+@using Msg.Entities
+@model System.Linq.IQueryable<Msg.Entities.ProductsApplyEntity>
+
+@{
+    ViewBag.Title = "商品申请审核";
+    ViewBag.InnerTopTitle = "商品审核";
+    var cates = ViewBag.Categories as List<CategoryModel>;
+}
+
+<div class="col-lg-6" style="width: 100%">
+    <div class="panel panel-default">
+
+        <div class="panel-heading" style="height: 50px;">
+            <div class="form-group" style="float: left; margin-left: 25px;">
+                <label>名称</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" id="txt_search_Name">
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 25px;">
+                <label>昵称</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" id="txt_search_SupplierName" value="@ViewBag.SupplierName">
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>品牌</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" id="txt_search_brand">
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>品类</label>
+                <label>
+                    <select class="form-control" id="sel_search_cates">
+                        <option value="" selected="selected">所有品类</option>
+                        @if (cates != null && cates.Any())
+                        {
+                            foreach (var item in cates)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select>
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label> 状态</label>
+                <label>
+                    <select class="form-control" id="sel_search_status">
+                        <option value="" selected="selected">所有状态</option>
+                        <option value="@ApplyStatusEnum.Verifying">申请中</option>
+                        <option value="@ApplyStatusEnum.ApplySuccess">申请成功</option>
+                        <option value="@ApplyStatusEnum.ApplyFailed"> 申请失败</option>
+                        <option value="@ApplyStatusEnum.GoodsUp">已上架</option>
+                        <option value="@ApplyStatusEnum.GoodsDown">已下架</option>
+                    </select>
+                </label>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <button type="button" class="btn btn-default" onclick="paging(1) ">搜索</button>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <button type="button" class="btn btn-default" onclick="reset() ">重置</button>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            @Html.Partial("_ProductAuthority", Model)
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<input type="hidden" id="h_SupplierId" value="@ViewBag.SupplierId" />
+<script type="text/javascript">
+    function paging(page) {
+        var pname = $("#txt_search_Name").val();
+        var brand = $("#txt_search_brand").val();
+        var cateId = $("#sel_search_cates").val();
+        var supplierName = $("#txt_search_SupplierName").val();
+        $(".panel-body").showLoading();
+        $.get("@Url.Action("_ProductAuthority", "Home", new { area = "Admin" })?t=" + Math.random(), { name: pname, supplierName: supplierName, cateId: cateId, brand: brand, page: page }, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+
+    function reset() {
+        $("#txt_search_Name").val("");
+        $("#sel_search_status").val("");
+        $("#sel_search_cates").val("");
+        $("#txt_search_brand").val("");
+        $("#txt_search_SupplierName").val("");
+        $(".panel-body").showLoading();
+        $.get("@Url.Action("_ProductAuthority", "Home", new { area = "Admin" })?t=" + Math.random(), {}, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+
+    function modifyStatus(id, status) {
+
+        var html = '<div class="form-group"><input type="text" class="form-control" id="txt_content"  maxlength="10" placeholder="请输入操作说明，200字以内" /></div>';
+
+        BootstrapDialog.show({
+            title: "审核产品入库申请",
+            message: $(html),
+            closable: false,
+
+            buttons: [{
+                id: "btn_submit",
+                icon: 'glyphicon glyphicon-send',
+                label: 'Save',
+                cssClass: 'btn-primary',
+                autospin: true,
+                action: function (dialogRef) {
+                    dialogRef.enableButtons(false);
+                    dialogRef.setClosable(false);
+                    var $button = dialogRef.getButton('btn_submit');
+                    var remark = $("#txt_content").val();
+
+                    if (remark.length < 1) {
+                        MsgDialog.Alert(false, "请输入操作说明！");
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                        return;
+                    }
+                    $.get("@Url.Action("ModifyProductApplyStatus","Home",new{area="Admin"})?t=" + Math.random(), { id: id, statusEnum: status, remark: remark }, function (data) {
+                        MsgDialog.Alert(data.status, data.msg, function () {
+                            if (data.status) {
+                                window.location.href = window.location.href;
+                            }
+                        });
+
+
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                    });
+
+                }
+            }, {
+                label: 'Close',
+                action: function (dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
+
+    }
+
+
+</script>

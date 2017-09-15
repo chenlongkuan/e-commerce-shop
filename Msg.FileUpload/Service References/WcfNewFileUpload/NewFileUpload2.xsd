@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://file.meisugou.com/NewFileUpload.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" />
+  <xs:element name="SaveSmailImage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q1:NewAttachmentsEntity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveSmailImageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="SaveSmailImageResult" nillable="true" type="q2:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveSmailImageByQuality">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q3:NewAttachmentsEntity" />
+        <xs:element minOccurs="0" name="quality" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveSmailImageByQualityResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="SaveSmailImageByQualityResult" nillable="true" type="q4:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSmailImageByHeightAndWidth">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q5:NewAttachmentsEntity" />
+        <xs:element minOccurs="0" name="Height" type="xs:int" />
+        <xs:element minOccurs="0" name="Width" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSmailImageByHeightAndWidthResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="UploadAndMakeSmailImageByHeightAndWidthResult" nillable="true" type="q6:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSmailImageNoFillWidthByHeightAndWidth">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q7:NewAttachmentsEntity" />
+        <xs:element minOccurs="0" name="Height" type="xs:int" />
+        <xs:element minOccurs="0" name="Width" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSmailImageNoFillWidthByHeightAndWidthResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="UploadAndMakeSmailImageNoFillWidthByHeightAndWidthResult" nillable="true" type="q8:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSmailImageByMaxHeightAndMaxWidth">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q9:NewAttachmentsEntity" />
+        <xs:element minOccurs="0" name="maxHeight" type="xs:int" />
+        <xs:element minOccurs="0" name="maxWidth" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSmailImageByMaxHeightAndMaxWidthResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="UploadAndMakeSmailImageByMaxHeightAndMaxWidthResult" nillable="true" type="q10:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSmailImageByMaxHeightAndMaxWidth_Tuan">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q11:NewAttachmentsEntity" />
+        <xs:element minOccurs="0" name="maxHeight" type="xs:int" />
+        <xs:element minOccurs="0" name="maxWidth" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSmailImageByMaxHeightAndMaxWidth_TuanResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="UploadAndMakeSmailImageByMaxHeightAndMaxWidth_TuanResult" nillable="true" type="q12:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSmailImageByMaxWidth">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q13:NewAttachmentsEntity" />
+        <xs:element minOccurs="0" name="maxWidth" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSmailImageByMaxWidthResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="UploadAndMakeSmailImageByMaxWidthResult" nillable="true" type="q14:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSquareImage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q15:NewAttachmentsEntity" />
+        <xs:element minOccurs="0" name="width" type="xs:int" />
+        <xs:element minOccurs="0" name="height" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadAndMakeSquareImageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="UploadAndMakeSquareImageResult" nillable="true" type="q16:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadFile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q17:NewAttachmentsEntity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadFileResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="UploadFileResult" nillable="true" type="q18:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadFileByOriginal">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q19:NewAttachmentsEntity" />
+        <xs:element minOccurs="0" name="saveSource" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadFileByOriginalResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="UploadFileByOriginalResult" nillable="true" type="q20:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadFile_Tuan">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="attachmen" nillable="true" type="q21:NewAttachmentsEntity" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UploadFile_TuanResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="UploadFile_TuanResult" nillable="true" type="q22:NewMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveSchoolLogo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="schoolId" type="xs:int" />
+        <xs:element minOccurs="0" name="buff" nillable="true" type="xs:base64Binary" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveSchoolLogoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveSchoolLogoResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMaxImgWidthSrcAndMaxHeight">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" minOccurs="0" name="record" nillable="true" type="q23:RecordImgMsg" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMaxImgWidthSrcAndMaxHeightResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetMaxImgWidthSrcAndMaxHeightResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

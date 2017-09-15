@@ -1,0 +1,206 @@
+﻿@using Msg.Entities
+@using Msg.Utils
+@using Msg.Web.App_Start
+@model Msg.Entities.CreditGoodsEntity
+
+@{
+    ViewBag.Title = Model.Name + " :: 积分兑换 ";
+    var comments = ViewBag.Comments as IQueryable<CommentsEntity>;
+    var history = ViewBag.ViewHistory as IQueryable<GoodsEntity>;
+    var hotSelling = ViewBag.HotSelling as IQueryable<GoodsEntity>;
+}
+@section head{
+
+    <link href="@Url.Content("~/Content/ShowLoading/showLoading.css")" rel="stylesheet" />
+}
+
+@if (Model != null)
+{
+
+    <div class="msg_w msg_details">
+        <div class="det_title"><a href="/" class="span">首页</a>&nbsp;&gt;&nbsp;<a href="@Url.Action("Index","Exchanges")">积分兑换</a>&nbsp;&gt;&nbsp;@Model.Name</div>
+        <div class="det_t clearfix">
+            <div class="det_img">
+                <!--产品参数开始-->
+                <div id="preview" class="spec-preview"> <span class="jqzoom"><img jqimg="@Model.Logo" src="@ImagesHelper.GetImgWidthHeight(Model.Logo, 350, 350, false)" alt="@Model.Name"></span> </div>
+
+                <!--产品参数结束-->
+            </div>
+            <div class="det_nav">
+                <div class="title">@Model.Name</div>
+                <div class="wor2">
+                    所需积分：<span class="span2">@Model.NeedCredits</span>
+                </div>
+                <div class="wor3">
+                    库存数量：@(Model.Quantity) 件<br>
+                    可兑次数：@(Model.ExchangeTimes) 次<br>
+                    已 兑 换：@(Model.ExchangeLogs.Count) 件
+                </div>
+                <dl class="clearfix">
+                    <dd>兑换数量：</dd>
+
+                    <dt class="clearfix stepper" data-trigger="spinner" id="spinner">
+                        <span class="dt1 calculate   down" data-spin="down">-</span>
+                        <div class="dt1" style="width: 50px;">
+                            <input class="stepper-input" data-rule="quantity" data-max="@Model.ExchangeTimes" min="1" id="txt_detail_buyCount" type="text" value="1">
+                        </div>
+                        <span class="dt1 calculate up" data-spin="up">+</span>
+                    </dt>
+                </dl>
+                <ul class="wor4 clearfix msg_b2">
+                    <li>
+                        <a href="@if (Request.Url != null){@(UserAuth.IsAuthenticated ? "JavaScript:;" : Url.Action("Login", "Account", new { returnUrl = Request.Url.ToString() }))}" id="btn_exhcnage" onclick="doExchange(@Model.Id)"><img src="@Url.Content("~/Content/images/det_nav1.png")">&nbsp;立即兑换</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="msg_shop" style="margin-top: 20px;" id="div_recommendforyou">
+            <ul class="shop_li clearfix">
+                <li shop_li="0">为你推荐</li>
+            </ul>
+            <div class="shop_dp" style="display: block;" id="div_recommendforyou_container">
+                <!--ajax加载-->
+            </div>
+        </div>
+        <div class="det_main clearfix">
+            <div class="main_left">
+                <div class="main_l_1" id="div_hot_Selling">
+                    <dl class="clearfix">
+                        <dd>热门销售</dd>
+                        <dt class="a2"><a href="javascript:;" id="btn_hotselling_change">换一批</a></dt>
+                    </dl>
+                    <div id="div_hot_Selling_container">
+                        @Html.Partial("_HotSellingGoods", hotSelling)
+
+                    </div>
+                </div>
+                <div class="main_l_1" style="margin-top: 20px;">
+                    <dl class="clearfix">
+                        <dd>最近浏览</dd>
+                    </dl>
+                    @Html.Partial("_HotSellingGoods", history)
+
+                </div>
+            </div>
+            <div class="main_right">
+                <div class="main_r_1">
+                    <div class="main_r_2">商品详情&nbsp;&nbsp;<span class="cl_999999">Product details</span></div>
+                    @Html.Raw(Model.Desc)
+                </div>
+                <div class="main_r_1" style="margin-top: 10px;">
+                    <div class="main_r_2">用户评论&nbsp;&nbsp;<span class="cl_999999">User comments</span></div>
+                    @if (comments != null)
+                    {
+                        foreach (var parent in comments)
+                        {
+                            <div class="main_r_3 clearfix" id="comments_@(parent.Id)">
+                                <div class="r_3_l">
+                                    <img src="@UserAuth.GetUsersAvatar(parent.User.Avatar)" width="70" height="70">
+                                    <div class="l_wor1">@parent.User.NickName</div>
+                                </div>
+                                <div class="r_3_r">
+                                    <div class="wor1">@parent.Content</div>
+                                    <div class="wor2">
+                                        @parent.CreateTime
+                                        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                                        <a href="javascript:;" onclick="comments.ScrollToCommentBox(@parent.Id, @parent.User.Id);return false; "><img src="@Url.Content("~/Content/images/r_3_r.png")">&nbsp;&nbsp;回复</a>
+                                    </div>
+                                    <div class="main_r_4">
+                                        @if (parent.FollowComments != null && parent.FollowComments.Any())
+                                        {
+                                            foreach (var item in parent.FollowComments)
+                                            {
+                                                <div class="main_r_3 clearfix" id="comments_reply_@(item.Id)">
+                                                    <div class="r_3_l">
+                                                        <img src="@UserAuth.GetUsersAvatar(item.User.Avatar)" width="70" height="70">
+                                                        <div class="l_wor1">@item.User.NickName</div>
+                                                    </div>
+                                                    <div class="r_3_r">
+                                                        <div class="wor1">
+                                                            <b>回复@(item.BeReplyedUser.NickName):</b>&nbsp;@item.Content
+                                                        </div>
+                                                        <div class="wor2">
+                                                            @item.CreateTime
+                                                            <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                                                            <a href="javascript:;" onclick="comments.ScrollToCommentBox(@item.Id, @item.User.Id);return false; "><img src="@Url.Content("~/Content/images/r_3_r.png")">&nbsp;&nbsp;回复</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    }
+
+                </div>
+                @Html.Raw(ViewBag.Pager)
+                <div class="main_r_1" style="margin-top: 10px;" id="div_comment_reply">
+                    <input type="hidden" id="h_replyTo" value="0" />
+                    <input type="hidden" id="h_pageNo" value="@ViewBag.PageNum" />
+                    <input type="hidden" id="h_beReplyedUserId" value="0" />
+                    <input type="hidden" id="h_goodsId" value="@Model.Id" />
+                    <div class="main_r_2">评论&nbsp;&nbsp;<span class="cl_999999">Comment</span></div>
+                    <div class="main_t">
+                        <textarea name="" id="txt_comment_content" cols="" rows=""></textarea>
+                    </div>
+                    <div class="main_a clearfix">
+                        @if (UserAuth.IsAuthenticated)
+                        {
+                            <a href="javascript:;" onclick=" comments.AddComment();return false; ">发表评论</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "Account", new {returnUrl = Request.Url.ToString()})">发表评论</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section scripts{
+        <script src="@Url.Content("~/Content/ShowLoading/jquery.showLoading.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/jquery.spinner.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/exchange.js")"></script>
+        <script type="text/javascript">
+            var hotSellingPage = 1;
+            var maxExchangeTimes = @(Model.ExchangeTimes);
+            var quantity = @(Model.Quantity);
+
+            var goodsId = @(Model.Id);
+            $(function () {
+               
+                //数量增减
+                $('[data-trigger="spinner"]').spinner('delay', 100).spinner('changed', function (e, newVal, oldVal) {
+                    //trigger lazed, depend on delay option.
+
+                });
+                //为你推荐
+                $("#div_recommendforyou").showLoading();
+                $.get("@Url.Action("_RecommendForyouGoods","Home")", {}, function (data) {
+                    $("#div_recommendforyou_container").html(data);
+                    $("#div_recommendforyou").hideLoading();
+                });
+                //热销 换一批
+                $("#btn_hotselling_change").bind("click", function () {
+                    $("#div_hot_Selling").showLoading();
+                    var pageNoStr = $("#h_hotSelling_page").val();
+                    if (isEmpty(pageNoStr)) {
+                        pageNoStr = "1";
+                    }
+                    var pageNum = parseInt(pageNoStr);
+                    if (!isNaN(pageNum)) {
+                        $.get("@Url.Action("_HotSellingGoods", "Home")", { page: pageNum + 1 }, function (data) {
+                            $("#div_hot_Selling_container").html(data);
+                            $("#div_hot_Selling").hideLoading();
+                        });
+                    }
+                });
+            });
+        </script>
+    }
+}

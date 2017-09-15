@@ -1,0 +1,80 @@
+﻿@model IQueryable<Msg.Entities.GoodsEntity>
+@{
+    ViewBag.Title = ViewBag.Key + " :: 搜索结果";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+}
+@section Scripts
+{
+    <script src="~/Areas/Mobile/Scripts/app.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".msg_search ul li").click(function () {
+                $(".msg_search ul li").removeClass("over");
+                $(this).addClass("over");
+            });
+        });
+        $(function () {
+            $("#js_appList").loadData2({
+                url: "/mobile/home/_Search",
+                page: 2,//下一页
+                key: $.trim($("#txt_head_search_key").val()),
+                order: $.trim($("#order").val()),
+                limit: 10,
+                ajaxType: "html",
+                funEnd: function (data) {
+                    $("#js_appList").append(data);
+                    if (data == "") {
+                        $("#js_appList").append("<div style='text-align: center; padding: 18px 0px;'><img src='/Content/images/load_end.png' /></div>");
+                    }
+                }
+            });
+            $("#btn_head_search").bind("click", function () {
+                var key = $.trim($("#txt_head_search_key").val());
+                if (key == "" || key == '输入需要的宝贝名称') {
+                    alert("请输入要搜索的内容");
+                    return;
+                }
+                window.location.href = '@Url.Action("Search", "Home")?key=' + key;
+            });
+        });
+
+        function search(order, obj) {
+            $("#order").val(order);
+            $(obj).parent().parent().children().removeClass("over");
+            $(obj).addClass("over");
+            $.get("/mobile/home/_Search?t=" + Math.random(), { order: order, key: $.trim($("#txt_head_search_key").val()) }, function (data) {
+                $("#js_appList").html(data);
+                if (data == "") {
+                    $("#js_appList").html("<li style='text-align: center; padding: 18px 0px;'><img src='/Content/images/load_end.png' /></li>");
+                }
+            });
+        }
+    </script>
+}
+<!--搜索 开始-->
+<input type="hidden" id="order" value="" />
+<div class="msg_ss">
+    <input name="" id="txt_head_search_key" type="text" value="@(string.IsNullOrEmpty(ViewBag.Key) ? "输入需要的宝贝名称" : ViewBag.Key)" style="color: #999;" onfocus="if(value=='输入需要的宝贝名称'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='输入需要的宝贝名称'}" placeholder="输入需要的宝贝名称" />
+    <div class="ss_button"><a href="javascript:;" id="btn_head_search">搜索</a></div>
+</div>
+<!--搜索 结束-->
+<!--排序 开始-->
+<div class="msg_search">
+    <ul class="clearfix">
+        <li class="over">
+            <div class="li1" onclick="search('',this);">综合排序</div>
+        </li>
+        <li>
+            <div class="li2" onclick="search('soldCount',this);">销量优先</div>
+        </li>
+    </ul>
+</div>
+<div class="search_w">搜索<span>“@ViewBag.Key”</span>，共<span>“@ViewBag.TotalCount”</span>个</div>
+<!--排序 结束-->
+<!--产品列表 开始-->
+<div class="msg_main">
+    <ul id="js_appList">
+        @Html.Partial("_Search", Model)
+    </ul>
+</div>
+<!--产品列表 结束-->

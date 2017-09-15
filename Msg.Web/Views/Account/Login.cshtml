@@ -1,0 +1,71 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>账号登陆 - 美速购 - 大学生专属O2O购物商城，零食、牛奶、休闲食品、在校自主创业、商企校园营销一站式平台。</title>
+    <link href="/fav.ico" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" />
+    <link href="/fav.ico" mce_href="favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="/fav.ico" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/normalize.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/msg_main.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/login.css")" />
+    <link href="@Url.Content("~/Content/bootstrapdialog/dist/css/bootstrap-dialog.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/jquery.2.1.3.js")"></script>
+    @*<script type="text/javascript" src="@Url.Content("/Content/js/aiqu.js")"></script>*@
+</head>
+
+<body>
+    <div class="msg_login">
+        <div class="login_t clearfix">
+            <div class="login_left"><a href="/">
+                <img src="@Url.Content("~/Content/images/logo.png")" /></a></div>
+            <div class="login_right">欢迎登录</div>
+        </div>
+        <div class="login_w clearfix">
+            
+            <div class="login_left" id="LoginImage">@*<img src="@Url.Content("~/content/images/login.png")" />*@</div>
+            <div class="login_right">
+                <form method="POST" action="@Url.Action("Login")">
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="right_1">用户名</div>
+                    <div class="right_2">
+                        <input name="Account" id="txt_login_Account" type="text" class="input1" value="请输入登录邮箱" style="color: rgb(153, 153, 153);" onfocus="if (value == '请输入登录邮箱') { this.style.color = '#000'; value = '' }" onblur="    if (value == '') { this.style.color = '#999'; value = '请输入登录邮箱' }" />
+
+                    </div>
+                    <div class="right_1">密码</div>
+                    <div class="right_2">
+                        <input name="Password" id="txt_login_Password" type="password" class="input2" />
+                    </div>
+                    <div class="right_3">
+                        <input name="IsRememberLogin" id="cbx_login_IsRememberLogin" type="checkbox" onchange="remLoginChange(this);" value="" />&nbsp;记住密码&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="@Url.Action("ForgotPassword")">忘记密码？</a>
+                    </div>
+                    @if (!string.IsNullOrEmpty(ViewBag.ErrMsg))
+                    {
+                        <div class="right_3"><span style="color: red">@ViewBag.ErrMsg</span></div>
+                    }
+
+                    <div class="right_4 clearfix">
+                        <a href="JavaScript:;" id="btn_login_submit" class="r_button b1">登&nbsp;&nbsp;录</a>
+                        <a href="@Url.Action("Regist")" class="r_button b2">注&nbsp;&nbsp;册</a>
+                    </div>
+                    <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+
+                </form>
+            </div>
+        </div>
+    </div>
+    @Html.Partial("_Footer")
+    <script src="@Url.Content("~/AdScript/web_login.js")"></script>
+    <script src="@Url.Content("~/Content/bootstrapdialog/dist/js/bootstrap-dialog.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.js")"></script>
+    <script src="@Url.Content("~/Scripts/regist.js")"></script>
+</body>
+</html>

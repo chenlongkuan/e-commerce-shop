@@ -1,0 +1,112 @@
+﻿@using Msg.Web.App_Start
+@model List<Msg.Bll.Models.CartModel>
+@{
+    ViewBag.Title = "我的购物车";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+}
+@section Head
+{
+    <link href="@Url.Content("~/Content/bootstrapdialog/dist/css/bootstrap-dialog.min.css")" rel="stylesheet" />
+    <style>body{padding-bottom:60px;}</style>
+}
+<div class="msg_g_m1">
+    @if (Model != null && Model.Any())
+    {
+        <ul>
+            @foreach (var item in Model)
+            {
+                <li id="tr_item_@(item.GoodsId)">
+                    <div class="clearfix">
+                        <div class="li_left_i">
+                            <input name="cbx_cart_item" type="checkbox" value="@item.GoodsId" @(item.Buyable ? "checked='checked'" : "disabled='disabled'")>
+                        </div>
+                        <div class="li_left">
+                            <a href="@Url.Action("Details", new { id = item.GoodsId })">
+                                <img src="@item.GoodsLogo"></a>
+                        </div>
+                        <div class="li_right">
+                            <div class="right_t">
+                                <div class="wor1"><a href="@Url.Action("Details", new { id = item.GoodsId })">@item.GoodsShortTitle</a></div>
+                                <div class="wor2">￥<span class="singlePrice" goodsid="@(item.GoodsId)" id="sp_single_price_goods_@(item.GoodsId)">@item.SinglePrice.ToString("F")</span></div>
+                                <div class="clearfix">
+                                    <div class="wor3"></div>
+                                    <div class="wor4">共@(item.Quantity)件商品&nbsp;&nbsp;<span class="cl_ff3300">合计：@((item.Quantity * item.SinglePrice).ToString("F"))元</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if (item.Buyable)
+                    {
+                        <div class="li1 clearfix" data-trigger="spinner" id="spinner">
+                            <div class="li1_lw">选择购买数量：</div>
+                            <div class="li1_l"><a href="javascript:;" data-spin="down" goodsid="@item.GoodsId">-</a></div>
+                            <div class="li1_z" style="width: 50px">
+                                <input value="@item.Quantity"  class="stepper-input" data-rule="quantity" goodsid="@(item.GoodsId)" data-max="@item.CouldBuyCount" min="1" id="txt_cart_buyCount_goods_@(item.GoodsId)" type="text">
+                            </div>
+                            <div class="li1_l"><a href="javascript:;" data-spin="up" goodsid="@item.GoodsId">+</a></div>
+                            <div class="li1_r"><a href="javascript:;" goodsid="@item.GoodsId" class="btn_cart_delete_goods">删除</a></div>
+                        </div>
+                                    
+                        if (item.LimitBuyCount < 99)
+                        {
+                        <div class="li1 clearfix" style="border: 0px;" data-trigger="spinner" id="spinner"><span style="color: darkgray">该商品限购@(item.LimitBuyCount)件，您目前可购数量为@(item.CouldBuyCount)</span></div>
+                        }
+
+                    }
+                    else
+                    {
+                        <div class="li1 clearfix" style="border: 0px;" data-trigger="spinner" id="spinner"><span style="color: darkgray">@item.UnBuyableDesc</span></div>
+                    }
+                </li>
+            }
+        </ul>
+    }
+</div>
+<!--加入购物车 开始-->
+<div class="msg_gwc clearfix">
+    <div class="msg_g_l1">
+        <input name="cbx_cart_all" type="checkbox" value="">&nbsp;<span class="sp_cbx_cart_all_desc">全选</span>
+    </div>
+    <div class="msg_g_r1">
+        <div class="wor1" style="line-height:20px; font-size:0.95em; text-align:right;">共计<span id="sp_cart_sumprice">@(Model != null ? Model.Sum(s => s.SellPrice).ToString("F") : "0")</span>元<br><span style="font-size:0.9em; color:#666;">全场满39元包邮</span></div>
+        @if (UserAuth.IsAuthenticated)
+        {
+            <a href="javascript:;" id="btn_cart_gotally">去支付</a>
+        }
+        else
+        {
+            <a href="@Url.Action("Login", "Account", new { returnUrl = Request.Url.ToString() })">去支付</a>
+        }
+    </div>
+</div>
+<!--加入购物车 结束-->
+
+@section scripts {
+    <script src="@Url.Content("~/Content/bootstrapdialog/dist/js/bootstrap-dialog.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.js")"></script>
+    <script src="@Url.Content("/Scripts/jquery.spinner.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/cart.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btn_cart_gotally").bind("click", function () {
+                var parameter = "";
+                $("input[name='cbx_cart_item']:enabled").each(function () {
+                    if (this.checked) {
+                        var goodsId = $(this).val();
+                        if (parameter == "") {
+                            parameter += goodsId + "$" + $("#txt_cart_buyCount_goods_" + goodsId).val();
+                        } else {
+                            parameter += "," + goodsId + "$" + $("#txt_cart_buyCount_goods_" + goodsId).val();
+                        }
+                    }
+                });
+                if (isEmpty(parameter)) {
+                    MsgDialog.Alert(false, "请至少选择一个商品");
+                    return;
+                }
+
+                window.location.href = "@Url.Action("CheckOut")?p=" + encodeURIComponent(parameter);
+            });
+        });
+    </script>
+}

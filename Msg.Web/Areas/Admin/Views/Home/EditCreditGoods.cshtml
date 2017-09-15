@@ -1,0 +1,422 @@
+﻿@using Msg.Utils
+@model Msg.Entities.CreditGoodsEntity
+@{
+    ViewBag.Title = "EditCreditGoods";
+}
+
+
+@section Head{
+    <link href="@Url.Content("~/Content/ueditor/themes/default/ueditor.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/My97DatePicker/skin/WdatePicker.css")" rel="stylesheet" />
+}
+
+
+
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            &nbsp;
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label>积分商品名称</label>
+                        @Html.TextBoxFor(c => c.Name, new { @class = "form-control", @id = "cgoodsName" })
+                    </div>
+                    
+                       <div class="form-group">
+                           <label>Logo</label>
+                           <br/>
+                           <a href="@Model.Logo" id="upLoadASrc" target="_blank">
+                               <img src="@ImagesHelper.GetImgWidthHeight(Model.Logo, 25, 25, false)" id="upLoadImgSrc" title="点击查看大图" width="200" height="120" ></a>
+                           @Html.HiddenFor(c => c.Logo)
+                           <br/>
+                           <label> <a href="javascript:;"  id="btn_upload">上传图片</a></label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>所需积分</label>
+                        @Html.TextBoxFor(c => c.NeedCredits, new { @class = "form-control", @id = "cgoodsNeedCredits" })
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>可兑换次数</label>
+                        @Html.TextBoxFor(c => c.ExchangeTimes, new { @class = "form-control", @id = "cgoodsTimes" })
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label>库存数量</label>
+                        @Html.TextBoxFor(c => c.Quantity, new { @class = "form-control", @id = "cgoodsQuantity" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>是否为虚拟商品</label>
+                        <label class="radio-inline">
+                            <input type="radio" onchange="HidePanel()" name="optionsRadiosInline" id="RadioY" value="@Model.IsVirtual" @(Model.IsVirtual  ? "checked='checked'" : "") >是
+                        </label>
+                        <label class="radio-inline">
+                                <input type="radio" onchange="ShowPanel()" name="optionsRadiosInline" id="RadioN" value="@Model.IsVirtual" @(!Model.IsVirtual ? "checked='checked'" : "") >否
+                        </label>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>
+                            开始时间
+                        </label>
+                        <input type="text" id="txt_startTime" readonly="readonly" class="form-control" value="@Model.StartTime.ToString("yyyy-MM-dd")" name="SaleStartTime" class="Wdate"  onclick="WdatePicker()">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            结束时间
+                        </label>
+                        <input type="text" class="form-control" readonly="readonly" id="txt_endTime" value="@Model.EndTime.ToString("yyyy-MM-dd")" name="SaleStartTime" class="Wdate"  onclick="WdatePicker()">
+                    </div>
+                    
+                      <div class="form-group">
+                          <label>商品描述</label>
+                          <div id="txt_Desc"></div>
+                        @Html.HiddenFor(c => c.Desc, new { @class = "form-control", @id = "cgoodsDesc" })
+                    </div>
+                    
+                                          <div class="form-group">
+                                              <label>商品规格</label>
+                                              <div id="txt_Spec"></div>
+                        @Html.HiddenFor(c => c.Spec, new { @class = "form-control", @id = "cgoodsSpec" })
+                    </div>
+
+                    
+                    
+
+
+                    <button type="button" id="btn_submit" class="btn btn-default" onclick="SubmitData()">提交</button>
+                    @if (ViewBag.ErrMsg is string && !string.IsNullOrEmpty(ViewBag.ErrMsg))
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.ErrMsg
+                        </div>
+                    }
+
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    
+    <script src="@Url.Content("~/Content/ueditor/editor_all_min.js")"></script>
+    <script src="@Url.Content("~/Content/ueditor/editor_config.js")"></script>
+    
+    <script src="@Url.Content("~/Scripts/jquery.swfobject.1-1-1.min.js")"></script>
+<script src="@Url.Content("~/Scripts/sexy_upload_one.js")"></script>
+    
+    
+
+    <script type="text/javascript">
+        var specOption = {
+            //这里可以选择自己需要的工具按钮名称,此处仅选择如下
+            toolbars: [['Undo', 'Redo', 'Source', '|', 'Bold', 'Italic', 'Underline', '|', 'ForeColor', 'BackColor', 'FontFamily', 'FontSize', '|', 'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|', 'Link', 'Unlink', '|', 'InsertImage', 'Emotion', 'InsertVideo', 'Map', '|', 'wordimage', 'Preview']],
+
+            initialContent: '@Html.Raw(Model.Spec)',
+            autoHeightEnabled: true //是否自动长高 
+        };
+        ue_edit_spec = new baidu.editor.ui.Editor(specOption);
+        ue_edit_spec.render('txt_Spec');
+
+
+        var detailOption = {
+            //这里可以选择自己需要的工具按钮名称,此处仅选择如下
+            toolbars: [['Undo', 'Redo', 'Source', '|', 'Bold', 'Italic', 'Underline', '|', 'ForeColor', 'BackColor', 'FontFamily', 'FontSize', '|', 'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|', 'Link', 'Unlink', '|', 'InsertImage', 'Emotion', 'InsertVideo', 'Map', '|', 'wordimage', 'Preview']],
+
+            initialContent: '@Html.Raw(Model.Desc)',
+            autoHeightEnabled: true //是否自动长高 
+        };
+        ue_edit_detail = new baidu.editor.ui.Editor(detailOption);
+        ue_edit_detail.render('txt_Desc');
+
+
+        $(function() {
+            $("#txt_startTime").val() == "0001-01-01" ? $("#txt_startTime").val("") : $("#txt_startTime").val();
+            $("#txt_endTime").val() == "0001-01-01" ? $("#txt_endTime").val("") : $("#txt_endTime").val();
+            
+            up = new SEXY_upload_one_file('up', {
+                id: 'btn_upload',
+                swf_src: '@Url.Content("~/Content/upload_one_file.swf")',
+            btn_src: '@Url.Content("~/Content/images/up_button.png")',
+                  up_url: '@Url.Action("RecivePhoto", "Common", new {area = ""})',
+                  loading: 'true',
+                  btn_w: 131,
+                  btn_h: 40,
+                  complete: function (backstr) {
+                      backstr = eval('(' + backstr + ')');
+                      if (backstr.status) {
+                          $("#Logo").val(backstr.filesSrc);
+                          $("#upLoadImgSrc").attr("src", backstr.filesSrc);
+                          $("#upLoadASrc").attr("href", backstr.filesSrc);
+                      } else {
+                          alert(backstr.msg);
+                      }
+                  }
+              });
+        });
+
+        function ShowPanel() {
+            $("#RadioN").attr("checked", "checked");
+            $("#RadioY").removeAttr("checked");
+        }
+
+
+        function HidePanel() {
+            $("#RadioY").attr("checked", "checked");
+            $("#RadioN").removeAttr("checked");
+        }
+
+
+        function SubmitData() {
+            var Logo = $("#Logo").val();
+            var cgoodsname = $("#cgoodsName").val();
+            var cgoodsNeedCredits = $("#cgoodsNeedCredits").val();
+            var times = $("#cgoodsTimes").val();
+            var quantity = $("#cgoodsQuantity").val();
+            var isVirtual = false;
+            if ($("#RadioY").attr("checked") == "checked") {
+                isVirtual = true;
+            } else {
+                isVirtual = false;
+            }
+            var startTime = $("#txt_startTime").val();
+            var endTime = $("#txt_endTime").val();
+            var desc = ue_edit_detail.getContent();
+            var spec = ue_edit_spec.getContent();
+
+
+            if ($("#RadioY").attr("checked") != "checked" && $("#RadioN").attr("checked") != "checked") {
+                MsgDialog.Alert(false, "请选择商品类型！");
+                return;
+            }
+
+
+            if (isEmpty(cgoodsNeedCredits) || isNaN(cgoodsNeedCredits)) {
+                MsgDialog.Alert(false, "请正确填写所需积分！");
+                return;
+            }
+
+
+            if (isEmpty(times) || isNaN(times)) {
+                MsgDialog.Alert(false, "请正确填写可兑换次数！");
+                return;
+            }
+
+
+            if (isEmpty(quantity) || isNaN(quantity)) {
+                MsgDialog.Alert(false, "请正确填写库存数量！");
+                return;
+            }
+
+
+            if (isEmpty(cgoodsname)) {
+                MsgDialog.Alert(false, "请填写积分商品名称！");
+                return;
+            }
+
+            if (isEmpty(startTime) || isEmpty(endTime)) {
+                MsgDialog.Alert(false, "请选择开始/结束时间！");
+                return;
+            }
+            
+
+
+            if (isEmpty(Logo)) {
+                MsgDialog.Alert(false, "请上传Logo！");
+                return;
+            }
+
+            $("#btn_submit").disabledButton(true);
+            var model = {
+                id: '@Html.Raw(Model.Id)',
+                Name: cgoodsname,
+                NeedCredits: cgoodsNeedCredits,
+                ExchangeTimes: times,
+                Quantity: quantity,
+                StartTime: startTime,
+                EndTime: endTime,
+                Logo:Logo,
+                Spec: spec,
+                Desc: desc,
+                IsVirtual: isVirtual,
+                editId: '@Model.Id.ToString()',
+                edittype: '@ViewBag.edittype'
+            };
+            // alert("OK2   ");
+            $.post("@Url.Action("DealEditCreditGoods", "Home", new {area = "Admin"})?t=" + Math.random() + "&edittype=@ViewBag.edittype", model, function(result) {
+                //alert("ok3");
+                //alert(result.isError);
+                if (result.status) {
+                    MsgDialog.Alert(true, "修改成功!", function() {
+                        location.href = "@Url.Action("CreditGoods", "Home", new {area = "Admin"})?t=" + Math.random();
+                    });
+
+                } else {
+                    MsgDialog.Alert(false, result.msg);
+                    $("#btn_submit").disabledButton(false);
+                }
+            });
+
+        }
+
+
+
+
+
+   @*     up = new SEXY_upload_one_file('up', {
+            id: 'btn_upload',
+            swf_src: '@Url.Content("~/Content/upload_one_file.swf")',
+                btn_src: '@Url.Content("~/Content/images/up_button.png")',
+            up_url: '@Url.Action("RecivePhoto", "Common", new {area = ""})',
+            loading: 'true',
+            btn_w: 131,
+            btn_h: 40,
+            complete: function (backstr) {
+                backstr = eval('(' + backstr + ')');
+                if (backstr.status) {
+                    $("#Logo").val(backstr.filesSrc);
+                } else {
+                    alert(backstr.msg);
+                }
+            }
+        });*@
+
+
+
+        function UpLoadImgToCreditGoods() {
+            
+            up = new SEXY_upload_one_file('up', {
+                id: 'btn_upload',
+                swf_src: '@Url.Content("~/Content/upload_one_file.swf")',
+                        btn_src: '@Url.Content("~/Content/images/up_button.png")',
+                       up_url: '@Url.Action("RecivePhoto", "Common", new {area = ""})',
+                       loading: 'true',
+                       btn_w: 131,
+                       btn_h: 40,
+                       complete: function (backstr) {
+                           backstr = eval('(' + backstr + ')');
+                           if (backstr.status) {
+                               $("#img_Cover").attr("src", backstr.filesSrc);
+                               $("#img_Cover").show();
+                               $("#Logo").val(backstr.filesSrc);
+                           } else {
+                               alert(backstr.msg);
+                           }
+                       }
+                   });
+
+
+
+        }
+
+
+        function gogogogogogo(id, name, logo, isUsable) {
+            var title = "编辑品牌";
+            if (id == 0) {
+                title = "新增品牌";
+            }
+            var html = '<div><div class="form-group"><div><a href="javascript:;" id="btn_upload">上传Logo</a></div></div>';
+            html += '<div class="form-group"><img src="" id="img_Cover" width="200" height="200" name="img_Cover" style="display: none" />';
+            //html += '<input type="hidden" id="imageUrl" name="imageUrl" /></div><div class="form-group"><label>名称</label>';
+            //html += '<input class="form-control" id="txt_brand_name" placeholder="输入品牌名称"></div><div class="form-group">';
+            //html += '<label>是否可用</label><input type="radio" name="isUsable" value="true" id="rd_brand_useable" checked="checked">可用';
+            //html += '<input type="radio" name="isUsable" id="rd_brand_unuseable" value="false">禁用</div></div>';
+            BootstrapDialog.show({
+                title: title,
+                message: $(html),
+                closable: false,
+                onshown: function() {
+                    up = new SEXY_upload_one_file('up', {
+                        id: 'btn_upload',
+                        swf_src: '@Url.Content("~/Content/upload_one_file.swf")',
+                        btn_src: '@Url.Content("~/Content/images/up_button.png")',
+                        up_url: '@Url.Action("RecivePhoto", "Common", new {area = ""})',
+                        loading: 'true',
+                        btn_w: 131,
+                        btn_h: 40,
+                        complete: function(backstr) {
+                            backstr = eval('(' + backstr + ')');
+                            if (backstr.status) {
+                                $("#img_Cover").attr("src", backstr.filesSrc);
+                                $("#img_Cover").show();
+                                $("#Logo").val(backstr.filesSrc);
+                            } else {
+                                alert(backstr.msg);
+                            }
+                        }
+                    });
+                },
+                buttons: [{
+                        id: "btn_submit",
+                        icon: 'glyphicon glyphicon-send',
+                        label: 'Save',
+                        cssClass: 'btn-primary',
+                        autospin: true,
+                        action: function(dialogRef) {
+                            dialogRef.enableButtons(false);
+                            dialogRef.setClosable(false);
+                            var $button = dialogRef.getButton('btn_submit');
+
+                            name = $("#txt_brand_name").val();
+                            logo = $("#imageUrl").val();
+                            var isUseable = $("input[name='isUsable']:checked").val();
+
+                            if (name.length < 1) {
+                                MsgDialog.Alert(false, "请输入品牌名称！");
+                                $button.stopSpin();
+                                dialogRef.enableButtons(true);
+                                dialogRef.setClosable(true);
+                                return;
+                            }
+                            if (logo.length < 1) {
+                                MsgDialog.Alert(false, "请上传品牌Logo！");
+                                $button.stopSpin();
+                                dialogRef.enableButtons(true);
+                                dialogRef.setClosable(true);
+                                return;
+                            }
+
+                            var url = "@Url.Action("ModifyBrand", "Home", new {area = "Admin"})?t=" + Math.random();
+                            if (id == 0) {
+                                url = "@Url.Action("AddBrand", "Home", new {area = "Admin"})?t=" + Math.random();
+                            }
+
+                            $.get(url, { Id: id, Name: name, Logo: logo, IsUseable: isUseable }, function(data) {
+
+                                MsgDialog.Alert(data.status, data.msg, function() {
+                                    if (data.status) {
+                                        window.location.href = window.location.href;
+                                    }
+                                });
+
+
+                                $button.stopSpin();
+                                dialogRef.enableButtons(true);
+                                dialogRef.setClosable(true);
+                            });
+                        }
+                    }, {
+                        label: 'Close',
+                        action: function(dialogRef) {
+                            dialogRef.close();
+                        }
+                    }]
+            });
+
+
+        }
+    </script>
+}

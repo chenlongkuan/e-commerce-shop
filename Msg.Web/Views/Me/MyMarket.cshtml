@@ -1,0 +1,92 @@
+﻿@using Msg.Entities
+@using Msg.Utils
+@model System.Linq.IQueryable<Msg.Entities.ProductsApplyEntity>
+
+@{
+    ViewBag.Title = "我的创业集市";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+}
+
+<div class="per_right per_order">
+    <div class="order_h">
+        <div class="h_left">我的创业集市</div>
+        <div class="h_right1 per_button">
+            @if (ViewBag.IsAuthorizedSupplier)
+            {
+                <a href="@Url.Action("ApplyProduct", "Me")">申请发布产品</a>
+            }
+            else
+            {
+                <a href="@Url.Action("ToBeSupplier", "Me")">申请成为创业者</a>
+            }
+
+        </div>
+    </div>
+    <div class="order_d">
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <tbody>
+                <tr>
+                    <th colspan="5">
+                        我的产品
+                    </th>
+                </tr>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        var goodsUrl = (item.Product != null && item.Product.Goods.FirstOrDefault() != null
+                            && (item.ApplyStatus == (byte)ApplyStatusEnum.GoodsUp
+                            || item.ApplyStatus == (byte)ApplyStatusEnum.GoodsDown)) ? Url.Action("Details", "Home", new { id = item.Product.Goods.FirstOrDefault().Id }) : "javascript:;";
+
+                        <tr>
+                            <td class="td1">
+                                <ul>
+                                    <li class="clearfix">
+                                        <div class="li1"><a href="@goodsUrl"><img src="@ImagesHelper.GetImgWidthHeight(item.Logo, 80, 80, false)" width="80" height="80"></a></div>
+                                        <div class="li2">
+                                            <a href="@goodsUrl">@item.Name</a>
+                                            <br>申请售卖价格：@(item.Price)元
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td width="70">数量<br>×&nbsp;@item.Quantity</td>
+                            <td width="130">申请日期<br>@item.CreateTime.ToShortDateString()<br>@item.CreateTime.ToLongTimeString()</td>
+                            <td width="150">
+                                @switch (item.ApplyStatus)
+                                {
+                                    case (byte)ApplyStatusEnum.ApplySuccess:
+                                        <span class="cl_0093dd">申请成功</span>
+                                        <br>
+                                        <a href="@Url.Action("GoodsUp", "Me", new { productId = item.Product == null ? 0 : item.Product.Id})">上架</a>
+                                        break;
+                                    case (byte)ApplyStatusEnum.ApplyFailed:
+                                    <span class="cl_ff3300">申请失败</span><br><a href="javascript:;" onclick="mymarket.delete(@item.Id);return false;">删除</a>
+                                        break;
+                                    case (byte)ApplyStatusEnum.GoodsDown:
+                                        var goodsId = item.Product == null ? 0 : item.Product.Goods.FirstOrDefault().Id;
+                                        <a href="@Url.Action("GoodsUp", "Me", new { productId = item.Product == null ? 0 : item.Product.Id, goodsId = goodsId })">编辑</a>
+                                        <a href="javascript:;">上架</a>
+                                        break;
+                                    case (byte)ApplyStatusEnum.GoodsUp:
+                                        var goodsId2 = item.Product == null ? 0 : item.Product.Goods.FirstOrDefault().Id;
+                                        <a href="@Url.Action("GoodsUp", "Me", new { productId = item.Product == null ? 0 : item.Product.Id, goodsId = goodsId2 })">编辑</a>
+                                        <br />
+                                        <a href="javascript:;" onclick="mymarket.goodsDown(@goodsId2); return false;">下架</a>
+                                        break;
+                                    case (byte)ApplyStatusEnum.Verifying:
+                                    <span class="cl_ff3300">申请中</span>
+                                        break;
+
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div class="per_f">@Html.Raw(ViewBag.Pager)</div>
+</div>

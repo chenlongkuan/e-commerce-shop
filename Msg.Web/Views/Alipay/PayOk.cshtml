@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "支付结果";
+    Layout = "~/Views/Shared/_CartLayout.cshtml";
+}
+
+<div class="msg_w" style="padding-bottom:50px;">
+    <div class="msg_shop">
+        <div class="shop_m clearfix">
+            <div class="shop_m_left">
+                <img src="@Url.Content("~/Content/images/shop.png")">&nbsp;支付结果
+            </div>
+            @*<div class="shop_m_right"><div class="r_span" style="width:100%;"></div></div>*@
+        </div>
+        @if (!string.IsNullOrEmpty((string)ViewBag.ErrMsg))
+        {
+            <div class="msg_fkcg" style="color: red">@ViewBag.ErrMsg！</div>
+            <div class="msg_fkcg1">
+                <a href="/">继续购物&gt;&gt;</a>
+            </div>
+        }
+        else
+        {
+            <div class="msg_fkcg">支付成功！</div>
+            <div class="msg_fkcg1">
+                <a href="/">继续购物&gt;&gt;</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="@Url.Action("MyOrder", "Me", new { orderNo = ViewBag.OrderNo })">查看订单&gt;&gt;</a>
+            </div>
+        }
+    </div>
+    @Html.Partial("_GuessLikeAndViewHistory")
+</div>

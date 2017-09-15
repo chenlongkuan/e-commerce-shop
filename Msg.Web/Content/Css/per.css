@@ -1,0 +1,105 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+
+/*个人中心 模板*/
+body{ background:#fff;}
+.per_mb_h{ height:40px; color:#666; line-height:40px;}
+.per_mb_h a{ color:#666;}
+.per_mb_h a:hover{ color:#0093dd}
+
+.per_left{ float:left; width:240px; background:#fafafa;}
+.per_left .left_t{ margin:0px 30px; height:50px; line-height:50px; border-bottom:1px solid #f1f1f1; font-size:16px; color:#333;}
+.per_left a{ color:#666; font-size:14px; display:block; height:38px; line-height:38px; padding:0px 30px 0px 27px; border-left:3px solid #fafafa;}
+.per_left a:hover{ text-decoration:none; color:#0093dd;}
+.per_left a.over{ border-left:3px solid #0093dd; color:#333;}
+.per_right{ float:right; width:940px;}
+
+
+/*我的信息*/
+.per_info{ border:1px solid #f4f4f4;}
+.per_info .info_t{ padding:29px; background:#fff;}
+.per_info .info_t .info_t_img{ float:left; margin-right:30px; width:80px; height:80px;}
+.per_info .info_t .info_t_img img{-moz-border-radius: 40px;-webkit-border-radius: 40px;border-radius:40px;}
+.per_info .info_t .info_t_img .img{ display:none; position:absolute; margin-left:0px; margin-top:0px;-moz-border-radius: 40px;-webkit-border-radius: 40px;border-radius:40px;}
+.per_info .info_t .info_t_w{ float:left; width:700px; font-size:24px;}
+.per_info .info_t .info_t_w .span{ font-size:12px;}
+.per_info .info_t .info_t_w .cl_999999{ font-size:10px; padding:0px 10px; margin-top:-5px; color:#ccc;}
+.per_info .info_dd{ border-top:1px solid #f4f4f4; border-bottom:1px solid #f4f4f4; background:#fafafa; height:40px; line-height:40px; padding:0px 20px; font-size:14px;}
+.per_info .dd_list_w{ padding:40px 0px; text-align:center;}
+.per_info .dd_list_tab td{ padding:10px 5px; border-right:1px solid #f4f4f4; text-align:center;}
+.per_info .dd_list_tab td .td1{ border:1px solid #f4f4f4; padding:4px; width:50px; height:50px; margin:0px 5px 3px 5px; float:left;}
+.per_info .dd_list_tab td .td1 img{ vertical-align:bottom;}
+
+/*我的订单*/
+
+.per_order .order_h{ border-bottom:1px solid #f4f4f4; height:50px;}
+.per_order .order_h .h_left{ float:left; line-height:50px; color:#333; font-size:16px;}
+.per_order .order_h .h_right{ float:right; padding-top:20px;}
+.per_order .order_h .h_right a{ padding:0px 15px; font-size:14px;}
+.per_order .order_h .h_right a:hover{ text-decoration:none;}
+.per_order .order_h .h_right a.over{ color:#0093dd;}
+.per_order .order_h .h_right span{ color:#ccc;}
+.per_order .order_h .h_right1{ float:right; padding-top:20px;}
+.per_order .order_d{ margin-top:20px;}
+.per_order .order_d table{ border-top:1px solid #f4f4f4; border-left:1px solid #f4f4f4;}
+.per_order .order_d table th{ height:40px; line-height:40px; padding:0px 20px; font-size:14px; font-weight:normal; text-align:left; background:#fafafa; border-bottom:1px solid #f4f4f4; border-right:1px solid #f4f4f4}
+.per_order .order_d table th .span1{ color:#ccc; font-size:12px; padding:0px 10px 0px 12px;}
+.per_order .order_d table td{font-size:14px;border-bottom:1px solid #f4f4f4; border-right:1px solid #f4f4f4; text-align:center;}
+.per_order .order_d table td.td1 li{ border-bottom:1px solid #f4f4f4; padding:20px;}
+.per_order .order_d table td.td1 li .li1{ float:left; width:80px; height:80px; margin-right:20px;}
+.per_order .order_d table td.td1 li .li2{ padding-left:100px; padding-top:20px; text-align:left; padding-right:10px;}
+.per_order .order_d table td.td2 ul{ width:800px; margin:auto; padding:30px 0px;}
+.per_order .order_d table td.td2 li{ float:left; width:200px;}
+.per_order .order_d table td.td2 li .li1{ width:197px; height:20px; background:#c3c3c3; border-right:3px solid #fff; text-align:center; font-size:12px; color:#fff;}
+.per_order .order_d table td.td2 li .li1.over{ background:#0093dd;}
+.per_order .order_d table td.td2 li .li2{ line-height:16px; font-size:12px; padding-top:10px;}
+.per_order .order_d table td.td3 { padding:30px 0px;}
+.per_order .order_d table td.td3 dd{ float:left; width:740px; text-align:right; line-height:40px;}
+.per_order .order_d table td.td3 dt{ float:left; text-align:right; line-height:40px; width:148px; padding-right:50px;}
+.per_order .order_d table td.td3 dt b{ color:#0093dd; font-size:22px;}
+.per_order .order_xx{ background:#fafafa; margin-top:20px; padding:30px;}
+.per_order .order_xx h4{ padding-bottom:20px; font-size:14px; color:#666;}
+.per_order .order_xx table{ padding-bottom:20px;}
+.per_order .order_xx td{ padding-bottom:7px;}
+
+
+/*创业集市*/
+.entre_f{background:#fafafa; margin-top:20px; padding:30px;}
+.entre_f td{ line-height:30px; font-size:14px; padding:0px 7px 15px 0px;}
+.entre_f td input{ height:28px; line-height:28px; padding:0px 5px; border:1px solid #cdcdcd;}
+.entre_f td textarea{ padding:5px; line-height:20px; resize:none; width:300px; height:100px; border:1px solid #cdcdcd;}
+
+/*站内信*/
+.station_l{ margin-top:20px;}
+.station_l table{ border-top:1px solid #f4f4f4; border-left:1px solid #f4f4f4;}
+.station_l th{height:40px; line-height:40px; padding:0px 20px; font-size:14px; font-weight:normal; text-align:left; background:#fafafa; border-bottom:1px solid #f4f4f4; border-right:1px solid #f4f4f4; text-align:center;}
+.station_l td{ padding:10px 20px; line-height:18px; border-bottom:1px solid #f4f4f4; border-right:1px solid #f4f4f4; text-align:center;}
+.station_l td .td1{ padding:10px 0px; line-height:18px; text-indent:2em;}
+.station_l tr.st_hide{ display:none;}
+.yhj_li { margin-top:20px;}
+.yhj_li ul{ margin-left:-20px;}
+.yhj_li li{ float:left; width:220px; margin-left:20px; margin-bottom:10px;}
+
+
+/*收货地址管理*/
+.address_li{ margin-top:20px;}
+.address_li ul{ margin-left:-20px;}
+.address_li li{ margin-left:20px; width:260px; float:left; background:#fafafa; border:1px solid #c6c6c6; padding:18px;}
+.address_li li .li1{ border-bottom:1px solid #c6c6c6; line-height:40px; font-size:14px;}
+.address_li li .li2{ padding-top:5px; line-height:20px; padding-bottom:10px;}
+
+
+
+
+.per_button a{ padding:5px 10px; font-size:14px; color:#fff; background:#0093dd;}
+.per_button a:hover{ background:#006da4; text-decoration:none;}
+a.per_button1{ padding:3px 10px; font-size:12px; color:#fff; background:#0093dd;}
+a.per_button1:hover{ background:#006da4; text-decoration:none;}
+a.per_button2{ padding:3px 10px; font-size:12px; color:#666; background:#f1f1f1;}
+a.per_button2:hover{ background:#d9d9d9; text-decoration:none;}
+
+
+
+
+.per_f{ padding:20px 0px; text-align:right;}

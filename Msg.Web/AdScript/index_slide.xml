@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AdItems>
+    <Item Title="幻灯片" Url="http://www.baidu.com" Image="http://file.meisugou.com/upload/20150316/201503161948056506.jpg" Remark="首页" OrderNo="1" AdSiteName="首页" FileName="index_slide" />
+    <Item Title="幻灯片" Url="http://www.baidu.com" Image="http://file.meisugou.com/upload/20150316/201503161954057053.jpg" Remark="首页" OrderNo="2" AdSiteName="首页" FileName="index_slide" />
+  </AdItems>
+</Root>

@@ -1,0 +1,31 @@
+﻿@model  IQueryable<Msg.Entities.CouponSendLogsEntity>
+@{
+    ViewBag.Title = "我的优惠券";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+}
+
+@section Scripts
+{
+    <script src="~/Areas/Mobile/Scripts/app.js"></script>
+    <script>
+        $(function () {
+            $("#js_appList").loadData({
+                url: "/mobile/me/_MyCoupons",
+                page: 2,//下一页
+                type: "",
+                limit: 10,
+                ajaxType: "html",
+                funEnd: function (data) {
+                    $("#js_appList").append(data);
+                    if (data == "") {
+                        $("#js_appList").append("<div style='text-align: center; padding: 18px 0px;'><img src='/Content/images/load_end.png' /></div>");
+                    }
+                }
+            });
+        });
+    </script>
+}
+<div class="msg_gr2" id="js_appList">
+    @Html.Partial("_MyCoupons", Model)
+</div>
+<div class="msg_gr_b"><a href="@Url.Action("Index")">返回个人中心</a></div>

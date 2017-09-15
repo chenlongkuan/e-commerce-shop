@@ -1,0 +1,102 @@
+﻿@using Msg.Entities
+@using Msg.Tools.Extensions
+@{
+    ViewBag.Title = "选择收货时间";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+    var noonExpireTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 0, 0);
+    var nightExpireTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 0, 0);
+}
+@section Head
+{
+    <style type="text/css">
+        body {
+            padding-bottom: 60px;
+            background: #fff;
+        }
+    </style>
+}
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery.spinner.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/cart.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#sendDate").bind("change", function () {
+                var nowDate = new Date();
+                var noonTime = new Date($("#h_noonExpireTime").val().replace(/-/g, "/"));
+                var nightTime = new Date($("#h_nightExpireTime").val().replace(/-/g, "/"));
+                var selectedDate = new Date($(this).val().replace(/-/g, "/"));
+                if (nowDate < selectedDate) {
+                    $("#firstTime").bind("click", function () {
+                        preOrder.selTime(0, this);
+                    });
+                } else if (nowDate < noonTime || nowDate >= nightTime) {
+                    $("#firstTime").bind("click", function () {
+                        preOrder.selTime(0, this);
+                    });
+                } else {
+                    var isDisabled = parseInt($.trim($("#isDisabled").val()));
+                    var sendDate = parseInt($.trim($("#sendDate").val()));
+                    if (isDisabled == 1 && sendDate == 0) {
+                        $("#firstTime").attr("onclick", "");
+                        $("#firstTime").unbind("click");
+                    } else {
+                        $("#firstTime").bind("click", function () {
+                            preOrder.selTime(0, this);
+                        });
+                    }
+                }
+            });
+        });
+
+    </script>
+}
+<input type="hidden" id="couponId" value="@ViewBag.couponId"/>
+<input type="hidden" id="p" value="@ViewBag.p"/>
+<div class="msg_sel">
+    <div class="sel_title">选择收货日期</div>
+    <dl>
+        <dd style="width: 80%;">
+            <select id="sendDate" style="width: 70%;">
+                @for (int i = 0; i < 7; i++)
+                {
+                    <option value="@i" @(i == ViewBag.sendDate ? "selected=selected" : "")>@DateTime.Now.AddDays(DateTime.Now >= nightExpireTime ? i + 1 : i).ToString("M月dd日")</option>
+                }
+            </select>
+        </dd>
+    </dl>
+
+    <input type="hidden" id="isDisabled" value="@ViewBag.sendTimeType" />
+    <a href="javascript:;" id="firstTime" @(ViewBag.sendDate != 0 ? "onclick=preOrder.selTime(0,this);" : "")>
+        <dl>
+            <dd>@SendTimeBucketsEnum.Noon.ToDescription()</dd>
+            <dt>
+                @if (ViewBag.sendTimeType == 0)
+                {
+                    <img src="@Url.Content("/Content/MobileTemplate/images/g.png")" />
+                }
+            </dt>
+        </dl>
+    </a>
+    <a href="javascript:;" onclick="preOrder.selTime(1,this);">
+        <dl>
+            <dd>@SendTimeBucketsEnum.AfterNoon.ToDescription()</dd>
+            <dt>
+                @if (ViewBag.sendTimeType == 1)
+                {
+                    <img src="@Url.Content("/Content/MobileTemplate/images/g.png")" />
+                }
+
+            </dt>
+        </dl>
+    </a>
+    <input type="hidden" id="sendTimeType" value="@ViewBag.sendTimeType">
+    <input type="hidden" id="h_noonExpireTime" value="@noonExpireTime" />
+    <input type="hidden" id="h_nightExpireTime" value="@nightExpireTime" />
+</div>
+<div style="line-height: 20px; color: #ff3300; padding: 3px 10px;">温馨提示：大学城以外学校每日17:00点统一发货，次日中午到货</div>
+<div class="msg_gwc clearfix">
+    <div class="msg_gwc_l"><a href="javascript:window.history.go(-1);">返回</a></div>
+    <div class="msg_gwc_r"><a href="javascript:;" onclick="preOrder.SelTimeOk();">确认选择</a></div>
+</div>
+

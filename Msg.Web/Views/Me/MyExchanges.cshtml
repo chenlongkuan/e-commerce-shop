@@ -1,0 +1,54 @@
+﻿@using Msg.Utils
+@using Msg.Web.App_Start
+@model System.Linq.IQueryable<Msg.Entities.CreditsExchangeLogsEntity>
+
+@{
+    ViewBag.Title = "我的积分兑换";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+}
+
+<div class="per_right per_order">
+    <div class="order_h">
+        <div class="h_left">我的积分兑换</div>
+        <div class="h_right1">
+            <a href="@Url.Action("Index", "Exchanges")">前往积分兑换中心&gt;&gt;</a>
+        </div>
+    </div>
+    <div class="order_d">
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <tbody>
+                <tr>
+                    <th colspan="6">
+                        我兑换的礼品
+                    </th>
+                </tr>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="td1">
+                                <ul>
+                                    <li class="clearfix">
+                                        <div class="li1"><a href="@Url.Action("Item", "Exchanges", new { id = item.Id })"><img src="@ImagesHelper.GetImgWidthHeight(item.CreditGoods.Logo, 80, 80, false)" width="80" height="80"></a></div>
+                                        <div class="li2">
+                                            <a href="@Url.Action("Item", "Exchanges", new { id = item.Id })">@item.CreditGoods.Name</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td width="70">数量<br>×&nbsp;@item.Quantity</td>
+                            <td width="70">消耗积分<br>×&nbsp;@item.CreditsCost</td>
+                            <td width="70">@(item.IsSended ? "已发货" : "未发货")</td>
+                            <td width="130">兑换日期<br>@item.CreateTime.ToShortDateString()<br>@item.CreateTime.ToLongTimeString()</td>
+                            @*<td width="150"><a href="javascript:;">删除</a></td>*@
+                        </tr>
+                    }
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+    <div class="per_f">@Html.Raw(ViewBag.Pager)</div>
+</div>

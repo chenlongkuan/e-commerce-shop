@@ -1,0 +1,114 @@
+﻿@model Msg.Entities.OrdersEntity
+@{
+    ViewBag.Title = "订单详情";
+}
+
+<link href="@Url.Content("~/Content/AdminTemplate/bower_components/bootstrap/dist/css/bootstrap.min.css")" media="print" rel="stylesheet">
+
+
+<div id="PrintArea">
+    <div class="panel-heading">
+        <table class="table table-striped table-bordered table-hover">
+            <tr id="hideTr">
+                <td colspan="2">@ViewBag.InnerTopTitle</td>
+            </tr>
+            <tr>
+                <td width="50%">
+
+                    姓名:
+
+                    @Model.Address.ReciverName
+                </td>
+                <td>
+
+                    电话:
+
+                    @Model.Address.ReciverTel
+
+                </td>
+            </tr>
+            <tr>
+                <td width="50%">
+
+                    学校:
+
+                    @Model.Address.SchoolName
+
+                </td>
+                <td>
+
+                    地址:
+
+                    @Model.Address.DetailAddress
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    总金额： @Model.DisplayPrice
+                </td>
+                <td>
+                    订单状态:
+                    @Model.StatusDesc
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                送货时间：@Model.SendTimeDate.ToString("yyyy年MM月dd日") @Model.SendTimeBuckets
+                </td>
+                
+            </tr>
+        </table>
+    </div>
+    <br />
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>编号</th>
+                    <th>商品名称</th>
+                    <th>品牌</th>
+                    <th>价格</th>
+                    <th>数量</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Items != null && Model.Items.Any())
+                {
+
+
+
+                    foreach (var item in Model.Items)
+                    {
+
+                        <tr>
+                            <td>@item.Goods.Id</td>
+                            <td>@item.Goods.ShortTitle</td>
+                            <td>@item.Goods.Product.Brand.Name</td>
+                            <td>@item.SinglePrice</td>
+                            <td>@item.Quantity</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+
+
+        <!--/.pager-->
+    </div>
+</div>
+<button type="button" class="btn btn-default" onclick="Print()">打印</button>
+
+<script src="@Url.Content("~/Scripts/jquery.printArea.js")"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#hideTr").hide();
+    });
+    function Print() {
+        $("#hideTr").show();
+        $("#PrintArea").printArea();
+        $("#hideTr").hide();
+    }
+</script>

@@ -1,0 +1,5 @@
+D:\xk_Projects\Meisugou\Msg.Utils\bin\Debug\Msg.Utils.dll
+D:\xk_Projects\Meisugou\Msg.Utils\bin\Debug\Msg.Utils.pdb
+D:\xk_Projects\Meisugou\Msg.Utils\obj\Debug\Msg.Utils.dll
+D:\xk_Projects\Meisugou\Msg.Utils\obj\Debug\Msg.Utils.pdb
+D:\xk_Projects\Meisugou\Msg.Utils\obj\Debug\Msg.Utils.csprojResolveAssemblyReference.cache

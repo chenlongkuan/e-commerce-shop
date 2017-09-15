@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6755828D-0E63-4F48-BAAD-E523F0D8057D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Msg.FileUpload</RootNamespace>
+    <AssemblyName>Msg.FileUpload</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NewFileUploadHelper.cs" />
+    <Compile Include="NewFileUploadProxy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QrCodeGeneratorProxy.cs" />
+    <Compile Include="QrCodeHelper.cs" />
+    <Compile Include="Service References\QrCodeGenerator\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WcfNewFileUpload\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WcfUpload\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="ServiceProxy.cs" />
+    <Compile Include="UploadHelper.cs" />
+    <Compile Include="UploadProxy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Msg.Config\Msg.Config.csproj">
+      <Project>{1bc24746-d10e-4426-a2b8-69c7e7d87ef1}</Project>
+      <Name>Msg.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Msg.Utils\Msg.Utils.csproj">
+      <Project>{764EA872-A9CF-4155-AD06-C7D91B7EFB22}</Project>
+      <Name>Msg.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WCF.Lib.File\WCF.Lib.File.csproj">
+      <Project>{1244BE9E-9D51-46D0-B945-447F945302FD}</Project>
+      <Name>WCF.Lib.File</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WCF.WEB.FileService\WCF.WEB.FileService.csproj">
+      <Project>{EAB3EA81-FA50-4F2C-B99E-BC4B285D2017}</Project>
+      <Name>WCF.WEB.FileService</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\DataSources\WCF.Lib.File.Entity.Message.datasource" />
+    <None Include="Properties\DataSources\WCF.Lib.File.Entity.NewMessage.datasource" />
+    <None Include="Service References\QrCodeGenerator\QrCodeGenerator.wsdl" />
+    <None Include="Service References\QrCodeGenerator\QrCodeGenerator.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\QrCodeGenerator\QrCodeGenerator1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfNewFileUpload\NewFileUpload.wsdl" />
+    <None Include="Service References\WcfNewFileUpload\NewFileUpload.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfNewFileUpload\NewFileUpload1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfNewFileUpload\NewFileUpload2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfUpload\Msg.FileUpload.WcfUpload.WeiboAvatarResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WcfUpload\Upload.wsdl" />
+    <None Include="Service References\WcfUpload\UploadFile.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfUpload\UploadFile1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfUpload\UploadFile2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\QrCodeGenerator\" />
+    <WCFMetadataStorage Include="Service References\WcfNewFileUpload\" />
+    <WCFMetadataStorage Include="Service References\WcfUpload\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\QrCodeGenerator\QrCodeGenerator.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\QrCodeGenerator\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\QrCodeGenerator\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\QrCodeGenerator\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WcfNewFileUpload\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WcfNewFileUpload\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WcfNewFileUpload\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WcfUpload\UploadFile.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WcfUpload\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WcfUpload\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WcfUpload\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WcfNewFileUpload\NewFileUpload.disco" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

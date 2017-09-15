@@ -1,0 +1,31 @@
+﻿@using Msg.Utils
+@model  IQueryable<Msg.Entities.CouponSendLogsEntity>
+
+@{
+    ViewBag.Title = "我的优惠券";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+}
+
+<div class="per_right per_order">
+    <div class="order_h">
+        <div class="h_left">我的优惠劵</div>
+        <div class="h_right1 cl_ff3300">* 优惠劵过期或者使用后自动删除</div>
+    </div>
+    <div class="yhj_li">
+        <ul class="clearfix">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    var couponLogo = item.Coupon.Logo == "null" ? Url.Content("~/Content/images/coupon_" + item.Coupon.CouponValue.ToString("####")+".png") : ImagesHelper.GetImgWidthHeight(item.Coupon.Logo, 260, 105, false, 100);
+                    
+                    <li>
+                        <img src="@couponLogo" />
+                        <span>剩余数量：@(item.Num - item.CostLogs.Count) ;过期日期：@item.Coupon.EndTime.ToShortDateString()</span>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+    <div class="per_f">@Html.Raw(ViewBag.Pager)</div>
+</div>

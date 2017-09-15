@@ -1,0 +1,288 @@
+﻿@using Msg.Bll.Models
+@model Msg.Entities.ProductsEntity
+
+@{
+    ViewBag.Title = Model.Id > 0 ? "编辑库存" : "添加库存";
+    ViewBag.InnerTopTitle = Model.Id > 0 ? "编辑库存" : "添加库存";
+    var brands = ViewBag.Brands as List<BrandsModel>;
+    var cates = ViewBag.Categories as List<CategoryModel>;
+}
+
+@section Head{
+    @*<link href="@Url.Content("~/Content/ueditor/themes/default/ueditor.css")" rel="stylesheet" />*@
+    <link href="~/Content/ueditor1_2_6_0-utf8-net/themes/default/css/ueditor.css" rel="stylesheet" />
+}
+
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            &nbsp;
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <form role="form" id="form1" method="POST" action="@Url.Action("SaveProduct", "Home", new { area = "Admin" })">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(f => f.Id)
+                        <div class="form-group">
+                            <div>
+                                <button type="button" class="btn btn-default" onclick=" upImage(); ">上传图片</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <img src="@Model.MainLogo" id="img_Cover" width="200" height="200" style="display: @(Model.Id>0?"block":"none")">
+                            @Html.HiddenFor(f => f.Logo)
+                        </div>
+                        <div class="form-group">
+                            <label>是否虚拟产品</label>
+                            <label class="radio-inline">
+                                <input type="radio" name="IsVirtual" id="rd_IsVirtual_true" onchange="changeVirtual();" value="true" @(Model.IsVirtual ? "checked='checked'" : "")>是
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="IsVirtual" id="rd_IsVirtual_false" onchange="changeVirtual();" value="false" @(Model.IsVirtual ? "" : "checked='checked'")>否
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>产品名称</label>
+                            @Html.TextBoxFor(f => f.Name, new { @class = "form-control", placeholder = "输入产品名称，最长100字", maxlength = 100 })
+                        </div>
+
+                        <div class="form-group input-group">
+                            <label>产品价格</label>
+                            @Html.TextBoxFor(f => f.Price, new {@class = "form-control", maxlength = 10})
+                        </div>
+                        <div class="form-group">
+                            <label>库存数量</label>
+                            @Html.TextBoxFor(f => f.Quantity, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <label>类目</label>
+                            <select class="form-control" id="sel_cates" name="cateId">
+                                @if (cates != null && cates.Any())
+                                {
+                                    foreach (var item in cates)
+                                    {
+                                        if (Model.Category != null && (Model != null && Model.Category.Id == item.Id))
+                                        {
+                                            <option value="@item.Id" selected="selected">@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+
+                                    }
+                                }
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>品牌</label>
+                            <select class="form-control" id="sel_brands" name="brandId">
+                                @if (brands != null && brands.Any())
+                                {
+                                    foreach (var item in brands)
+                                    {
+                                        if (Model.Brand != null && (Model != null && Model.Brand.Id == item.Id))
+                                        {
+                                            <option value="@item.Id" selected="selected">@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="well" id="div_tickets">
+                            <label>票务库存参数</label>
+                            <div class="form-group">
+                                <label>场馆</label>
+                                @Html.TextBoxFor(f => f.Venue, new { @class = "form-control", placeholder = "输入票务使用场馆，最长20字", maxlength = 20 })
+                            </div>
+                            <div class="form-group">
+                                <label>使用日期</label>
+                                @Html.TextBoxFor(f => f.UsingDate, new { @class = "form-control", onfocus = "WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'%y-%M-%d',alwaysUseStartDate:true})" })
+                            </div>
+                        </div>
+                        <div class="well" id="div_travel">
+                            <label>旅游库存参数</label>
+                            <div class="form-group">
+                                <label>目的地</label>
+                                @Html.TextBoxFor(f => f.Destination, new { @class = "form-control", placeholder = "输入旅游目的地，最长20字", maxlength = 20 })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>规格</label>
+                            <div id="txt_Spec"></div>
+                            @Html.HiddenFor(f => f.Spec)
+                        </div>
+
+                        <div class="form-group">
+                            <label>描述</label>
+                            <div id="txt_Desc"></div>
+                            @Html.HiddenFor(f => f.Desc)
+                        </div>
+
+                        <button type="button" id="btn_submit" class="btn btn-default">提交</button>
+                        <button type="reset" class="btn btn-default">重置</button>
+                    </form>
+                    @if (ViewBag.ErrMsg is string && !string.IsNullOrEmpty(ViewBag.ErrMsg))
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.ErrMsg
+                        </div>
+                    }
+                </div>
+
+            </div>
+            <!-- /.row (nested) -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+@section Scripts{
+
+    <script src="@Url.Content("~/Content/ueditor1_2_6_0-utf8-net/ueditor.all.min.js")"></script>
+    <script src="@Url.Content("~/Content/ueditor1_2_6_0-utf8-net/ueditor.config.js")"></script>
+
+
+    <script type="text/javascript">
+        var specOption = {
+            //这里可以选择自己需要的工具按钮名称,此处仅选择如下
+            toolbars: [['Undo', 'Redo', 'Source', '|', 'Bold', 'Italic', 'Underline', '|', 'ForeColor', 'BackColor', 'FontFamily', 'FontSize', '|', 'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|', 'Link', 'Unlink', '|', 'InsertImage', 'Emotion', 'InsertVideo', 'Map', '|', 'wordimage', 'Preview']],
+            initialContent: '@Html.Raw(Model.Spec)',
+            autoHeightEnabled: true //是否自动长高
+        };
+        ue_edit_spec = new baidu.editor.ui.Editor(specOption);
+        ue_edit_spec.render('txt_Spec');
+
+
+        var detailOption = {
+            //这里可以选择自己需要的工具按钮名称,此处仅选择如下
+            toolbars: [['Undo', 'Redo', 'Source', '|', 'Bold', 'Italic', 'Underline', '|', 'ForeColor', 'BackColor', 'FontFamily', 'FontSize', '|', 'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|', 'Link', 'Unlink', '|', 'InsertImage', 'Emotion', 'InsertVideo', 'Map', '|', 'wordimage', 'Preview']],
+            initialContent: '@Html.Raw(Model.Desc)',
+            autoHeightEnabled: true //是否自动长高
+        };
+        ue_edit_detail = new baidu.editor.ui.Editor(detailOption);
+        ue_edit_detail.render('txt_Desc');
+
+        $(function () {
+            var isvirth = $("input[name='IsVirtual']:checked").val();
+            if (isvirth != "true") {
+                $("#div_tickets").hide();
+                $("#div_travel").hide();
+            }
+
+            //提交按钮
+            $("#btn_submit").bind("click", function () {
+                var logo = $("#Logo").val();
+                var name = $("#Name").val();
+                var price = $("#Price").val();
+                var quantity = $("#Quantity").val();
+                var cateId = $("#sel_cates").val();
+                var brandId = $("#sel_brands").val();
+
+                if (isEmpty(logo)) {
+                    MsgDialog.Alert(false, "请上传Logo！");
+                    return;
+                }
+                if (isEmpty(name)) {
+                    MsgDialog.Alert(false, "请填写产品名称！");
+                    return;
+                }
+                if (isEmpty(price) || isNaN(price)) {
+                    MsgDialog.Alert(false, "价格填写错误！");
+                    return;
+                }
+                if (isEmpty(quantity) || isNaN(quantity)) {
+                    MsgDialog.Alert(false, "库存数量填写错误！");
+                    return;
+                }
+                if (isEmpty(cateId) || isNaN(cateId)) {
+                    MsgDialog.Alert(false, "清先添加类目到系统中！");
+                    return;
+                }
+                if (isEmpty(brandId) || isNaN(brandId)) {
+                    MsgDialog.Alert(false, "清先添加品牌到系统中！");
+                    return;
+                }
+                $("#btn_submit").disabledButton(true);
+                $("#Spec").val(ue_edit_spec.getContent());
+                $("#Desc").val(ue_edit_detail.getContent());
+
+                $("form").submit();
+            });
+        });
+
+        function changeVirtual() {
+            var isvirth = $("input[name='IsVirtual']:checked").val();
+            $("#Venue").val("");
+            $("#UsingDate").val("");
+            $("#Destination").val("");
+            if (isvirth != "true") {
+                $("#div_tickets").hide();
+                $("#div_travel").hide();
+            } else {
+                $("#div_tickets").show();
+                $("#div_travel").show();
+            }
+        }
+
+    </script>
+    <script type="text/javascript">
+        //重新实例化一个编辑器，防止在上面的editor编辑器中显示上传的图片或者文件
+        var _editor = UE.getEditor('upload_ue');
+        _editor.ready(function () {
+            //设置编辑器不可用
+            _editor.setDisabled();
+            //隐藏编辑器，因为不会用到这个编辑器实例，所以要隐藏
+            _editor.hide();
+            //侦听图片上传
+            _editor.addListener('beforeInsertImage', function (t, arg) {
+
+                if (arg[0].src != null || arg[0].src.length > 0) {
+                    $("#img_Cover").attr("src", arg[0].src);
+                    $("#img_Cover").show();
+                    var hasVal = $("#Logo").val();
+                    for (var i = 0, ci; ci = arg[i++];) {
+                        if (hasVal.length < 1) {
+                            hasVal = arg[0].src;
+                        } else {
+                            hasVal = hasVal + "|" + ci.src;
+                        }
+                    }
+
+                    $("#Logo").val(hasVal);
+                }
+            });
+            ////侦听文件上传
+            //_editor.addListener('afterUpfile', function (t, arg) {
+
+            //});
+            
+        });
+
+
+        //弹出图片上传的对话框
+        function upImage() {
+            var myImage = _editor.getDialog("insertimage");
+            myImage.open();
+        }
+
+        //弹出文件上传的对话框
+        function upFiles() {
+            var myFiles = _editor.getDialog("attachment");
+            myFiles.open();
+        }
+    </script>
+
+    <script type="text/plain" id="upload_ue">
+    </script>
+
+
+}

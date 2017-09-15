@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "申请成为创业者";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+    var errMsg = ViewBag.ErrMsg as string;
+}
+<div class="per_right per_order">
+    <div class="order_h">
+        <div class="h_left">申请成为创业者</div>
+    </div>
+    <div class="entre_f">
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <tbody>
+                <tr>
+                    <td align="right">申请人：</td>
+                    <td><input type="text" id="txt_supplier_linkman" maxlength="10" style="width:100px;"></td>
+                </tr>
+                <tr>
+                    <td align="right">联系电话：</td>
+                    <td><input type="text" id="txt_supplier_linktel" maxlength="11" style="width:150px;"></td>
+                </tr>
+
+                <tr>
+                    <td align="right" valign="top">申请理由：</td>
+                    <td><textarea id="txt_supplier_reason" maxlength="500"></textarea></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="cl_ff3300">
+                        <span id="txt_result">@(string.IsNullOrEmpty(errMsg) ? "申请成功后，请耐心等待客服电话核实！" : errMsg)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td class="per_button"><a href="javascript:;" id="btn_supplier" onclick="mymarket.tobeSupplier(); return false;">立即申请</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

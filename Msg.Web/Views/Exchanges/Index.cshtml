@@ -1,0 +1,41 @@
+﻿@model List<Msg.Bll.Models.CreditGoodsLiteModel>
+
+@{
+    ViewBag.Title = "积分兑换";
+}
+@section head{
+
+    <link href="@Url.Content("~/Content/ShowLoading/showLoading.css")" rel="stylesheet" />
+}
+@section scripts{
+    <script src="@Url.Content("~/Content/ShowLoading/jquery.showLoading.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/exchange.js")"></script>
+}
+<div class="nk_list msg_jf">
+    <input type="hidden" id="currentTabId" value="1" />
+    <div class="ls_list_li">
+        <!--<a href="javascript:;" class="nk_qh_l"><img src="images/left.png"/></a>
+        <a href="javascript:;" class="nk_qh_r"><img src="images/right.png"/></a>-->
+        <ul class="clearfix">
+            <li class="over" ls_list_li="0">
+                <div class="tabChange li1 over" tabid="1">0-1000积分</div>
+            </li>
+            <li ls_list_li="1">
+                <div class="tabChange li1" tabid="2">1001-3000积分</div>
+            </li>
+            <li ls_list_li="2">
+                <div class="tabChange li1" tabid="3">3001-5000积分</div>
+            </li>
+            <li ls_list_li="3">
+                <div class="tabChange li1" tabid="4">5001-8000积分</div>
+            </li>
+            <li ls_list_li="4">
+                <div class="tabChange li1" tabid="5">8000积分以上</div>
+            </li>
+        </ul>
+    </div>
+    <div class="list_main" style="display: block;">
+        @Html.Partial("_Index", Model)
+    </div>
+</div>

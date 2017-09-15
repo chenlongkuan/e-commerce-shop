@@ -1,0 +1,25 @@
+﻿@model IQueryable<Msg.Entities.GoodsEntity>
+@if (Model != null && Model.Any())
+{
+    var img = "";
+    foreach (var item in Model)
+    {
+        img = Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.SecondLogo, 105, 105, false);
+    <li class="clearfix">
+        <div class="li_left">
+            <a href="@Url.Action("Details", "Home", new { id = item.Id })">
+                <img class="lazy" width="105" height="105" data-original="@img" /></a>
+        </div>
+        <div class="li_right">
+            <div class="right_t">
+                <div class="wor1"><a href="@Url.Action("Details", "Home", new { id = item.Id })">@item.ShortTitle</a></div>
+                <div class="wor2">￥@(item.SellPrice.ToString("F"))</div>
+                <div class="clearfix">
+                    <div class="wor3">市场价：@(item.MarketPrice.ToString("F"))</div>
+                    <div class="wor4">@(item.SoldCount + item.FakeSoldCount)人购买</div>
+                </div>
+            </div>
+        </div>
+    </li>
+    }
+}

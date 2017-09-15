@@ -1,0 +1,22 @@
+﻿@using Msg.Utils
+@model System.Linq.IQueryable<Msg.Entities.GoodsEntity>
+
+<ul class="clearfix">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <li>
+                <a href="@Url.Action("Details","Home", new {id = item.Id})" target="_blank">
+                    <img class="lazy" src="@ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 150, 150, false)" width="150" height="150">
+                </a>
+                <div class="li1">￥@item.SellPrice.ToString("F")</div>
+                <div class="li2">
+                    <a href="@Url.Action("Details", "Home", new { id = item.Id })" target="_blank">@item.ShortTitle</a>
+                </div>
+            </li>
+        }
+    }
+
+
+</ul>

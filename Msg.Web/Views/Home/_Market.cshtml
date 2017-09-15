@@ -1,0 +1,39 @@
+﻿@using Msg.Utils
+@model System.Collections.Generic.List<Msg.Bll.Models.MarketGoodsModel>
+
+<ul class="clearfix">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <li>
+                <div class="li_img">
+                    <a href="@Url.Action("Details", "Home", new { id = item.Id })"><img class="lazy" data-original="@Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Logo, 230, 230, false, 80)" width="220" height="220"></a>
+                </div>
+                <div class="li1">￥@item.SellPrice.ToString("F")</div>
+                <div class="li2">
+                    <a href="@Url.Action("Details", "Home", new { id = item.Id })">@item.ShortTitle</a>
+                </div>
+                <div class="li3 clearfix">
+                    <div class="li3_l">
+                        已售出 @item.SoldCount
+                    </div>
+                    <div class="li3_r">
+                        @if (item.IsOnSelling)
+                        {
+                           <a href="javascript:;" img="@ImagesHelper.GetImgWidthHeight(item.MainLogo, 220, 220, false)" class="btnCart" onclick="updateCart(@item.Id,1,'add',null,this);return false;">加入购物车</a>
+                        }
+                        else
+                        {
+                            <a href="JavaScript:;" class="over" disabled="disabled">加入购物车</a>
+                        }
+                    </div>
+                </div>
+            </li>
+
+        }
+    }
+
+
+</ul>
+<div class="msg_f" style="padding: 20px 0;">@Html.Raw(ViewBag.Pager)</div>

@@ -1,0 +1,254 @@
+﻿@using Msg.Bll.Models
+@model System.Linq.IQueryable<Msg.Entities.UsersEntity>
+
+@{
+    ViewBag.Title = "用户管理";
+    ViewBag.InnerTopTitle = "用户管理";
+
+    var schools = ViewBag.Schools as List<SchoolModel>;
+}
+
+<div class="col-lg-6" style="width: 100%">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="height: 50px;">
+            <div class="form-group" style="float: left">
+                <label>昵称</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" id="txt_search_nickName">
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>学校</label>
+                <label>
+                    <select class="form-control" id="sel_search_school">
+                        <option value="" selected="selected">所有学校</option>
+                        @if (schools != null && schools.Any())
+                        {
+                            foreach (var item in schools)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select>
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>排序字段</label>
+                <label>
+                    <select class="form-control" id="sel_search_sort">
+                        <option value="createtime">注册时间</option>
+                        <option value="credit">积分</option>
+
+                    </select>
+                </label>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <button type="button" class="btn btn-default" onclick="paging(1)">搜索</button>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <button type="button" class="btn btn-default" onclick="reset()">重置</button>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            @Html.Partial("_Users", Model)
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<script type="text/javascript">
+
+    function paging(page) {
+        var nickName = $("#txt_search_nickName").val();
+        var schoolId = $("#sel_search_school").val();
+        var sort = $("#sel_search_sort").val();
+        $(".panel-body").showLoading();
+        $.get("@Url.Action("_Users", "Home", new { area = "Admin" })?t=" + Math.random(), { schoolId: schoolId, nickName: nickName, sortColumn: sort, page: page }, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+
+    function reset() {
+        $("#txt_search_nickName").val("");
+        $("#sel_search_school").val("");
+        $("#sel_search_sort").val("");
+        $(".panel-body").showLoading();
+        $.get("@Url.Action("_Users", "Home", new { area = "Admin" })?t=" + Math.random(), {}, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+
+    function disableUser(id) {
+        MsgDialog.Confirm("确定要禁用/启用此用户吗?", function () {
+            $.get("@Url.Action("DisableUser", "Home", new { area = "Admin" })?t=" + Math.random(), { id: id }, function (data) {
+                MsgDialog.Alert(data.status, da.msg);
+            });
+        });
+
+    }
+
+
+    function sendNotify(userId, isBatch) {
+        if (isBatch) {
+            userId = MsgFunc.CboxCheckedValues("cbx_user");
+            if (isEmpty(userId)) {
+                MsgDialog.Alert(false, "请至少选择一个用户！");
+                return;
+            }
+        }
+        var html = '<div class="form-group"><textarea class="form-control" id="txt_content" style="resize: none" rows="5" maxlength="1000" placeholder="请输入站内信内容,1000字以内"></textarea></div>';
+        BootstrapDialog.show({
+            title: '发送站内信',
+            message: $(html),
+            closable: true,
+            buttons: [{
+                id: "btn_submit",
+                icon: 'glyphicon glyphicon-send',
+                label: 'OK',
+                cssClass: 'btn-primary',
+                autospin: true,
+                action: function (dialogRef) {
+                    dialogRef.enableButtons(false);
+                    dialogRef.setClosable(false);
+                    var $button = dialogRef.getButton('btn_submit');
+                    var content = $("#txt_content").val();
+
+                    if (content.length < 1) {
+                        MsgDialog.Alert(false, "请输入站内信内容！");
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                        return;
+                    }
+
+                    var url = "@Url.Action("SendNotify", "Home", new { area = "Admin" })";
+
+                    if (isBatch) {
+                        url = "@Url.Action("SendBatchNotify","Home",new{area="Admin"})?t=" + Math.random();
+                        userId = MsgFunc.CboxCheckedValues("cbx_user");
+                        if (isEmpty(userId)) {
+                            MsgDialog.Alert(false, "请至少选择一个用户！");
+                            return;
+                        }
+                    }
+
+                    $.post(url, { toUserId: userId, content: content }, function (data) {
+
+                        MsgDialog.Alert(data.status, data.msg, function () {
+                            if (data.status) {
+                                window.location.href = window.location.href;
+                            } else {
+                                $button.stopSpin();
+                                dialogRef.enableButtons(true);
+                                dialogRef.setClosable(true);
+                                return;
+                            }
+                        });
+                    });
+                }
+            }, {
+                label: 'Cancel',
+                action: function (dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
+    }
+
+    function sendCoupon(userId, isBatch) {
+        if (isBatch) {
+            userId = MsgFunc.CboxCheckedValues("cbx_user");
+            if (isEmpty(userId)) {
+                MsgDialog.Alert(false, "请至少选择一个用户！");
+                return;
+            }
+        }
+
+        var html = '<div id="div_dialog"><div class="form-group"><label>类型</label><label class="radio-inline"><input type="radio" name="couponType" id="rd_cash" value="1" checked="checked">现金券';
+        html += '</label><label class="radio-inline"><input type="radio" name="couponType" id="rd_reduce" value="2">满省券</label></div><div class="form-group">';
+        html += '<label>选择优惠券</label><select class="form-control" id="sel_coupons"></select></div></div>';
+        BootstrapDialog.show({
+            title: '发送优惠券',
+            message: $(html),
+            closable: true,
+            onshown: function (dg) {
+
+                loadCoupons(dg);
+                $("input[name='couponType']").bind("change", function () {
+                    loadCoupons(dg);
+                });
+
+            },
+            buttons: [{
+                id: "btn_submit",
+                icon: 'glyphicon glyphicon-send',
+                label: 'OK',
+                cssClass: 'btn-primary',
+                autospin: true,
+                action: function (dialogRef) {
+                    dialogRef.enableButtons(false);
+                    dialogRef.setClosable(false);
+                    var $button = dialogRef.getButton('btn_submit');
+                    var couponId = $("#sel_coupons").val();
+
+                    var url = "@Url.Action("SendCoupon", "Home", new { area = "Admin" })?t=" + Math.random();
+
+                    if (isBatch) {
+                        url = "@Url.Action("SendBathcCoupon","Home",new{area="Admin"})?t=" + Math.random();
+                    }
+
+                    $.get(url, { toUserId: userId, couponId: couponId }, function (data) {
+
+                        MsgDialog.Alert(data.status, data.msg, function () {
+                            if (data.status) {
+                                window.location.href = window.location.href;
+                            } else {
+                              
+                                $button.stopSpin();
+                                dialogRef.enableButtons(true);
+                                dialogRef.setClosable(true);
+                                return;
+                            }
+                        });
+                        $button.stopSpin();
+                        $button.disable();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                    });
+                }
+            }, {
+                label: 'Cancel',
+                action: function (dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
+
+    }
+
+
+    function loadCoupons(dg) {
+        $("#div_dialog").showLoading();
+        var couponType = $("input[name='couponType']:checked").val();
+        $.get("@Url.Action("GetCoupons", "Home", new { area = "Admin" })?t=" + Math.random(), { couponType: couponType }, function (data) {
+            var $button = dg.getButton('btn_submit');
+            if (data.coupons != null && data.coupons.length > 0) {
+                var selHtml = "";
+                $(data.coupons).each(function () {
+                    selHtml += "<option value='" + this.Id + "'>" + this.CouponName + "</option>";
+                });
+                $("#sel_coupons").html(selHtml);
+                $button.enable();
+            } else {
+                $("#sel_coupons").html("");
+                $button.disable();
+            }
+            $("#div_dialog").hideLoading();
+        });
+    }
+</script>
+

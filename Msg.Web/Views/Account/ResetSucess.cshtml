@@ -1,0 +1,32 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>重设密码成功 - 美速购 - 大学生专属O2O购物商城，零食、牛奶、休闲食品、在校自主创业、商企校园营销一站式平台。</title>
+    <link href="/fav.ico" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" />
+    <link href="/fav.ico" mce_href="favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="/fav.ico" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/normalize.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/msg_main.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/login.css")" />
+</head>
+
+<body>
+    <div class="msg_login">
+        <div class="login_t clearfix">
+            <div class="login_left"><a href="/"><img src="@Url.Content("~/Content/images/logo.png")" /></a></div>
+            <div class="login_right">重设密码成功</div>
+        </div>
+        <div class="msg_reg">
+            <div class="msg_zh1"><div class="msg_zh2" style="width:100%;"></div></div>
+            <div class="msg_zh4 a2">修改密码成功！<br /><a href="@Url.Action("Login", "Account", new { area = "" })">返回登录页>></a></div>
+        </div>
+    </div>
+    @Html.Partial("_Footer")
+</body>
+</html>

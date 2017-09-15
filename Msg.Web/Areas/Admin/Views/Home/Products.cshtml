@@ -1,0 +1,108 @@
+﻿@using Msg.Bll.Models
+@model System.Linq.IQueryable<Msg.Entities.ProductsEntity>
+
+@{
+    ViewBag.Title = "库存管理";
+    ViewBag.InnerTopTitle = "库存管理";
+    var brands = ViewBag.Brands as List<BrandsModel>;
+    var cates = ViewBag.Categories as List<CategoryModel>;
+}
+
+<div class="col-lg-6" style="width: 100%">
+    <div class="panel panel-default">
+
+        <div class="panel-heading" style="height: 50px;">
+            <div style="float: left;">
+                <a href="@Url.Action("SaveProduct", "Home", new {area = "Admin"})" class="btn btn-default">添加库存</a>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 25px;">
+                <label>名称</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" id="txt_search_Name"></label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>品牌</label>
+                <label>
+                    <select class="form-control" id="sel_search_brands">
+                        <option value="" selected="selected">所有品牌</option>
+                        @if (brands != null && brands.Any())
+                        {
+                            foreach (var item in brands)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                </select></label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>品类</label>
+                <label>
+                    <select class="form-control" id="sel_search_cates">
+                        <option value="" selected="selected">所有品类</option>
+                        @if (cates != null && cates.Any())
+                        {
+                            foreach (var item in cates)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                </select></label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>排序字段</label>
+                <label>
+                    <select class="form-control" id="sel_search_sort">
+                        <option value="credit">库存数量</option>
+                        <option value="createtime">添加时间</option>
+                    </select></label>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <button type="button" class="btn btn-default" onclick=" paging(1) ">搜索</button>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <button type="button" class="btn btn-default" onclick=" reset() ">重置</button>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            @Html.Partial("_Products", Model)
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+<input type="hidden" id="h_SupplierId" value="@ViewBag.SupplierId" />
+<script type="text/javascript">
+    function paging(page) {
+        var pname = $("#txt_search_Name").val();
+        var brandId = $("#sel_search_brands").val();
+        var cateId = $("#sel_search_cates").val();
+        var sort = $("#sel_search_sort").val();
+        var supplierId = $("#h_SupplierId").val();
+        $(".panel-body").showLoading();
+        $.get("@Url.Action("_Products", "Home", new { area = "Admin" })?t=" + Math.random(), { brandId: brandId, cateId: cateId, supplierId: supplierId, name: pname, sortColumn: sort, page: page }, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+
+    function reset() {
+        $("#txt_search_Name").val("");
+        $("#sel_search_brands").val("");
+        $("#sel_search_sort").val("");
+        $("#sel_search_cates").val("");
+        $(".panel-body").showLoading();
+        $.get("@Url.Action("_Products", "Home", new { area = "Admin" })?t=" + Math.random(), {}, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+
+    function disableProduct(id) {
+        MsgDialog.Confirm("确定要禁用/启用此库存吗?<br/>禁用/启用之后对应已上架的产品将会消失/可见.", function () {
+            $.get("@Url.Action("ToggleProductUseable", "Home", new { area = "Admin" })?t=" + Math.random(), { id: id }, function (data) {
+                MsgDialog.Alert(data.status, data.msg);
+            });
+        });
+    }
+</script>

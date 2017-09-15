@@ -1,0 +1,44 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewBag.Title-美速购</title>
+
+    <link href="@Url.Content("~/Content/MobileTemplate/css/msg_main.css")" rel="stylesheet" type="text/css">
+
+    @RenderSection("Head", false)
+
+    <!-- jQuery -->
+    <script src="@Url.Content("/Scripts/jquery.2.1.3.js")"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!--全屏导航 开始-->
+<div class="msg_q_dh clearfix">
+    <a href="@Url.Action("Index", "Home")" style="padding-top: 2px;">
+        <img src="@Url.Content("/Content/MobileTemplate/images/dh1.png")"></a>
+    <a href="@Url.Action("Cart", "Home")">
+        <img src="@Url.Content("/Content/MobileTemplate/images/dh2.png")"></a>
+    <a href="@Url.Action("Index", "Me")">
+        <img src="@Url.Content("/Content/MobileTemplate/images/dh3.png")"></a>
+    <a href="javascript:window.history.go(-1);">
+        <img src="@Url.Content("/Content/MobileTemplate/images/dh4.png")"></a>
+</div>
+<!--全屏导航 结束-->
+    @RenderBody()
+
+    <script src="/Scripts/lazy.js"></script>
+    @RenderSection("Scripts", false)
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+﻿@using Msg.Entities
+@using Msg.Utils
+@model Msg.Entities.CouponsEntity
+@{
+    ViewBag.Title = "优惠券管理";
+    // ViewBag.InnerTopTitle = "编辑优惠券";
+
+}
+
+@section Head{
+    <link href="@Url.Content("~/Content/ueditor/themes/default/ueditor.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/My97DatePicker/skin/WdatePicker.css")" rel="stylesheet" />
+}
+
+
+
+<div class="col-lg-12">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            &nbsp;
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <div class="form-group">
+                        <label>优惠券名称</label>
+                        @Html.TextBoxFor(c => c.CouponName, new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>Logo</label>
+                        <br />
+                        @if (string.IsNullOrEmpty(Model.Logo))
+                        {
+                            <div class="form-group">
+                                <img src="" id="img_Cover" width="200" height="200" name="img_Cover" style="display: none" />
+                            </div>
+                            <div class="form-group">
+                                <div><a href="javascript:;" id="btn_upload">上传Logo</a></div>
+                            </div>
+                        }
+                        else
+                        {
+                            <a href="@Model.Logo" target="_blank">
+                                <img src="@ImagesHelper.GetImgWidthHeight(Model.Logo, 25, 25, false)" id="img_Cover" width="200" height="200" name="img_Cover" title="点击查看大图">
+                            </a>
+                            <br />
+                            <label>
+                                <button type="button" id="btn_upload">修改图片</button>
+                            </label>
+                        }
+                        <input type="hidden" id="imageUrl" name="imageUrl" value="@Model.Logo" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>面值</label>
+                        @Html.TextBoxFor(c => c.CouponValue, new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group">
+                        <label>优惠券类型：</label>
+                        <label class="radio-inline">
+                            @if (Model.Id.ToString() != "00000000-0000-0000-0000-000000000000")
+                            {
+                                <input type="radio" onchange=" HidePanel() " name="optionsRadiosInline" id="RadioX" value="@((byte)Model.Type)" @(Model.Type == CouponTypeEnum.CashDeduction ? "checked='checked'" : "")>
+                            }
+                            else
+                            {
+                                <input type="radio" onchange=" HidePanel() " name="optionsRadiosInline" id="RadioX" value="1" checked="checked">
+                            }
+                            现金抵扣券
+                        </label>
+                        <label class="radio-inline">
+                            @if (Model.Id.ToString() != "00000000-0000-0000-0000-000000000000")
+                            {
+                                <input type="radio" onchange="ShowPanel()" name="optionsRadiosInline" id="RadioM" value="@((byte)Model.Type)" @(Model.Type == CouponTypeEnum.FullReduceDeduction ? "checked='checked'" : "")>
+                            }
+                            else
+                            {
+                                <input type="radio" onchange="ShowPanel()" name="optionsRadiosInline" id="RadioM" value="2">
+                            }
+                            满省抵扣券
+                        </label>
+                    </div>
+                    <div id="SelectToShowPanel" class="form-group">
+                        <label>
+                            满额
+                        </label>
+                        @Html.TextBoxFor(c => c.FullPrice, new { @class = "form-control", @id = "CouponsFullPrice" })
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>
+                            开始时间
+                        </label>
+                        <input type="text" id="txt_startTime" readonly="readonly" class="form-control" value="@Model.StartTime.ToString("yyyy-MM-dd")" name="SaleStartTime" class="Wdate" onclick="WdatePicker()">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            结束时间
+                        </label>
+                        <input type="text" class="form-control" readonly="readonly" id="txt_endTime" value="@Model.EndTime.ToString("yyyy-MM-dd")" name="SaleStartTime" class="Wdate" onclick="WdatePicker()">
+                    </div>
+
+                    <button type="button" id="btn_submit" class="btn btn-default" onclick="SubmitData()">提交</button>
+                    <button type="reset" class="btn btn-default">重置</button>
+                    @if (ViewBag.ErrMsg is string && !string.IsNullOrEmpty(ViewBag.ErrMsg))
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.ErrMsg
+                        </div>
+                    }
+
+                    <!-- /.row (nested) -->
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+</div>
+@Html.HiddenFor(f => f.Id)
+
+
+<script src="@Url.Content("~/Scripts/jquery.swfobject.1-1-1.min.js")"></script>
+<script src="@Url.Content("~/Scripts/sexy_upload_one.js")"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#SelectToShowPanel").hide();
+        $("#txt_startTime").val() == "0001-01-01" ? $("#txt_startTime").val("") : $("#txt_startTime").val();
+        $("#txt_endTime").val() == "0001-01-01" ? $("#txt_endTime").val("") : $("#txt_endTime").val();
+
+        up = new SEXY_upload_one_file('up', {
+            id: 'btn_upload',
+            swf_src: '@Url.Content("~/Content/upload_one_file.swf")',
+            btn_src: '@Url.Content("~/Content/images/up_button.png")',
+            up_url: '@Url.Action("RecivePhoto", "Common",new{area=""})',
+            loading: 'true',
+            btn_w: 131,
+            btn_h: 40,
+            complete: function (backstr) {
+
+                backstr = eval('(' + backstr + ')');
+                if (backstr.status) {
+                    $("#img_Cover").attr("src", backstr.filesSrc);
+                    $("#img_Cover").show();
+                    $("#imageUrl").val(backstr.filesSrc);
+                } else {
+                    alert(backstr.msg);
+                }
+            }
+        });
+    });
+
+    function ShowPanel() {
+        $("#SelectToShowPanel").show();
+        $("#RadioM").attr("checked", "checked");
+        $("#RadioX").removeAttr("checked");
+    }
+
+
+    function HidePanel() {
+        $("#SelectToShowPanel").hide();
+        $("#RadioX").attr("checked", "checked");
+        $("#RadioM").removeAttr("checked");
+    }
+
+
+
+
+
+    function SubmitData() {
+        var Logo = $("#imageUrl").val();
+        var CouponsName = $("#CouponName").val();
+        var CouponsValue = $("#CouponValue").val();
+        var CouponsType = $("input[name='optionsRadiosInline']:checked").val();
+        var CouponsFullPrice = 0;
+
+
+        if ($("#RadioX").attr("checked") != "checked") {
+            CouponsFullPrice = $("#CouponsFullPrice").val();
+            if (isEmpty(CouponsValue) || isNaN(CouponsValue)) {
+                MsgDialog.Alert(false, "请正确填写面额数值！");
+                return;
+            }
+        }
+        var StartTime = $("#txt_startTime").val();
+        var EndTime = $("#txt_endTime").val();
+
+        if (isEmpty(CouponsName)) {
+            MsgDialog.Alert(false, "请填写优惠券名称！");
+            return;
+        }
+
+        if (isEmpty(StartTime) || isEmpty(EndTime)) {
+            MsgDialog.Alert(false, "请选择优惠券开始/结束时间！");
+            return;
+        }
+
+
+        if (isEmpty(Logo)) {
+            MsgDialog.Alert(false, "请上传Logo！");
+            return;
+        }
+
+        $("#btn_submit").disabledButton(true);
+
+        var couponsEntity = {
+            id: $("#Id").val(),
+            CouponName: CouponsName,
+            CouponValue: CouponsValue,
+            Logo: Logo,
+            Type: CouponsType,
+            FullPrice: CouponsFullPrice,
+            StartTime: StartTime,
+            EndTime: EndTime
+        };
+        // alert("OK2   ");
+        $.get("@Url.Action("ModifyOrAddCouponsToSolve", "Home", new { area = "Admin" })?t=" + Math.random() + "&edittype=@ViewBag.Type", couponsEntity, function (result) {
+            //alert("ok3");
+            //alert(result.isError)
+            MsgDialog.Alert(result.status, result.msg, function () {
+                if (result.status) {
+                    location.href = "@Url.Action("Coupons", "Home", new { area = "Admin" })?t=" + Math.random();
+                } else {
+                    $("#btn_submit").disabledButton(false);
+                }
+            });
+        });
+
+    }
+
+
+
+</script>

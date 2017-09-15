@@ -1,0 +1,49 @@
+﻿@using Msg.Entities
+@model List<Msg.Bll.Models.MarketGoodsModel>
+
+@{
+    ViewBag.Title = "创业集市";
+}
+<div class="msg_w">
+    <div class="nk_list msg_cyjs">
+        <div class="ls_list_li">
+            <!--<a href="javascript:;" class="nk_qh_l"><img src="images/left.png"/></a>
+            <a href="javascript:;" class="nk_qh_r"><img src="images/right.png"/></a>-->
+            <ul class="clearfix">
+                <li class="@ViewBag.DayliUseTabClassOver" ls_list_li=" 0">
+                    <div class="marketCate ls_list_li li1 li1_1 @ViewBag.DayliUseTabClassOver" cateid="@CategoriesEnum.DayliUse" style="padding-bottom: 0px;"></div>
+                </li>
+                <li ls_list_li="1" class="@ViewBag.SkinCareTabClassOver">
+                    <div class="marketCate ls_list_li li1 li1_2 @ViewBag.SkinCareTabClassOver" cateid="@CategoriesEnum.SkinCare" style="padding-bottom: 0px;"></div>
+                </li>
+                <li ls_list_li="2" class="@ViewBag.IntegrationTabClassOver">
+                    <div class="marketCate ls_list_li li1 li1_3 @ViewBag.IntegrationTabClassOver" cateid="@CategoriesEnum.Integration" style="padding-bottom: 0px;"></div>
+                </li>
+            </ul>
+        </div>
+        <div class="list_main" style="display: block;">
+            @Html.Partial("_Market", Model)
+        </div>
+    </div>
+</div>
+<input type="hidden" id="h_cateId" value="@ViewBag.CateId" />
+@section scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $(".marketCate").bind("click", function () {
+                var cateId = $(this).attr("cateid");
+                $("#h_cateId").val(cateId);
+                pagingMarket(1);
+            });
+        });
+
+        function pagingMarket(page) {
+            $(".list_main").showLoading();
+            $.get("@Url.Action("_Market", "Home")", { cateId: $("#h_cateId").val(), page: 1 }, function (data) {
+                $(".list_main").html(data);
+                $(".list_main").hideLoading();
+            });
+        }
+    </script>
+}

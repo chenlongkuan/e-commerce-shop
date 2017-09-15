@@ -1,0 +1,38 @@
+﻿@using Msg.Utils
+@model System.Linq.IQueryable<Msg.Entities.OrdersEntity>
+
+@if (Model.Any())
+{
+    <table cellpadding="0" cellspacing="0" width="100%" class="dd_list_tab">
+
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td class="clearfix">
+                    @foreach (var item in order.Items)
+                    {
+                        <div class="td1">
+                            <a href="@Url.Action("Details", "Home", new { id = item.Goods.Id })"><img src="@ImagesHelper.GetImgWidthHeight(item.Goods.Product.MainLogo, 50, 50, false)" width="50" height="50"></a>
+                        </div>
+                    }
+                </td>
+                <td width="40">&times;&nbsp;@order.Items.Sum(f=>f.Quantity)</td>
+                <td width="210">订单号：@order.OrderNo</td>
+                <td width="110">
+                    ￥@(order.DisplayPrice)
+                    <br>@order.PayWay
+                </td>
+                <td width="120"><a href="@Url.Action("MyOrder", new {no = order.OrderNo})" target="_blank">订单详情</a></td>
+                <td width="150" class="per_button">
+                    <a href="@Url.Action("Payment", "Alipay", new {order = order.OrderNo})">立即付款</a>
+                </td>
+            </tr>
+        }
+    </table>
+    @Html.Raw(ViewBag.Pager)
+}
+else
+{
+    <div class="dd_list_w">还没有未支付的订单，<a href="/" target="_blank">赶快去挑选喜欢的商品吧！</a></div>
+}
+

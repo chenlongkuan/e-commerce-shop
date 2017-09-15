@@ -1,0 +1,26 @@
+﻿@using Msg.Utils
+@model System.Collections.Generic.List<Msg.Bll.Models.CreditGoodsLiteModel>
+
+<ul class="clearfix">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <li>
+                <div class="li_img">
+                    <a href="@Url.Action("Item", new { id = item.Id })" target="_blank"><img class="lazy" src="@ImagesHelper.GetImgWidthHeight(item.Logo, 220, 220, false)" width="220" height="220"></a>
+                </div>
+                <div class="li1">@(item.NeedCredits)积分</div>
+                <div class="li2">
+                    <a href="@Url.Action("Item", new { id = item.Id })" target="_blank">@item.Name</a>
+                </div>
+                <div class="li4">
+                    <a href="@Url.Action("Item", new { id = item.Id })" target="_blank">立即兑换</a>
+                </div>
+            </li>
+        }
+    }
+
+
+</ul>
+<div class="msg_f" style="padding: 20px 0;">@Html.Raw(ViewBag.Pager)</div>

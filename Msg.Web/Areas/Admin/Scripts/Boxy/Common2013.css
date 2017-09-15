@@ -1,0 +1,678 @@
+﻿/*******************************************************
+/// <summary>
+/// 版权所有: 版权所有(C) 2013，讯酷科技
+/// 内容摘要: 2013改版后的通用导航
+/// 完成日期: 2013/1/28 9:48:54
+/// 版    本: 1.0
+/// 作    者:  张婷
+///
+/// 修改记录1
+/// 修改日期:
+/// 版 本 号:
+/// 修 改 人:
+/// 修改内容:
+/// </summary> 
+*******************************************************/
+/*body{-webkit-text-size-adjust:none;}
+
+img{ border:0px;}
+ul,dl,dd{ margin:0px; padding:0px; list-style:none;}
+li{vertical-align:bottom}*/
+
+.tuan_fhdb{position:absolute; bottom:20px; right:30px; width:56px; height:56px;background:url(/images/hdb.png) no-repeat; cursor:pointer;}
+
+.xk2013_w{ width:990px; margin:auto;}
+
+/*主题边框*/
+.xk_border_1{ border:1px solid #dadada;}
+.xk_border_2{ border:1px solid #e5e5e5;}
+
+/*下边框*/
+.xk_border_bottom{ border-bottom:1px solid #dadada;}
+.xk_border_bottom1{ border-bottom:1px solid #e5e5e5;}
+.xk_border_left{ border-left:1px solid #dadada;}
+.xk_border_top1{ border-top:1px solid #e5e5e5;}
+
+/*字体颜色*/
+.cl_eb7604{ color:#eb7604;}
+.cl_c6c6c6{ color:#c6c6c6;}
+.cl_78a14c{ color:#78a14c;}
+.cl_bb6c4d{ color:#bb6c4d;}
+.cl_454545{ color:#454545;}
+.cl_999999{ color:#999999;}
+.cl_ff3300{ color:#ff3300;}
+.cl_cc3300{ color:#cc3300;}
+.cl_6e8e4a{ color:#0066aa;}
+
+/*a:link,
+a:visited{text-decoration:none; color:#454545;}
+a:hover{text-decoration:none; color:#0066aa;}*/
+/**/
+.xk2013_left{ float:left; width:740px;}
+.xk2013_right{ float:right; width:240px;}
+.xk2013_left1{ float:left;}
+.xk2013_right1{ float:right;}
+
+
+.a1 a:link,
+.a1 a:visited{text-decoration:none; color:#666;}
+.a1 a:hover{text-decoration:none; color:#0066aa;}
+
+.a2 a:link,
+.a2 a:visited{text-decoration:none; color:#666;}
+.a2 a:hover{text-decoration:none; color:#0066aa;}
+
+.a3 a:link,
+.a3 a:visited{text-decoration:none; color:#333;}
+.a3 a:hover{text-decoration:none; color:#0066aa;}
+
+.a4 a:link,
+.a4 a:visited{text-decoration:none; color:#fff;}
+.a4 a:hover{text-decoration:underline; color:#fff;}
+
+.a5 a:link,
+.a5 a:visited{text-decoration:none; color:#1e5b9a;}
+.a5 a:hover{text-decoration:underline; color:#1e5b9a;}
+
+.a6 a:link,
+.a6 a:visited{text-decoration:none; color:#454545;}
+.a6 a:hover{text-decoration:none; color:#0066aa;}
+
+.xk2013_nav{ height:30px; border-bottom:1px solid #eaeaea; background:#fbfbfb;}
+.xk2013_w{ width:990px; margin:auto;}
+.xk2013_nav_left{ float:left; _width:330px;}
+.xk2013_nav_left_1{ float:left; padding-right:10px; line-height:30px;}
+.xk2013_nav_left_2{ float:left;}
+.xk2013_nav_left_2 li{ float:left; padding:0px 10px; line-height:30px; background:url(http://www.xunkoo.com/images/2013img/xk2013_nav_fen.gif) no-repeat left center;}
+.xk2013_nav_right{ float:right; line-height:30px;}
+.xk2013_nav_right1{float: left; padding-right: 5px;line-height: 30px;_padding-top: 5px;_line-height: 0px;}
+.xk2013_nav_right1 img{display:inline-block; *display:inline; *zoom:1; margin-bottom:-5px; *margin-bottom:-3px;}
+.xk2013_nav_right2{ float: left;padding-right: 15px;_padding-top: 6px;_line-height: 0px;}
+.xk2013_nav_right2 img{display:inline-block; *display:inline; *zoom:1; margin-bottom:1px;}
+.xk2013_nav_right3{float: left; background:url(http://www.xunkoo.com/images/2013img/xtb_52.gif) no-repeat left center;padding-left: 21px;}
+.xk2013_nav_right3 span{ color: #cd1112;}
+.xk2013_nav_right4{display: none; position: absolute;margin-top: -1px;margin-left: -61px; border: 1px solid #dadada;background: #fff;z-index: 99;border-bottom: 0px;}
+.xk2013_nav_right4 a{display: block; border-bottom: 1px solid #e5e5e5;height: 42px;padding-left: 20px;width: 140px;line-height: 42px;font-size: 14px;color: #454545;}
+.xk2013_nav_right4 a:hover{ background: #fafafa;color: #666;}
+/***********************按钮***************************/
+.xk2013_botton_1 .button{border:0; padding:0; margin:0px; background-color:none; cursor:pointer;}
+.xk2013_botton_1 .button:link,
+.xk2013_botton_1 .button:visited,
+.xk2013_botton_1 .button:hover{text-decoration:none; font-size:14px;}
+.xk2013_botton_1 .button .xk-ui-button-default,
+.xk2013_botton_1 .button .xk-ui-button-default span{
+	background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat;line-height:32px; height:32px;
+	cursor:pointer; padding:0; border:0; margin:0;display:inline-block; *display:inline; zoom:1;white-space:nowrap;
+}
+
+.xk2013_botton_1 .button .xk-ui-button-default{background-position:left -96px; padding-left:5px;}
+.xk2013_botton_1 .button .xk-ui-button-default span{background-position:right -96px; padding-left:19px; padding-right:24px; color:#fff;}
+
+.xk2013_botton_1 .button .xk-ui-button-hover{background-position:left -128px; cursor:pointer;}
+.xk2013_botton_1 .button .xk-ui-button-hover span{background-position:right -128px; color:#fff; cursor:pointer;}
+
+.xk2013_botton_1 .button .xk-ui-button-active{background-position:left -160px; cursor:pointer;}
+.xk2013_botton_1 .button .xk-ui-button-active span{background-position:right -160px; color:#fff; cursor:pointer;}
+
+.xk2013_botton_1 .button .xk-ui-button-disabled{background-position:left -192px; cursor:default;}
+.xk2013_botton_1 .button .xk-ui-button-disabled span{background-position:right -192px; color:#aca899; cursor:default;}
+
+
+.xk2013_botton_2 a:link,
+.xk2013_botton_2 a:visited{ background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat 0px -348px; display:block; width:57px; height:24px; line-height:24px; padding-left:23px;}
+.xk2013_botton_2 a:hover{ background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat 0px -372px; color:#0066aa;}
+
+.xk2013_botton_4 a:link,
+.xk2013_botton_4 a:visited{ background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat 0px -556px; display:block; width:57px; height:24px; line-height:24px; padding-left:23px;}
+.xk2013_botton_4 a:hover{ background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat 0px -580px; color:#0066aa;}
+
+
+
+.xk2013_botton_3 .button{border:0; padding:0; margin:0px; background-color:none; cursor:pointer;}
+.xk2013_botton_3 .button:link,
+.xk2013_botton_3 .button:visited,
+.xk2013_botton_3 .button:hover{text-decoration:none; font-size:12px;}
+.xk2013_botton_3 .button .xk-ui-button-default,
+.xk2013_botton_3 .button .xk-ui-button-default span{
+	background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat;line-height:24px; height:24px;
+	cursor:pointer; padding:0; border:0; margin:0;display:inline-block; *display:inline; zoom:1;white-space:nowrap;
+}
+
+.xk2013_botton_3 .button .xk-ui-button-default{background-position:left -396px; padding-left:19px;}
+.xk2013_botton_3 .button .xk-ui-button-default span{background-position:right -396px; padding-left:1px; padding-right:12px; color:#fff;}
+
+.xk2013_botton_3 .button .xk-ui-button-hover{background-position:left -420px; cursor:pointer;}
+.xk2013_botton_3 .button .xk-ui-button-hover span{background-position:right -420px; color:#fff; cursor:pointer;}
+
+.xk2013_botton_3 .button .xk-ui-button-active{background-position:left -444px; cursor:pointer;}
+.xk2013_botton_3 .button .xk-ui-button-active span{background-position:right -444px; color:#fff; cursor:pointer;}
+
+.xk2013_botton_3 .button .xk-ui-button-disabled{background-position:left -468px; cursor:default;}
+.xk2013_botton_3 .button .xk-ui-button-disabled span{background-position:right -468px; color:#aca899; cursor:default;}
+
+.xk2013_botton_5 .button{border:0; padding:0; margin:0px; background-color:none; cursor:pointer; font-weight:normal}
+.xk2013_botton_5 .button:link,
+.xk2013_botton_5 .button:visited,
+.xk2013_botton_5 .button:hover{text-decoration:none; font-size:22px;}
+.xk2013_botton_5 .button .xk-ui-button-default,
+.xk2013_botton_5 .button .xk-ui-button-default span{
+	background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat;line-height:40px; height:40px;
+	cursor:pointer; padding:0; border:0; margin:0;display:inline-block; *display:inline; zoom:1;white-space:nowrap;
+}
+
+.xk2013_botton_5 .button .xk-ui-button-default{background-position:left -604px; padding-left:14px;}
+.xk2013_botton_5 .button .xk-ui-button-default span{background-position:right -604px; padding-left:10px; padding-right:24px; color:#454545;}
+
+.xk2013_botton_5 .button .xk-ui-button-hover{background-position:left -644px; cursor:pointer;}
+.xk2013_botton_5 .button .xk-ui-button-hover span{background-position:right -644px; color:#0066aa; cursor:pointer;}
+
+.xk2013_botton_5 .button .xk-ui-button-active{background-position:left -684px; cursor:pointer;}
+.xk2013_botton_5 .button .xk-ui-button-active span{background-position:right -684px; color:#0066aa; cursor:pointer;}
+
+.xk2013_botton_5 .button .xk-ui-button-disabled{background-position:left -724px; cursor:default;}
+.xk2013_botton_5 .button .xk-ui-button-disabled span{background-position:right -724px; color:#aca899; cursor:default;}
+
+
+.xk2013_botton_6 .button{border:0; padding:0; margin:0px; background-color:none; cursor:pointer; font-weight:normal}
+.xk2013_botton_6 .button:link,
+.xk2013_botton_6 .button:visited,
+.xk2013_botton_6 .button:hover{text-decoration:none; font-size:14px;}
+.xk2013_botton_6 .button .xk-ui-button-default,
+.xk2013_botton_6 .button .xk-ui-button-default span{
+	background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat;line-height:32px; height:32px;
+	cursor:pointer; padding:0; border:0; margin:0;display:inline-block; *display:inline; zoom:1;white-space:nowrap;
+}
+
+.xk2013_botton_6 .button .xk-ui-button-default{background-position:left -764px; padding-left:14px;}
+.xk2013_botton_6 .button .xk-ui-button-default span{background-position:right -764px; padding-left:10px; padding-right:24px; color:#0066aa;}
+
+.xk2013_botton_6 .button .xk-ui-button-hover{background-position:left -796px; cursor:pointer;}
+.xk2013_botton_6 .button .xk-ui-button-hover span{background-position:right -796px; color:#0066aa; cursor:pointer;}
+
+.xk2013_botton_6 .button .xk-ui-button-active{background-position:left -828px; cursor:pointer;}
+.xk2013_botton_6 .button .xk-ui-button-active span{background-position:right -828px; color:#0066aa; cursor:pointer;}
+
+.xk2013_botton_6 .button .xk-ui-button-disabled{background-position:left -860px; cursor:default;}
+.xk2013_botton_6 .button .xk-ui-button-disabled span{background-position:right -860px; color:#aca899; cursor:default;}
+
+
+
+.xk2013_botton_7 .button{border:0; padding:0; margin:0px; background-color:none; cursor:pointer; font-weight:normal}
+.xk2013_botton_7 .button:link,
+.xk2013_botton_7 .button:visited,
+.xk2013_botton_7 .button:hover{text-decoration:none; font-size:14px;}
+.xk2013_botton_7 .button .xk-ui-button-default,
+.xk2013_botton_7 .button .xk-ui-button-default span{
+	background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat;line-height:30px; height:32px;
+	cursor:pointer; padding:0; border:0; margin:0;display:inline-block; *display:inline; zoom:1;white-space:nowrap;
+}
+
+.xk2013_botton_7 .button .xk-ui-button-default{background-position:left -764px; padding-left:14px;}
+.xk2013_botton_7 .button .xk-ui-button-default span{background-position:right -764px; padding-left:10px; padding-right:24px; color:#454545;}
+
+.xk2013_botton_7 .button .xk-ui-button-hover{background-position:left -796px; cursor:pointer;}
+.xk2013_botton_7 .button .xk-ui-button-hover span{background-position:right -796px; color:#0066aa; cursor:pointer;}
+
+.xk2013_botton_7 .button .xk-ui-button-active{background-position:left -828px; cursor:pointer;}
+.xk2013_botton_7 .button .xk-ui-button-active span{background-position:right -828px; color:#0066aa; cursor:pointer;}
+
+.xk2013_botton_7 .button .xk-ui-button-disabled{background-position:left -860px; cursor:default;}
+.xk2013_botton_7 .button .xk-ui-button-disabled span{background-position:right -860px; color:#aca899; cursor:default;}
+
+
+.xk2013_botton_8 .button{border:0; padding:0; margin:0px; background-color:none; cursor:pointer; font-weight:normal}
+.xk2013_botton_8 .button:link,
+.xk2013_botton_8 .button:visited,
+.xk2013_botton_8 .button:hover{text-decoration:none; font-size:12px;}
+.xk2013_botton_8 .button .xk-ui-button-default,
+.xk2013_botton_8 .button .xk-ui-button-default span{
+	background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat;line-height:24px; height:24px;
+	cursor:pointer; padding:0; border:0; margin:0;display:inline-block; *display:inline; zoom:1;white-space:nowrap;
+}
+
+.xk2013_botton_8 .button .xk-ui-button-default{background-position:left -1270px; padding-left:5px;}
+.xk2013_botton_8 .button .xk-ui-button-default span{background-position:right -1270px; padding-left:5px; padding-right:10px; color:#454545;}
+
+.xk2013_botton_8 .button .xk-ui-button-hover{background-position:left -1294px; cursor:pointer;}
+.xk2013_botton_8 .button .xk-ui-button-hover span{background-position:right -1294px; color:#454545; cursor:pointer;}
+
+.xk2013_botton_8 .button .xk-ui-button-active{background-position:left -1318px; cursor:pointer;}
+.xk2013_botton_8 .button .xk-ui-button-active span{background-position:right -1318px; color:#454545; cursor:pointer;}
+
+.xk2013_botton_8 .button .xk-ui-button-disabled{background-position:left -1342px; cursor:default;}
+.xk2013_botton_8 .button .xk-ui-button-disabled span{background-position:right -1342px; color:#aca899; cursor:default;}
+.xk2013_botton_8 img{display:inline-block; *display:inline; *zoom:1; margin-right:3px;}
+
+
+.xk2013_botton_9 .button{border:0; padding:0; margin:0px; background-color:none; cursor:pointer;}
+.xk2013_botton_9 .button:link,
+.xk2013_botton_9 .button:visited,
+.xk2013_botton_9 .button:hover{text-decoration:none; font-size:14px;}
+.xk2013_botton_9 .button .xk-ui-button-default,
+.xk2013_botton_9 .button .xk-ui-button-default span{
+	background:url(http://www.xunkoo.com/images/2013img/xk2013_botton.gif) no-repeat;line-height:30px; height:32px;
+	cursor:pointer; padding:0; border:0; margin:0;display:inline-block; *display:inline; zoom:1;white-space:nowrap;
+}
+
+.xk2013_botton_9 .button .xk-ui-button-default{background-position:left -96px; padding-left:5px;}
+.xk2013_botton_9 .button .xk-ui-button-default span{background-position:right -96px; padding-left:5px; padding-right:10px; color:#fff;}
+
+.xk2013_botton_9 .button .xk-ui-button-hover{background-position:left -128px; cursor:pointer;}
+.xk2013_botton_9 .button .xk-ui-button-hover span{background-position:right -128px; color:#fff; cursor:pointer;}
+
+.xk2013_botton_9 .button .xk-ui-button-active{background-position:left -160px; cursor:pointer;}
+.xk2013_botton_9 .button .xk-ui-button-active span{background-position:right -160px; color:#fff; cursor:pointer;}
+
+.xk2013_botton_9 .button .xk-ui-button-disabled{background-position:left -192px; cursor:default;}
+.xk2013_botton_9 .button .xk-ui-button-disabled span{background-position:right -192px; color:#aca899; cursor:default;}
+
+/***********************按钮***************************/
+
+/* 通用按钮2 */
+.btn_newxk_2 .button{border:0; padding:0; margin:0px; background-color:none; cursor:pointer;}
+.btn_newxk_2 .button:link,
+.btn_newxk_2 .button:visited,
+.btn_newxk_2 .button:hover{text-decoration:none; font-size:12px; font-weight:bold;}
+.btn_newxk_2 .button .xk-ui-button-default,
+.btn_newxk_2 .button .xk-ui-button-default span{
+	background:url(/content/themes/images/new_user_btn.gif) no-repeat;line-height:22px; height:22px;
+	cursor:pointer; padding:0; border:0; margin:0;display:inline-block; *display:inline; zoom:1;white-space:nowrap;
+}
+
+.btn_newxk_2 .button .xk-ui-button-default{background-position:left -714px; padding-left:8px;}
+.btn_newxk_2 .button .xk-ui-button-default span{background-position:right -714px; padding-left:2px; padding-right:10px; color:#fff;}
+
+.btn_newxk_2 .button .xk-ui-button-hover{background-position:left -736px; cursor:pointer;}
+.btn_newxk_2 .button .xk-ui-button-hover span{background-position:right -736px; color:#fff; cursor:pointer;}
+
+.btn_newxk_2 .button .xk-ui-button-active{background-position:left -758px; cursor:pointer;}
+.btn_newxk_2 .button .xk-ui-button-active span{background-position:right -758px; color:#fff; cursor:pointer;}
+
+.btn_newxk_2 .button .xk-ui-button-disabled{background-position:left -780px; cursor:default;}
+.btn_newxk_2 .button .xk-ui-button-disabled span{background-position:right -780px; color:#aca899; cursor:default;}
+/* 通用按钮2 */
+
+/**/
+.uc-button-a-n6-h22 .button{border:0; padding:0; margin:0px; background-color:transparent; cursor:pointer; text-align:left;}
+.uc-button-a-n6-h22 a.button{text-decoration:none; font-style:16px; font-weight:normal; color:#666;}
+
+.uc-button-a-n6-h22 .button .xk-ui-button-default,
+.uc-button-a-n6-h22 .button .xk-ui-button-default span{background:url(http://www.xunkoo.com/images/user_center_btn.gif) no-repeat;line-height:22px; height:22px; cursor:pointer; padding:0; border:0; margin:0;display:inline-block; *display:inline; zoom:1;white-space:nowrap; }
+
+.uc-button-a-n6-h22 .button .xk-ui-button-default{background-position:left -656px; padding-left:5px;}
+.uc-button-a-n6-h22 .button  .xk-ui-button-default span{background-position:right -656px; padding-left:5px; padding-right:10px;color:#666; }
+
+.uc-button-a-n6-h22 .button .xk-ui-button-hover{background-position:left -679px; cursor:pointer;}
+.uc-button-a-n6-h22 .button .xk-ui-button-hover span{background-position:right -679px; color:#666; cursor:pointer;}
+
+.uc-button-a-n6-h22 .button .xk-ui-button-active{background-position:left -702px; cursor:pointer;}
+.uc-button-a-n6-h22 .button .xk-ui-button-active span{background-position:right -702px; color:#333; cursor:pointer;}
+
+.uc-button-a-n6-h22 .button .xk-ui-button-disabled{background-position:left -725px; cursor:default;}
+.uc-button-a-n6-h22 .button .xk-ui-button-disabled span{background-position:right -725px; color:#aca899; cursor:default;}
+/**/
+
+
+/* 搜索 下拉列表 开始 */
+.xk2013_select_1 .sexySelect{display:inline-block; *display:inline; zoom:1; background:#fff;}
+.xk2013_select_1 .sexySelect .select_input,
+.xk2013_select_1 .sexySelect .select_open,
+.xk2013_select_1 .sexySelect .select_open span{display:block;}
+.xk2013_select_1 .sexySelect .select_now{border:0; background:url(http://www.xunkoo.com/images/2013img/xk2013_select_bg_1.gif) no-repeat;}
+.xk2013_select_1 .sexySelect .select_input{float:left;width:auto; height:28px; color:#999; line-height:28px; overflow:hidden; white-space: nowrap;padding:0 0 0 6px;cursor:default; background:none;}
+.xk2013_select_1 .sexySelect .select_open{float:right;font-size:0px; overflow:hidden;background:url(http://www.xunkoo.com/images/2013img/xk2013_select_over_1.gif); width:21px; height:28px;cursor:default;}
+.xk2013_select_1 .sexySelect .select_open span{font-size:0px; overflow:hidden;background:url(http://www.xunkoo.com/images/2013img/xk2013_select_1.gif); width:21px; height:28px;cursor:default;}
+.xk2013_select_1 .sexySelect_disabled .select_now{background:#f5f5f5;}
+.xk2013_select_1 .sexySelect_disabled .select_input{background:#f5f5f5;}
+.xk2013_select_1 .sexySelect_disabled .select_open span{background:url(http://www.xunkoo.com/images/2013img/xk2013_select_disabled_1.gif);}
+.xk2013_select_1 .sexySelect ul{position:absolute; z-index:9999; list-style:none; padding:0; margin:0; overflow-x:hidden; overflow-y:auto;background:#fff; overflow-y:auto; overflow-x:hidden;border:1px solid #e1e1e1; border-top:none; max-height:250px;_height:expression(this.scrollHeight > 250 ? "250px" : "auto");}
+.xk2013_select_1 .sexySelect li{list-style-type:none; padding:3px; margin:0; cursor:default; color:#333; line-height:18px;white-space: nowrap;background-color:#fff; border:1px solid #fff;border-left:none;border-right:none;}
+.xk2013_select_1 .sexySelect li.over{background:#eee; border:1px solid #e8e8e8;border-left:none;border-right:none;}
+
+
+
+
+.xk2013_select_2 .sexySelect{display:inline-block; *display:inline; zoom:1; background:#fff;}
+.xk2013_select_2 .sexySelect .select_input,
+.xk2013_select_2 .sexySelect .select_open,
+.xk2013_select_2 .sexySelect .select_open span{display:block;}
+.xk2013_select_2 .sexySelect .select_now{border:0; background:url(/images/2013img/xk2013_select_bg_2.gif) no-repeat;}
+.xk2013_select_2 .sexySelect .select_input{float:left;width:auto; height:32px; color:#999; line-height:32px; overflow:hidden; white-space: nowrap;padding:0 0 0 6px;cursor:default; background:none;}
+.xk2013_select_2 .sexySelect .select_open{float:right;font-size:0px; overflow:hidden;background:url(http://www.xunkoo.com/images/2013img/xk2013_select_over_2.gif); width:32px; height:32px;cursor:default;}
+.xk2013_select_2 .sexySelect .select_open span{font-size:0px; overflow:hidden;background:url(http://www.xunkoo.com/images/2013img/xk2013_select_2.gif); width:32px; height:32px;cursor:default;}
+.xk2013_select_2 .sexySelect_disabled .select_now{background:#f5f5f5;}
+.xk2013_select_2 .sexySelect_disabled .select_input{background:#f5f5f5;}
+.xk2013_select_2 .sexySelect_disabled .select_open span{background:url(http://www.xunkoo.com/images/2013img/xk2013_select_disabled_2.gif);}
+.xk2013_select_2 .sexySelect ul{position:absolute; z-index:9999; list-style:none; padding:0; margin:0; overflow-x:hidden; overflow-y:auto;background:#fff; overflow-y:auto; overflow-x:hidden;border:1px solid #e1e1e1; border-top:none; max-height:250px;_height:expression(this.scrollHeight > 250 ? "250px" : "auto");}
+.xk2013_select_2 .sexySelect li{list-style-type:none; padding:3px; margin:0; cursor:default; color:#333; line-height:18px;white-space: nowrap;background-color:#fff; border:1px solid #fff;border-left:none;border-right:none;}
+.xk2013_select_2 .sexySelect li.over{background:#eee; border:1px solid #e8e8e8;border-left:none;border-right:none;}
+
+
+.sexySelect{display:inline-block; *display:inline; zoom:1; background:#fff;}
+.sexySelect .select_input,
+.sexySelect .select_open,
+.sexySelect .select_open span{display:block;}
+.sexySelect .select_now{border:0; background:url(http://www.xunkoo.com/images/2013img/xk2013_select_bg_2.gif) no-repeat;}
+.sexySelect .select_input{float:left;width:auto; height:32px; color:#999; line-height:32px; overflow:hidden; white-space: nowrap;padding:0 0 0 6px;cursor:default; background:none;}
+.sexySelect .select_open{float:right;font-size:0px; overflow:hidden;background:url(http://www.xunkoo.com/images/2013img/xk2013_select_over_2.gif); width:32px; height:32px;cursor:default;}
+.sexySelect .select_open span{font-size:0px; overflow:hidden;background:url(http://www.xunkoo.com/images/2013img/xk2013_select_2.gif); width:32px; height:32px;cursor:default;}
+.sexySelect_disabled .select_now{background:#f5f5f5;}
+.sexySelect_disabled .select_input{background:#f5f5f5;}
+.sexySelect_disabled .select_open span{background:url(http://www.xunkoo.com/images/2013img/xk2013_select_disabled_2.gif);}
+.sexySelect ul{position:absolute; z-index:9999; list-style:none; padding:0; margin:0; overflow-x:hidden; overflow-y:auto;background:#fff; overflow-y:auto; overflow-x:hidden;border:1px solid #e1e1e1; border-top:none; max-height:250px;_height:expression(this.scrollHeight > 250 ? "250px" : "auto");}
+.sexySelect li{list-style-type:none; padding:3px; margin:0; cursor:default; color:#333; line-height:18px;white-space: nowrap;background-color:#fff; border:1px solid #fff;border-left:none;border-right:none;}
+.sexySelect li.over{background:#eee; border:1px solid #e8e8e8;border-left:none;border-right:none;}
+/* 搜索 下拉列表 结束 */
+
+
+
+
+
+
+
+/*textarea width:429px*/
+.xk_textarea_1{ background:url(http://www.xunkoo.com/images/2013img/xk2013_qz10.gif) no-repeat; height:7px; width:429px;overflow: hidden;}
+.xk_textarea_2{ background:url(http://www.xunkoo.com/images/2013img/xk2013_qz10.gif) right; width:409px; padding:0px 10px;}
+.xk_textarea_2 textarea{ border:0px; width:389px; resize:none; line-height:22px; font-family:"微软雅黑"; font-size:14px;}
+.xk_textarea_3{ background:url(http://www.xunkoo.com/images/2013img/xk2013_qz10.gif) no-repeat 0px -7px; height:7px; width:429px;overflow: hidden;}
+/*textarea width:429px*/
+/***********************input***************************/
+.xk2013_input_l{ background:url(http://www.xunkoo.com/images/2013img/xk2013_input.gif) no-repeat; height:32px; padding-left:10px;float: left;}
+.xk2013_input_r{ background:url(http://www.xunkoo.com/images/2013img/xk2013_input.gif) no-repeat right; height:32px; padding-right:10px;*float: left;}
+.xk2013_input_r input{ border:0px; height:28px; line-height:28px; *height:26px; *line-height:26px; margin:1px 0px; font-family:"微软雅黑"; font-size:14px;}
+.con_right{ background:url(/images/2013img/con_right.gif) no-repeat; height:32px;}
+.con_right1{ padding:1px 10px; float:left;_overflow: hidden;}
+.con_right1 input{ border:0px; line-height:28px; height:28px; *line-height:26px; *height:26px; font-family:"微软雅黑";}
+.con_right2{ float:left; background:url(/images/2013img/con_right1.gif) no-repeat; width:37px; height:32px;}
+.con_right2 a{ display:block; width:36px; height:32px;}
+.con_right3{ float: left;width: 52px;border-right: 1px solid #d1d1d1;height: 28px;line-height: 28px;cursor: pointer;padding-top: 2px;}
+.con_right3 img{ display:inline-block; *display:inline; *zoom:1; margin-bottom:3px; margin-left:4px;}
+.con_right4{display: none; position: absolute;margin-top: 0px;margin-left: 0px;border: 1px solid #d1d1d1;border-top: 0px;background: #fff;text-align: left;}
+.con_right4 a{ display: block;padding-left: 9px;line-height: 24px;height: 24px;width: 42px;}
+.con_right4 a:hover{ background: #f2efef;color: #454545;}
+/***********************input***************************/
+
+/* 站内信 */
+.msg-Interactives {margin: 0px;padding:0px;background-color: #f8f8f8; font-size:12px; position:relative;width: 516px;} 
+.msg-options {margin: 0px;padding: 0px;clear:both;height:34px;border-bottom: 1px solid #d6d6d6; }
+.msg-option,.msg-optionSelected {float: left;height:34px;text-align:center;font-family: "微软雅黑";font-size: 16px;list-style: none;-moz-user-select: none;-khtml-user-select: none; cursor: pointer;line-height:34px;border-right:1px solid #d6d6d6;padding:0px 15px;font-weight:normal;color:#666;}
+.msg-Optioncaption{font-size:14px; color:#000; padding-right:20px;}
+.msg-optionSelected {border-right:1px solid #d6d6d6;background-color:#fff;height: 35px;}
+#msg-close {position:absolute;left:490px;top:12px;background-image: url(http://www.xunkoo.com/images/2013img/xk2013t_1.gif);background-repeat: no-repeat;background-position: center center;height: 12px;width: 13px; cursor:pointer;}
+
+.msg-InteractivesBody {background-color: #FFF; padding-bottom:10px;}
+.msg-InteractivesBody textarea{border:1px solid #dedede; background:#fff; padding:4px; width:470px; font-size:12px; height:90px; overflow-y:auto; overflow-x:hidden}
+.msg-lengthtip{color:#666; font-family:'微软雅黑' ,Verdana,Tahoma; font-size:12px; padding-right:10px;}
+.msg-lengthtip b{color:#09f;}
+/* 文本域长度超出颜色 */
+.txt-red,.txt-red b{color:#c00;}
+.msg-error{padding-right:20px; color:#c30;}
+#msg-hi {list-style-type: none;margin: 0px;padding: 0px;overflow: hidden;}
+#msg-hi li {height: 30px;width: 65px;float: left;padding-left: 30px;line-height: 30px; font-size:12px; cursor:pointer; display:block; color:#333; text-decoration:none;}
+
+.e1{ background-image:url(http://www.xunkoo.com/images/icon/dzh/01.gif); background-repeat:no-repeat;background-position: left center;}
+.e2{ background-image:url(http://www.xunkoo.com/images/icon/dzh/02.gif); background-repeat:no-repeat;background-position: left center;}
+.e3{ background-image:url(http://www.xunkoo.com/images/icon/dzh/03.gif); background-repeat:no-repeat;background-position: left center;}
+.e4{ background-image:url(http://www.xunkoo.com/images/icon/dzh/04.gif); background-repeat:no-repeat;background-position: left center;}
+.e5{ background-image:url(http://www.xunkoo.com/images/icon/dzh/05.gif); background-repeat:no-repeat;background-position: left center;}
+.e6{ background-image:url(http://www.xunkoo.com/images/icon/dzh/06.gif); background-repeat:no-repeat;background-position: left center;}
+.e7{ background-image:url(http://www.xunkoo.com/images/icon/dzh/07.gif); background-repeat:no-repeat;background-position: left center;}
+.e8{ background-image:url(http://www.xunkoo.com/images/icon/dzh/08.gif); background-repeat:no-repeat;background-position: left center;}
+.e9{ background-image:url(http://www.xunkoo.com/images/icon/dzh/09.gif); background-repeat:no-repeat;background-position: left center;}
+.e10{ background-image:url(http://www.xunkoo.com/images/icon/dzh/10.gif); background-repeat:no-repeat;background-position: left center;}
+.e11{ background-image:url(http://www.xunkoo.com/images/icon/dzh/11.gif); background-repeat:no-repeat;background-position: left center;}
+.e12{ background-image:url(http://www.xunkoo.com/images/icon/dzh/12.gif); background-repeat:no-repeat;background-position: left center;}
+.e13{ background-image:url(http://www.xunkoo.com/images/icon/dzh/13.gif); background-repeat:no-repeat;background-position: left center;}
+.e14{ background-image:url(http://www.xunkoo.com/images/icon/dzh/14.gif); background-repeat:no-repeat;background-position: left center;}
+.e15{ background-image:url(http://www.xunkoo.com/images/icon/dzh/15.gif); background-repeat:no-repeat;background-position: left center;}
+
+/* 站内信 */
+
+/* 顶部导航2 */
+.xk2013_nav{ height:30px; border-bottom:1px solid #e2e2e2; background:#fbfbfb;}
+.xk2013_nav_left{ float:left; _width:330px;}
+.xk2013_nav_left_1{ float:left; padding-right:10px; line-height:30px;}
+.xk2013_nav_left_2{ float:left;}
+.xk2013_nav_left_2 li{ float:left; padding:0px 10px; line-height:30px; background:url(http://www.xunkoo.com/images/2013img/xk2013_nav_fen.gif) no-repeat left center;}
+.xk2013_nav_left_2 li a:link,
+.xk2013_nav_left_2 li a:visited{ /*color: #999;*/color: #bababa; text-decoration: none;}
+.xk2013_nav_left_2 li a:hover{ color: #0066aa;text-decoration: none;}
+.xk2013_nav_right{ float:right; line-height:30px;}
+.xk2013_nav_right a:link,
+.xk2013_nav_right a:visited{ /*color: #666;*/color: #bababa;text-decoration: none;}
+.xk2013_nav_right a:hover{ color: 0066aa;text-decoration: none;}
+
+.xk2013_main{ background:url(http://www.xunkoo.com/images/2013img/xk2013_bj.gif); padding-bottom:25px;}
+.xk2013_nav_1{ background:url(http://www.xunkoo.com/images/2013img/xk2013_main_naw.gif) repeat-x; height:72px;}
+.xk2013_nav_1 .xk2013_logo{ margin:23px 10px 0px 0px; float:left; width:108px;}
+.xk2013_nav_1 .xk2013_logo a{ display:block; width:108px; height:30px; background:url(http://www.xunkoo.com/images/2013img/xk2013_logo.png) no-repeat;}
+.xk2013_nav_2{ float:right; border-right:1px solid #f3f3f3; height:62px;}
+.xk2013_nav_2 li{float:left; border-left:1px solid #f3f3f3; }
+.xk2013_nav_2 li a:link,
+.xk2013_nav_2 li a:visited{height:62px; line-height:62px; width:123px; text-align:center; color:#666; font-size:16px; display:block;_padding-top: 20px;_height:40px; _line-height:40px;}
+.xk2013_nav_2 li a:hover{ border-top:2px solid #f3f3f3; line-height:58px;height: 60px;_height:36px; background:#fcfcfc;_padding-top: 18px;text-decoration: none;}
+.xk2013_nav_2 li a.over{ border-top:2px solid #f3f3f3; line-height:58px; height:60px; background:#fcfcfc;_height:36px; }
+.xk2013_nav_2 li a.over:hover{_padding-top: 20px;}
+.xk2013_nav_2 li a img{display:inline-block; *display:inline; *zoom:1; margin-bottom:-2px; margin-right:3px;}
+.xk2013_nav_2 li a.over1 img{display:inline-block; *display:inline; *zoom:1; margin-bottom:0px; margin-right:3px;}
+.xk2013_nav_2 li .wor{ background:url(http://www.xunkoo.com/images/2013img/xk2013_nav_2.png) no-repeat; _background:url(http://www.xunkoo.com/images/2013img/xk2013_nav_2_ie6.gif) no-repeat; width:28px; height:28px; line-height:28px; text-align:center; color:#fff; position:absolute; margin-left:88px; margin-top:-66px;}
+.xk2013_nav_2 li .wor1{ background:url(http://www.xunkoo.com/images/2013img/xk2013_nav_3.gif) no-repeat; width:24px; height:9px; position:absolute; margin-left:88px; margin-top:-53px;}
+.xk2013_nav_2 li .wor2{ background:url(http://www.xunkoo.com/images/2013img/hot.gif) no-repeat; width:24px; height:9px; position:absolute; margin-left:85px; margin-top:-50px;}
+/* 顶部导航2 */
+
+/* 选择学校 开始 */
+.reg_select_school{background:#fcfefb; color:#666; font-size:12px; font-weight:normal; font-family:'微软雅黑' ,Verdana,Tahoma;width:660px; padding:0;}
+
+.reg_select_school .title-bar-ext{ height:40px; line-height:40px; padding:0px 15px; font-size:16px; background-color:#F8F8F8;}
+.reg_select_school .title-bar-ext h2{ float:left; font-size:16px; color:#666; font-weight:bold; margin:0px; padding:0px; line-height:40px;}
+.reg_select_school .title-bar-ext .close-ext{ float:right;
+    background-image: url("http://www.xunkoo.com/scripts/res/images/close.gif");
+    background-repeat: no-repeat;
+    font-size: 0px;
+    height: 17px;
+    line-height:500px;
+    overflow:hidden;
+    display:block;
+    right: 6px;
+    top: 10px; margin-top:14px;
+    width: 17px;
+}
+
+.reg_select_school input{font-size:12px; font-weight:normal; font-family:'微软雅黑' ,Verdana,Tahoma; color:#666;}
+.reg_select_school select{font-size:12px; font-weight:normal; font-family:'微软雅黑' ,Verdana,Tahoma;color:#666;}
+.reg_select_school div.region{margin:10px 15px; padding-bottom:10px; border-bottom:1px solid #d4dfcf; }
+.reg_select_school div.pinyin{margin:10px 15px; padding-bottom:10px; border-bottom:1px solid #d4dfcf;}
+.reg_select_school div.pinyin a{ margin-right:10px; line-height:20px;}
+
+.reg_select_school div.content{margin:10px 15px; padding:10px 0;}
+
+
+
+.reg_select_school div.content {height:300px;overflow-y:auto;overflow-x:hidden}
+.reg_select_school div.content ul{padding:0; margin:0; padding-left:0px;}
+.reg_select_school div.content li{color:#9e9e9e; float:left; width:190px; padding:3px 0;overflow:hidden; white-space:nowrap; -o-text-overflow:ellipsis; text-overflow:ellipsis; margin-right:10px;}
+.reg_select_school div.content a:link,
+.reg_select_school div.content a:visited{color:#666; text-decoration:none;}
+.reg_select_school div.content a:hover{color:#0066aa; text-decoration:none}
+.reg_select_school div.pinyin a:link,
+.reg_select_school div.pinyin a:visited{color:#666; text-decoration:none;}
+.reg_select_school div.pinyin a:hover{color:#0066aa; text-decoration:none}
+/* 选择学校 结束 */
+
+
+/*弹出登录框*/
+.xk2013_xltx li{ float:left; border:1px solid #e9e9e9; height:32px; line-height:32px; width:113px;}
+.xk2013_xltx li a.li1{ background:url(http://www.xunkoo.com/images/2013img/xltx.gif) no-repeat 10px 0px; padding-left:50px; display:block; width:63px; font-size:12px; color:#666;}
+.xk2013_xltx li a.li1:hover{ background:url(http://www.xunkoo.com/images/2013img/xltx.gif) no-repeat 10px -32px;}
+.xk2013_xltx li a.li2{ background:url(http://www.xunkoo.com/images/2013img/xltx.gif) no-repeat 10px -64px; padding-left:50px; display:block; width:63px; font-size:12px; color:#666;}
+.xk2013_xltx li a.li2:hover{ background:url(http://www.xunkoo.com/images/2013img/xltx.gif) no-repeat 10px -96px;}
+/*弹出登录框*/
+
+/***********************IE6浏览器提示***************************/
+.xk2013_ie{ background:#5f5f5f; height:30px; line-height:30px;}
+.xk2013_ie_left{ width:965px; float:left; color:#ffcc66;}
+.xk2013_ie_left a:link,
+.xk2013_ie_left a:visited,
+.xk2013_ie_left a:hover{ color:#9ade4d; text-decoration:underline; padding:0px 4px;}
+.xk2013_ie_right{ padding-top:11px; float:left; width:9px; height:8px;}
+/***********************IE6浏览器提示***************************/
+
+
+ /* 消息提示 */
+.xk2013t_8{ padding:14px 10px 7px 10px; background:#fff; width:158px;position:absolute; z-index:2;}
+.xk2013t_8 dl{float: left;}
+.xk2013t_8 dd{ float:left; width:120px; line-height:22px;}
+.xk2013t_8 dt{ float:left; line-height:22px;} 
+.xk2013t_8_1{ position:absolute; margin-left:111px; margin-top:-20px; background:url(http://www.xunkoo.com/images/2013img/gb2013_left_3_top.gif); width:9px; height:6px;overflow: hidden;}
+.xk2013t_8_2{ position:absolute; margin-left:150px; margin-top:-8px; width:9px; height:8px;}
+ /* 消息提示 */
+ 
+ /*通用标签*/
+.xkbq{ border:1px s}
+.xkbq ul{ margin: 0px;padding: 0px;list-style: none;}
+.xkbq li{ float: left;padding-right: 5px;line-height: 22px;color: #999;}
+.xkbq li a:link,
+.xkbq li a:visited{ float: left;display: block;height: 22px;line-height: 22px;padding: 0px 7px;background: #f1f1f1;color: #999; text-decoration:none;}
+.xkbq li a:hover{ color:#999; text-decoration:none;}
+.xkbq1{ height:36px; line-height:36px; color:#999; padding:0px 20px;}
+.xkbq1 a:link,
+.xkbq1 a:visited{ color:#999; text-decoration:none;}
+.xkbq1 a:hover{text-decoration:underline;}
+
+/*通用标签*/
+
+
+/*弹出框*/
+.xk2013t_dl{ width:635px;}
+.xk2013t_dl_top{ height:36px; background:#5782ad; padding:0px 14px;}
+.xk2013t_dl_top dd{ float:left; line-height:36px; font-size:16px; color:#fff;}
+.xk2013t_dl_top dt{ float:right; padding-top:10px;}
+.xk2013t_dl_c{ padding:23px; background:#fff;}
+.xk2013t_dl_left{ float:left; width:379px; border-right:1px solid #e1e1e1;}
+.xk2013t_dl_left1{ height:34px; line-height:34px; padding-right:30px;}
+.xk2013t_dl_left1 dd{ float:left;}
+.xk2013t_dl_left1 dt{ float:right;}
+.xk2013t_dl_left2{ padding-bottom:19px;}
+.xk2013t_dl_right{ float:left; padding-left:20px;}
+.xk2013t_dl_r{-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius:5px; }
+
+
+.xk2013_loginbar2_1{ padding-bottom:5px;margin-top:-5px; font-size:22px; color:#454545;}
+.xk2013_loginbar2_2{ padding-top:16px;}
+.xk2013_loginbar1_2{ background:url(http://www.xunkoo.com/images/2013img/xk2013_loginbar1_3.gif) no-repeat; height:40px; padding-left:8px; padding-bottom:15px; float:left;}
+.xk2013_loginbar1_3{ background:url(http://www.xunkoo.com/images/2013img/xk2013_loginbar1_3.gif) no-repeat right; height:40px; padding-right:10px;}
+.xk2013_loginbar1_3 input{margin-top:1px; border:0px; height:36px; line-height:36px; _height:34px; _line-height:34px; padding-left:30px; font-size:18px;}
+.xk2013_loginbar1_3 .input1{ background:url(http://www.xunkoo.com/images/2013img/xk2013_loginbar1_2.gif) no-repeat;}
+.xk2013_loginbar1_3 .input2{ background:url(http://www.xunkoo.com/images/2013img/xk2013_loginbar1_2.gif) no-repeat 0px -36px; }
+.xk2013_loginbar1_3 .input3{ background:url(http://www.xunkoo.com/images/2013img/xk2013_loginbar1_2.gif) no-repeat 0px -72px;}
+.xk2013_loginbar1_3 .input4{ background:url(http://www.xunkoo.com/images/2013img/xk2013_loginbar1_2.gif) no-repeat 0px -108px; }
+
+
+.xk2013t_tx{width:350px; background:#fff;}
+.xk2013t_tx1{ padding:10px;}
+.xk2013t_tx2  .dd{ float:left; height:84px; width:84px; margin-right:15px;}
+.xk2013t_tx2 .dt{ float:left; width:230px;}
+.xk2013t_tx2 .dt .dt1{ margin-top:-4px;}
+.xk2013t_tx2 .dt .dt2{ float:left; color:#999; font-size:14px; padding-right:10px;}
+.xk2013t_tx2 .dt .dt2 a{ font-size:16px; float:left;
+			display:inline-block; *display:inline; *zoom:1;
+			max-width:150px; _width:expression(this.scrollWidth>150 ? "150px" : "auto");
+			overflow:hidden; white-space:nowrap; -o-text-overflow:ellipsis; text-overflow:ellipsis;}
+.xk2013t_tx2 .dt .dt3{ font-size:10px; margin-top:3px; float:left; background:url(http://www.xunkoo.com/images/2013img/xtb_36.gif) no-repeat; width:41px; height:17px; line-height:16px; text-align:center; color:#fff;}
+.xk2013t_tx2 .dt .dt4{ line-height:22px; padding-top:5px;}
+.xk2013t_tx2 .dt .dt4 img{display:inline-block; *display:inline; *zoom:1; margin-bottom:-1px; margin:0px 10px;}
+.xk2013t_tx3{ padding:10px 0px;}
+
+.xk2013t_tx3 .dd{ float:left; width:160px; overflow:hidden; white-space:nowrap; -o-text-overflow:ellipsis; text-overflow:ellipsis; line-height:24px; height:24px;}
+.xk2013t_tx3 .dt{ float:right;margin-left: 5px;}
+.xk2013t_tx3 .dt.dt1{ background:url(http://www.xunkoo.com/images/2013img/xtb_41.gif) no-repeat; width:32px; height:24px; line-height:24px; padding-left:63px;}
+.xk2013t_tx4{ background:#f6f6f6; } 
+
+
+.xk2013t_fz{ width:445px; background:#fff;}
+.xk2013t_fz1{ padding:23px 14px 16px 14px;}
+.xk2013t_fz2{ padding-bottom:40px;}
+.xk2013t_fz2 dd{ float:left; width:75px; text-align:right; height:32px; line-height:32px; font-size:14px;}
+.xk2013t_fz2 dt{ float:left;}
+.xk2013t_fz3{ text-align:right; padding-right:20px;}
+.xk2013t_fz3 a{ margin-left:5px;}
+
+.xk2013t_1{ padding:20px 20px 15px 20px; background:#fff; width:380px;}
+.xk2013t_1_1{ padding-bottom:15px; text-align:center; font-size:18px; color:#333;}
+.xk2013t_2{ width:300px; background:#fff;text-align:center; font-size:18px; color:#333;}
+.xk2013t_2 span,
+.xk2013t_2 b{ color:#ff5a00;}
+.xk2013t_3{ padding:14px; width:420px; background:#fff;}
+.xk2013t_3_1{ background:#fafafa; margin-bottom:8px; width:400px; padding:0px 10px; height:32px; line-height:32px; overflow:hidden; white-space:nowrap; -o-text-overflow:ellipsis; text-overflow:ellipsis;}
+.xk2013t_3_2{ border:1px solid #d2d2d2;}
+.xk2013t_3_2 textarea{ border:0px; border-top:2px solid #f7f7f7; border-left:1px solid #f7f7f7; height:60px; line-height:20px; padding-left:5px; resize:none; width:412px; width:410px; font-family:"微软雅黑";}
+.xk2013t_3_3{ padding-top:10px;}
+.xk2013t_3_3 dd{ float:left; line-height:20px;}
+.xk2013t_3_3 dt{ float:right; padding-top:5px;}
+/*弹出框*/
+/***********************404错误***************************/
+.xk2013_404{ padding:25px 0px;}
+.xk2013_404_1{ background:url(/images/2013img/xk2013_404.gif) no-repeat; width:616px; height:280px; padding:180px 0px 0px 342px;}
+.xk2013_404_2{ line-height:30px;}
+.xk2013_404_2 span{ font-size:20px; font-weight:bold;}
+.xk2013_404_3{ padding:25px 0px 10px 0px; font-size:14px; font-weight:bold;}
+.footer1{ padding: 20px 0px;text-align: center;color: #666;height: 20px;line-height: 20px;}
+.footer1 a{ padding: 0px 10px;font-size: 14px;}
+/***********************404错误***************************/
+
+/***********************引导***************************/
+.xk2013_yd1{ position: absolute;margin-top: 51px;margin-left:514px;z-index: 1;*margin-left:-345px; }
+.xk2013_yd1_1{ background: url(/images/2013img/yd_1.png) no-repeat;padding-top: 14px;height: 48px;width: 185px;padding-left: 57px;}
+.xk2013_yd1_2{ float: left;width: 150px;line-height: 18px;color: #c09655; }
+.xk2013_yd1_2 a:link,
+.xk2013_yd1_2 a:visited{ color: #996633;text-decoration: none;height: 48px;line-height: 18px;text-align: left;font-size: 12px;display: inline;}
+.xk2013_yd1_2 a:hover{ text-decoration: underline;}
+.xk2013_yd1_3{ float: left;padding-left: 6px;}
+.xk2013_yd1_3 a{ display: block;width: 9px;height: 8px;}
+
+.xk2013_yd2{ position: absolute;margin-top: 51px;margin-left:637px;z-index: 1;*margin-left:-225px; }
+.xk2013_yd2_1{ background: url(/images/2013img/yd_2.png) no-repeat;padding-top: 14px;height: 48px;width: 185px;padding-left: 57px;}
+.xk2013_yd2_2{ float: left;width: 150px;line-height: 18px;color: #c09655; }
+.xk2013_yd2_2 span{ color: #996633;text-decoration: none;height: 48px;line-height: 18px;text-align: left;font-size: 12px;display: inline;}
+.xk2013_yd2_3{ float: left;padding-left: 6px;}
+.xk2013_yd2_3 a{ display: block;width: 9px;height: 8px;}
+
+
+.xk2013_yd3{ position: relative;font-size: 0px;}
+.xk2013_yd3_1{ position: absolute;right: 0px;top: 0px;width: 49px;height: 48px;display: none;}
+.xk2013_yd3_1 a{ display: block;background: url(http://www.xunkoo.com/images/2013img/xk2013_xbgg.png) no-repeat;width: 49px;height: 48px;}
+.xk2013_yd3_1 a:hover{background: url(http://www.xunkoo.com/images/2013img/xk2013_xbgg_hover.png) no-repeat;}
+.xk2013_yd3_2{ height: 70px;background: url(http://www.xunkoo.com/images/2013img/xbjs.gif) repeat-x;}
+.xk2013_yd3_3{ width: 990px;height: 70px;margin: auto;}
+.xk2013_yd3_4{ position: absolute;right: 0px;top: 0px;width: 19px;height: 19px;}
+.xk2013_yd3_4 a{ display: block;background: url(http://www.xunkoo.com/images/2013img/xbjs1.gif) no-repeat;width: 19px;height: 19px;}
+/***********************引导***************************/
+
+
+/**********************讯酷社区首页酷币兑换按钮********************************/
+.xk_add_wai{width:240px;}
+.xk_add_d{ display: block;width: 230px;height: 33px;background: url(/images/add_d.png) no-repeat; margin: 0 auto}
+.xk_add_d:hover{background: url(/images/add_d.png) -230px 0 no-repeat}
+
+/***********************弹出框的取消按钮************************************/
+.btn_newxk_head_qx .button{border:0; padding:0; margin:0px; background-color:none; cursor:pointer;}
+.btn_newxk_head_qx .button:link,
+.btn_newxk_head_qx .button:visited,
+.btn_newxk_head_qx .button:hover{text-decoration:none; font-size:12px; font-weight:bold;}
+.btn_newxk_head_qx .button .xk-ui-button-default,
+.btn_newxk_head_qx .button .xk-ui-button-default span{
+	background:url(http://www.xunkoo.com/images/new_user_btn.gif) no-repeat;line-height:24px; height:24px; font-weight:bold;
+	cursor:pointer; padding:0; border:0; margin:0;display:inline-block; *display:inline; zoom:1;white-space:nowrap;
+}
+
+.btn_newxk_head_qx .button .xk-ui-button-default{background-position:left -642px; padding-left:10px;}
+.btn_newxk_head_qx .button .xk-ui-button-default span{background-position:right -642px; padding-right:10px; color:#666;}
+
+.btn_newxk_head_qx .button .xk-ui-button-hover{background-position:left -666px; cursor:pointer;}
+.btn_newxk_head_qx .button .xk-ui-button-hover span{background-position:right -666px; color:#666; cursor:pointer;}
+
+.btn_newxk_head_qx .button .xk-ui-button-active{background-position:left -690px; cursor:pointer;}
+.btn_newxk_head_qx .button .xk-ui-button-active span{background-position:right -690px; color:#666; cursor:pointer;}
+
+.btn_newxk_head_qx .button .xk-ui-button-disabled{background-position:left -690px; cursor:default;}
+.btn_newxk_head_qx .button .xk-ui-button-disabled span{background-position:right -690px; color:#aca899; cursor:default;}

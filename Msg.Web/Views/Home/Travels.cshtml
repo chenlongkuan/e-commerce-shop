@@ -1,0 +1,40 @@
+﻿@using Msg.Utils
+@model System.Linq.IQueryable<Msg.Entities.GoodsEntity>
+
+@{
+    ViewBag.Title = "小美旅游";
+}
+
+<div class="sh_list">
+    <div class="sh_hea clearfix">
+        <div class="sh_hea_l">小美旅游&nbsp;&nbsp;<span>毕业前让自己走向远方走完那些想走的路</span></div>
+    </div>
+    <div class="sh_main">
+        <ul class="clearfix">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <li>
+                        <div class="li_img">
+                            <div class="li_wor">@item.Product.Destination</div>
+                            <a href="@Url.Action("Details", "Home", new {id = item.Id})" target="_blank">
+                                <img class="lazy" width="280" height="177" data-original="@Msg.Utils.ImagesHelper.GetImgWidthHeight(item.Product.SecondLogo, 280, 177, false)"/>
+                            </a>
+                        </div>
+                        <div class="li_t">
+                            <a href="@Url.Action("Details", "Home", new {id = item.Id})">@item.ShortTitle</a>
+                        </div>
+                        <div class="li1 clearfix">
+                            <div class="li1_l">￥@item.SellPrice.ToString("F")</div>
+                            <div class="li1_r">
+                                <a href="@Url.Action("Details", "Home", new {id = item.Id})">&nbsp;<img src="@Url.Content("~/Content/images/li1_r.png")"/>&nbsp;去看看</a>
+                            </div>
+                        </div>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+    <div class="msg_f" style="padding: 20px 0;">@Html.Raw(ViewBag.Pager)</div>
+</div>

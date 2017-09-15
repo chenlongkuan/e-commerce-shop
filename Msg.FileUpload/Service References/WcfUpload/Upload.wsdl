@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Upload" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_IUpload_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsoma:OptimizedMimeSerialization xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://file.meisugou.com/UploadFile.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://file.meisugou.com/UploadFile.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://file.meisugou.com/UploadFile.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IUpload_UploadFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFile" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_UploadFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_Deletefile_InputMessage">
+    <wsdl:part name="parameters" element="tns:Deletefile" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_Deletefile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeletefileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_MovePhoto_InputMessage">
+    <wsdl:part name="parameters" element="tns:MovePhoto" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_MovePhoto_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MovePhotoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_SetAvatar_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetAvatar" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_SetAvatar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetAvatarResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_WeiboAvatar_InputMessage">
+    <wsdl:part name="parameters" element="tns:WeiboAvatar" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_WeiboAvatar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:WeiboAvatarResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_SavePhoto_InputMessage">
+    <wsdl:part name="parameters" element="tns:SavePhoto" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_SavePhoto_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SavePhotoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_deletePhoto_InputMessage">
+    <wsdl:part name="parameters" element="tns:deletePhoto" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_deletePhoto_OutputMessage">
+    <wsdl:part name="parameters" element="tns:deletePhotoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_deleteAlbum_InputMessage">
+    <wsdl:part name="parameters" element="tns:deleteAlbum" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_deleteAlbum_OutputMessage">
+    <wsdl:part name="parameters" element="tns:deleteAlbumResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_UploadMakeThumbnailImage_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadMakeThumbnailImage" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_UploadMakeThumbnailImage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadMakeThumbnailImageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_MakeSmailImageByMaxWidthLogo_InputMessage">
+    <wsdl:part name="parameters" element="tns:MakeSmailImageByMaxWidthLogo" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_MakeSmailImageByMaxWidthLogo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MakeSmailImageByMaxWidthLogoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_MakeSmailImageByMaxWidth_InputMessage">
+    <wsdl:part name="parameters" element="tns:MakeSmailImageByMaxWidth" />
+  </wsdl:message>
+  <wsdl:message name="IUpload_MakeSmailImageByMaxWidth_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MakeSmailImageByMaxWidthResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IUpload">
+    <wsdl:operation name="UploadFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/UploadFile" message="tns:IUpload_UploadFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/UploadFileResponse" message="tns:IUpload_UploadFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Deletefile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/Deletefile" message="tns:IUpload_Deletefile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/DeletefileResponse" message="tns:IUpload_Deletefile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MovePhoto">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/MovePhoto" message="tns:IUpload_MovePhoto_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/MovePhotoResponse" message="tns:IUpload_MovePhoto_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetAvatar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/SetAvatar" message="tns:IUpload_SetAvatar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/SetAvatarResponse" message="tns:IUpload_SetAvatar_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="WeiboAvatar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/WeiboAvatar" message="tns:IUpload_WeiboAvatar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/WeiboAvatarResponse" message="tns:IUpload_WeiboAvatar_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SavePhoto">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/SavePhoto" message="tns:IUpload_SavePhoto_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/SavePhotoResponse" message="tns:IUpload_SavePhoto_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="deletePhoto">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/deletePhoto" message="tns:IUpload_deletePhoto_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/deletePhotoResponse" message="tns:IUpload_deletePhoto_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteAlbum">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/deleteAlbum" message="tns:IUpload_deleteAlbum_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/deleteAlbumResponse" message="tns:IUpload_deleteAlbum_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadMakeThumbnailImage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/UploadMakeThumbnailImage" message="tns:IUpload_UploadMakeThumbnailImage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/UploadMakeThumbnailImageResponse" message="tns:IUpload_UploadMakeThumbnailImage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MakeSmailImageByMaxWidthLogo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/MakeSmailImageByMaxWidthLogo" message="tns:IUpload_MakeSmailImageByMaxWidthLogo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/MakeSmailImageByMaxWidthLogoResponse" message="tns:IUpload_MakeSmailImageByMaxWidthLogo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MakeSmailImageByMaxWidth">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUpload/MakeSmailImageByMaxWidth" message="tns:IUpload_MakeSmailImageByMaxWidth_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUpload/MakeSmailImageByMaxWidthResponse" message="tns:IUpload_MakeSmailImageByMaxWidth_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSHttpBinding_IUpload" type="tns:IUpload">
+    <wsp:PolicyReference URI="#WSHttpBinding_IUpload_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UploadFile">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/UploadFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Deletefile">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/Deletefile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MovePhoto">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/MovePhoto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetAvatar">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/SetAvatar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="WeiboAvatar">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/WeiboAvatar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SavePhoto">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/SavePhoto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deletePhoto">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/deletePhoto" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteAlbum">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/deleteAlbum" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadMakeThumbnailImage">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/UploadMakeThumbnailImage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MakeSmailImageByMaxWidthLogo">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/MakeSmailImageByMaxWidthLogo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MakeSmailImageByMaxWidth">
+      <soap12:operation soapAction="http://tempuri.org/IUpload/MakeSmailImageByMaxWidth" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Upload">
+    <wsdl:port name="WSHttpBinding_IUpload" binding="tns:WSHttpBinding_IUpload">
+      <soap12:address location="http://file.meisugou.com/UploadFile.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://file.meisugou.com/UploadFile.svc</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Dns>localhost</Dns>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

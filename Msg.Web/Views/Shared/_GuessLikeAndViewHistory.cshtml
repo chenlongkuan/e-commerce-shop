@@ -1,0 +1,48 @@
+﻿@using Msg.Entities
+@using Msg.Utils
+@{
+    var guessYouLike = ViewBag.GuessYouLike as IQueryable<GoodsEntity>;
+    var viewHistory = ViewBag.ViewHistory as IQueryable<GoodsEntity>;
+}
+@helper LoopHtml(GoodsEntity item)
+{
+    <li>
+        <a href="@Url.Action("Details", new {id = item.Id})" t target="_blank">
+            <img class="lazy" src="@ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 163, 163, false)" width="163" height="163">
+        </a>
+        <div class="li1">￥@(item.SellPrice.ToString("F"))</div>
+        <div class="li2">
+            <a href="@Url.Action("Details", new {id = item.Id})" t target="_blank">@item.ShortTitle</a>
+        </div>
+    </li>
+}
+<div class="msg_shop" style="margin-top: 20px;">
+    <ul class="shop_li clearfix">
+        <li class="over" shop_li="0">猜你喜欢</li>
+        <span>|</span>
+        <li shop_li="1">最近浏览</li>
+    </ul>
+    <div class="shop_dp" style="display: block;">
+        <ul class="clearfix">
+            @if (guessYouLike != null && guessYouLike.Any())
+            {
+                foreach (var item in guessYouLike)
+                {
+                    @LoopHtml(item)
+                }
+            }
+        </ul>
+    </div>
+    <div class="shop_dp">
+        <ul class="clearfix">
+            @if (viewHistory != null && viewHistory.Any())
+            {
+                foreach (var item in viewHistory)
+                {
+                    @LoopHtml(item)
+                }
+            }
+        </ul>
+    </div>
+</div>
+

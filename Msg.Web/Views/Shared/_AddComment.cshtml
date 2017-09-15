@@ -1,0 +1,45 @@
+﻿@using Msg.Entities
+@using Msg.Utils
+@{
+    var comments = ViewBag.Comments as CommentsEntity;
+    var followComments = ViewBag.FollowComments as CommentsFollowEntity;
+}
+
+@if (comments != null)
+{
+    <div class="main_r_3 clearfix" id="comments_@(comments.Id)">
+        <div class="r_3_l">
+            <img src="@ImagesHelper.GetImgWidthHeight(comments.User.Avatar, 70, 70, false)" width="70" height="70">
+            <div class="l_wor1">@comments.User.NickName</div>
+        </div>
+        <div class="r_3_r">
+            <div class="wor1">@comments.Content</div>
+            <div class="wor2">
+                @comments.CreateTime
+                <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                <a href="javascript:;" onclick="comments.ScrollToCommentBox(@comments.Id,@comments.User.Id);return false;"><img src="@Url.Content("~/Content/images/r_3_r.png")">&nbsp;&nbsp;回复</a>
+
+            </div>
+        </div>
+    </div>
+}
+
+@if (followComments != null)
+{
+    <div class="main_r_3 clearfix" id="comments_reply_@(followComments.Id)">
+        <div class="r_3_l">
+            <img src="@ImagesHelper.GetImgWidthHeight(followComments.User.Avatar, 70, 70, false)" width="70" height="70">
+            <div class="l_wor1">@followComments.User.NickName</div>
+        </div>
+        <div class="r_3_r">
+            <div class="wor1">
+                <b>回复@(followComments.BeReplyedUser.NickName):</b>&nbsp;@followComments.Content
+            </div>
+            <div class="wor2">
+                @followComments.CreateTime
+                <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                <a href="javascript:;" onclick="comments.ScrollToCommentBox(@followComments.Id,@followComments.User.Id);return false;"><img src="@Url.Content("~/Content/images/r_3_r.png")">&nbsp;&nbsp;回复</a>
+            </div>
+        </div>
+    </div>
+}

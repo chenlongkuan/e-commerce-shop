@@ -1,0 +1,56 @@
+﻿@using Msg.Utils
+@model System.Linq.IQueryable<Msg.Entities.GoodsEntity>
+
+@{
+    ViewBag.Title = ViewBag.Key + " :: 搜索结果";
+}
+
+<div class="nk_list">
+    <div class="msg_search_t">搜索“@ViewBag.Key”，共“<span class="cl_ff3300">@ViewBag.TotalCount</span>”条结果</div>
+    <div class="list_main" style="display: block;">
+        <ul class="clearfix">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <li>
+                        <div class="li_img">
+                            <a href="@Url.Action("Details", "Home", new {id = item.Id})"><img class="lazy" data-original="@ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 220, 220, false)" width="220" height="220"/></a>
+                        </div>
+                        <div class="li1">￥@item.SellPrice.ToString("F")</div>
+                        <div class="li2">
+                            <a href="@Url.Action("Details", "Home", new {id = item.Id})">@item.ShortTitle</a>
+                        </div>
+                        <div class="li3 clearfix">
+                            <div class="li3_l">
+                                @if ((item.Product.Quantity - item.SoldCount) > 2)
+                                {
+                                    <span> 已售出 @(item.SoldCount + item.FakeSoldCount)</span>
+                                }
+                                else
+                                {
+                                    <span> 库存不足</span>
+                                }
+
+                            </div>
+                            <div class="li3_r">
+                                @if (item.IsOnSelling && item.Product.Quantity >= item.SoldCount)
+                                {
+                                    <a href="javascript:;" img="@ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 220, 220, false)" class="btnCart" onclick="updateCart(@item.Id, 1, 'add', null, this);return false; ">加入购物车</a>
+                                }
+                                else
+                                {
+                                    <a href="JavaScript:;" class="over" disabled="disabled">加入购物车</a>
+                                }
+                            </div>
+                        </div>
+
+                    </li>
+                }
+            }
+
+        </ul>
+
+    </div>
+    <div class="msg_f" style="padding: 20px 0;">@Html.Raw(ViewBag.Pager)</div>
+</div>

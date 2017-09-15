@@ -1,0 +1,185 @@
+﻿@using Msg.Bll.Models
+@model System.Linq.IQueryable<Msg.Entities.OrdersEntity>
+@{
+    ViewBag.Title = "订单管理";
+    ViewBag.InnerTopTitle = "订单管理";
+    var brands = ViewBag.Brands as List<BrandsModel>;
+}
+
+
+@section Head{
+    <link href="@Url.Content("~/Content/ueditor/themes/default/ueditor.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/My97DatePicker/skin/WdatePicker.css")" rel="stylesheet" />
+}
+
+
+
+<div class="col-lg-6" style="width: 100%">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="height: 120px;" id="dayinArea">
+            <div class="form-group" style="float: left">
+                <label>姓名</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" id="txt_search_nickName"></label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                @*  <label>订单时间</label>
+                <label>
+                    <select class="form-control" id="sel_search_school">
+                        <option value="" selected="selected">所有时间</option>
+                    </select></label>*@
+                <label>订单时间</label>
+                <label>
+                    @*<input class="form-control" style="width: 120px;" id="txt_searh_BegindateTime" readonly="readonly">*@
+                     <input type="text" id="txt_searh_BegindateTime" readonly="readonly" class="form-control" value="" name="SaleStartTime" class="Wdate"  onclick="WdatePicker()">
+                </label>
+                @*<label>
+                    <img onclick="WdatePicker({el:'txt_searh_BegindateTime'});
+    " src="@Url.Content("~/Content/My97DatePicker/skin/datePicker.gif")" width="16" height="22" align="absmiddle"></label>*@
+            </div>
+               <div class="form-group" style="float: left; margin-left: 15px;">
+                @*  <label>订单时间</label>
+                <label>
+                    <select class="form-control" id="sel_search_school">
+                        <option value="" selected="selected">所有时间</option>
+                    </select></label>*@
+                <label>至</label>
+                <label>
+                    @*<input class="form-control" style="width: 120px;" id="txt_searh_EnddateTime" readonly="readonly">*@
+                     <input type="text" id="txt_searh_EnddateTime" readonly="readonly" class="form-control" value="" name="SaleStartTime" class="Wdate"  onclick="WdatePicker()">
+                </label>
+                @*<label>
+                    <img onclick="WdatePicker({el:'txt_searh_EnddateTime'});
+    " src="@Url.Content("~/Content/My97DatePicker/skin/datePicker.gif")" width="16" height="22" align="absmiddle"></label>*@
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px">
+                <label>电话</label>
+                <label>
+                    <input class="form-control" style="width: 120px;" id="txt_search_Mobile"></label>
+            </div>
+                <br />
+            <br />
+            <br />
+        <div class="form-group" style="float: left;">
+                <label>品牌</label>
+                <label>
+                    <select class="form-control" id="sel_search_brands">
+                        <option value="" selected="selected">所有品牌</option>
+                        @if (brands != null && brands.Any())
+                        {
+                            foreach (var item in brands)
+                            {
+                            <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    </select></label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px">
+                <label>名称</label>
+                <label>
+                    <input class="form-control" style="width: 120px;" id="txt_search_goodsName"></label>
+            </div>
+            @* 
+            <div style="height:1px; width:120px;"><label>123</label></div>*@
+        
+            <div class="form-group" style="float: left; margin-left:15px;">
+                <label>状态</label>
+                <label>
+                    <select class="form-control" id="sel_search_State">
+                        <option value="0" >所有状态</option>
+                        <option value="1">未支付</option>
+                        <option value="2">已支付</option>
+                        <option value="3">正在出库</option>
+                        <option value="4">已发货</option>
+                        <option value="5">已收货</option>
+                        <option value="6">完成关闭</option>
+                        <option value="7">自助取消</option>
+                        <option value="8">过期关闭</option>
+                        @*1:未支付，2：已支付，3：正在出库，4：已发货，5：已收货,6：完成关闭，7：自助取消，8：过期关闭*@
+                    </select></label>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <div style="float: right; margin-left: 15px;">
+
+                    <button type="button" class="btn btn-default" onclick="paging(1,'ok');">导出</button>
+                </div>
+                <div style="float: right; margin-left: 15px;">
+                    <button type="button" class="btn btn-default" onclick="paging(1);" >搜索</button>
+                </div>
+                <div style="float: right; margin-left: 15px;">
+                    <button type="button" class="btn btn-default" onclick="reset();">重置</button>
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            @Html.Partial("_Orders", Model)
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+<script type="text/javascript">
+    //$(function() {
+    //    $("input#biuuu_button").click(function() {
+    //        $("div#myPrintArea").printArea();
+    //    });
+    //}
+    
+
+
+</script> 
+
+<script type="text/javascript">
+    function paging(page,out) {
+       // alert(page);
+        var searchnickName = $("#txt_search_nickName").val();
+        var searchBegindateTime = $("#txt_searh_BegindateTime").val();
+        var searchEnddateTime = $("#txt_searh_EnddateTime").val();
+        var searchMoble = $("#txt_search_Mobile").val();
+        var searchbrand = $("#sel_search_brands").val();
+        var searchgoodName = $("#txt_search_goodsName").val();
+        var searchState = $("#sel_search_State").val();
+        
+        if (out == 'ok') {
+            window.open("@Url.Action("OutToExcel", "Home", new { area = "Admin" })?t=" + Math.random() + "&state=" + searchState + "&brandId" + searchbrand + "&nickName" + searchnickName + "&mobile" + searchMoble + "&goodName" + searchgoodName + "&dateBegin" + searchBegindateTime + "&dateEnd"+searchEnddateTime);
+            return;
+        }
+
+
+        $(".panel-body").showLoading();
+        //_Orders(int state, DateTime? date, int? brandsId, int page = 1, int pagesize = 10, string orderBy = "", string nickName = "", string goodName = "", string mobile = "")
+        $.get("@Url.Action("_orders", "Home", new { area = "Admin" })?t=" + Math.random(), { state: searchState, brandId: searchbrand, nickName: searchnickName, mobile: searchMoble, goodName: searchgoodName, dateBegin: searchBegindateTime, dateEnd: searchEnddateTime, page: page }, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+    
+    function ModifyOrderStatus(id,status) {
+        $.get("@Url.Action("ModifyOrder", "Home", new {area = "Admin"})", { id: id ,orderStatus:status}, function (result) {
+            //alert(result.isError);
+
+            MsgDialog.Alert(result.status, result.msg, function () {
+                if (result.status)
+                    paging(1, '');
+            });
+        });
+    }
+
+
+    function reset() {
+        $("#txt_search_nickName").val("");
+        $("#txt_searh_BegindateTime").val("");
+        $("#txt_searh_EnddateTime").val("");
+        $("#txt_search_Mobile").val("");
+        $("#sel_search_brands").val("");
+        $("#txt_search_goodsName").val("");
+        $(".panel-body").showLoading();
+        $.get("@Url.Action("_orders", "Home", new { area = "Admin" })?t=" + Math.random(), {state : 0}, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+</script>

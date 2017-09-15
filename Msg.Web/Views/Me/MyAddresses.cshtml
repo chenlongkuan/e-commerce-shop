@@ -1,0 +1,124 @@
+﻿@using Msg.Bll.Models
+@using Msg.Web.App_Start
+@model IQueryable<Msg.Entities.UserAddressEntity>
+
+@{
+    ViewBag.Title = "我的收货地址";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+    var schools = ViewBag.Schools as List<SchoolModel>;
+    var regions = ViewBag.Regions as List<RegionModel>;
+}
+
+<div class="per_right per_order">
+    <div class="order_h">
+        <div class="h_left">我的收货地址</div>
+    </div>
+    <div class="address_li">
+        <ul class="clearfix">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <li>
+                        <div class="li1"><span id="sp_txt_ReciverName_@(item.Id)">@item.ReciverName</span></div>
+                        <div class="li2">
+                            <span id="sp_txt_ReciverTel_@(item.Id)">@item.ReciverTel</span><br>
+                            <span id="sp_txt_CityName_@(item.Id)">@item.CityName</span>
+                            <span id="sp_txt_RegionName_@(item.Id)">@item.RegionName</span>
+                            <input type="hidden" id="h_regionId_@(item.Id)" value="@item.RegionId" />
+                            <span id="sp_txt_SchoolName_@(item.Id)">@item.SchoolName</span>
+                            <input type="hidden" id="h_schoolId_@(item.Id)" value="@item.SchoolId" />
+                            <span id="sp_txt_DetailAddress_@(item.Id)">
+                                @item.DetailAddress
+                            </span>
+
+                        </div>
+                        <div class="clearfix">
+                            @if (!item.IsDefult)
+                            {
+                                <a href="JavaScript:;" class="per_button1" onclick="accounts.setDefault(@item.Id);return false;">设为默认</a> <span>&nbsp; &nbsp;</span>
+                            }
+                            <a href="JavaScript:;" class="per_button1" onclick="accounts.ToEditAddressModel(@item.Id);return false;">编辑</a>
+                            &nbsp;&nbsp;
+                            <a href="JavaScript:;" class="per_button2" onclick="accounts.deleteAddress(@item.Id);return false;">删除</a>
+                        </div>
+                    </li>
+                }
+            }
+
+
+        </ul>
+    </div>
+    <div class="entre_f">
+        <input type="hidden" id="h_address_id" value="" />
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <tbody>
+                <tr>
+                    <td width="140" align="right">收货人：</td>
+                    <td><input type="text" id="txt_address_receiverName" maxlength="10" style="width: 150px;"></td>
+                </tr>
+                <tr>
+                    <td align="right">联系电话：</td>
+                    <td><input type="text" id="txt_address_tel" maxlength="11" style="width: 200px;"></td>
+                </tr>
+                <tr>
+                    <td align="right">收货地址：</td>
+                    <td>
+
+                        <select id="sel_address_ctiy">
+                            <option>重庆市</option>
+                        </select>&nbsp;&nbsp;
+                        <select id="sel_address_region">
+                            <option value="-1">--请选择--</option>
+                            @if (regions != null && regions.Any())
+                            {
+                                foreach (var item in regions)
+                                {
+                                    if (item.Id == UserAuth.UserRegionId)
+                                    {
+                                        <option value="@item.Id" selected="selected">@item.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            }
+
+                        </select>&nbsp;&nbsp;
+                        <select id="sel_address_school">
+                            <option value="-1">--请选择--</option>
+                            @if (schools != null && schools.Any())
+                            {
+                                foreach (var item in schools)
+                                {
+                                    if (item.Id == UserAuth.SchoolId)
+                                    {
+                                        <option value="@item.Id" selected="selected">@item.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">&nbsp;</td>
+                    <td><input type="text" id="txt_address_detail" style="width: 400px; color: rgb(153, 153, 153);" value="寝室楼栋，门牌号" onfocus=" if (value == '寝室楼栋，门牌号') { this.style.color = '#000'; value = '' } " onblur=" if (value == '') { this.style.color = '#999'; value = '寝室楼栋，门牌号' } "></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td class="per_button">
+                        <a href="JavaScript:;" id="btn_address_save" onclick="accounts.saveAddress(); return false;">添加新收货地址</a>
+                        &nbsp;&nbsp;
+                        <a href="JavaScript:;" id="btn_quitEditModel" style="display: none" onclick="accounts.quitEditModel(); return false;">退出编辑模式</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

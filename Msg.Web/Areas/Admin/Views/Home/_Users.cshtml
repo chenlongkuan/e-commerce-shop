@@ -1,0 +1,71 @@
+﻿@model System.Linq.IQueryable<Msg.Entities.UsersEntity>
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="cbx_user_all" name="cbx_all" onclick="MsgFunc.CboxCheckAll(this, 'cbx_user');" title="全选" />全选</th>
+                <th>编号</th>
+                <th>昵称</th>
+                <th>姓名</th>
+                <th>电话</th>
+                <th>邮箱</th>
+                <th>积分</th>
+                <th>地址</th>
+                <th>学校</th>
+                <th>注册时间</th>
+                <th colspan="3">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+
+                foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td><input type="checkbox" name="cbx_user" value="@item.Id" /></td>
+                        <td>@item.Id</td>
+                        <td>@item.NickName</td>
+                        <td>
+                            @item.UserName
+                        </td>
+                        <td>@item.Mobile</td>
+                        <td>@item.Email</td>
+                        <td>@item.Credits</td>
+                        <td>
+                            @if (item.UserAddress != null)
+                            {
+                                foreach (var address in item.UserAddress.Where(f => f.IsDefult))
+                                {
+                                    @(address.DetailAddress)<br />
+                                }
+                            }
+                    </td>
+
+                    <td>@item.School.Name</td>
+                    <td>@item.CreateTime</td>
+                    <td>
+                        <a href="javascript:;" onclick="disableUser(@item.Id);return false;">封号</a>
+                    </td>
+                    <td>
+                        <a href="javascript:;" onclick="sendNotify(@item.Id,false);return false;">站内信</a>
+                    </td>
+                    <td>
+                        <a href="javascript:;" onclick="sendCoupon(@item.Id,false);return false;">优惠券</a>
+                    </td>
+                </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div style="float: left">
+        <a href="javascript:;" class="btn btn-default" onclick="sendCoupon(0,true);return false;">批量赠送优惠券</a>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <a href="javascript:;" class="btn btn-default" onclick="sendNotify(0, true);return false;">批量发送站内信</a>
+    </div>
+    <div style="float: right">@Html.Raw(ViewBag.Pager)</div>
+    <!--/.pager-->
+</div>

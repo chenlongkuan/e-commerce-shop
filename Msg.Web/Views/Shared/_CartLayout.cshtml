@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@(ViewBag.Title) - 美速购 - 大学生专属O2O购物商城，零食、牛奶、休闲食品、在校自主创业、商企校园营销一站式平台。</title>
+    <link href="/fav.ico" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" />
+    <link href="/fav.ico" mce_href="favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="/fav.ico" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="@Url.Content("~/Content/Css/normalize.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Css/msg_main.css")" rel="stylesheet" />
+    <!-- Bootstrap Core CSS -->
+    <link href="@Url.Content("~/Content/bootstrapdialog/dist/css/bootstrap-dialog.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/ShowLoading/showLoading.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/jquery.2.1.3.js")"></script>
+    @RenderSection("head", required: false)
+</head>
+<body>
+    @Html.Partial("_Header")
+
+    <div class="msg_w" style="padding-bottom:50px;">
+        @RenderBody()
+    </div>
+    <!--大图切换 结束-->
+    @Html.Partial("_Footer")
+    <!--页脚 结束-->
+
+    <script src="@Url.Content("~/Content/Js/aiqu.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.lazyload.min.js")"></script>
+
+    <script src="@Url.Content("~/AdScript/index_top.js")"></script>
+
+    <script src="@Url.Content("~/Content/bootstrapdialog/dist/js/bootstrap-dialog.min.js")"></script>
+<script src="@Url.Content("~/Content/ShowLoading/jquery.showLoading.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/parabola.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/jquery.spinner.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/cart.js")"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            $("img.lazy").lazyload({
+                effect: "fadeIn"
+            });
+
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

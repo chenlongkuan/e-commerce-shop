@@ -1,0 +1,232 @@
+﻿@using Msg.Bll.Models
+@model Msg.Entities.ProductsApplyEntity
+
+@{
+    ViewBag.Title = Model.Id > 0 ? "编辑产品" : "申请发布商品";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+    var errMsg = ViewBag.ErrMsg as string;
+    var cates = ViewBag.Categories as List<CategoryModel>;
+}
+
+<div class="per_right per_order">
+    <div class="order_h">
+        <div class="h_left">@(Model.Id > 0 ? "编辑产品" : "申请发布商品")</div>
+    </div>
+    <div class="entre_f">
+        <form id="fr_publish" method="POST" action="@Url.Action("ApplyProduct", "Me")">
+            @Html.AntiForgeryToken()
+            <table cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="140" align="right">产品名称：</td>
+                        <td>
+                            @Html.TextBoxFor(f => f.Name, new { id = "txt_product_apply_Name", maxlength = "100", style = "width: 300px;" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="140" align="right">品类名称：</td>
+                        <td>
+                            <select id="sel_cates" name="categoryId" style="width: 300px;">
+                                @if (cates != null && cates.Any())
+                                {
+                                    foreach (var item in cates)
+                                    {
+                                        <option value="@item.Id">@item.Name</option>
+                                    }
+                                }
+
+                            </select>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="140" align="right">品牌名称：</td>
+                        <td>
+                            @Html.TextBoxFor(f => f.BrandName, new { id = "txt_product_apply_BrandName", maxlength = "20", style = "width: 300px;" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="120" align="right">产品数量：</td>
+                        <td>
+                            @Html.TextBoxFor(f => f.Quantity, new { id = "txt_product_apply_Quantity", style = "width: 100px;" })
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="120" align="right">售卖单价：</td>
+                        <td>
+                            @Html.TextBoxFor(f => f.Price, new { id = "txt_product_apply_Price", style = "width: 100px;" })&nbsp;元
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">产品缩略图：</td>
+                        <td>
+
+                            <a href="javascript:;" id="btn_upload" onclick="upImage(); return false;">上传图片</a><br />
+                            <img src="@Model.Logo" id="img_Cover" width="200" height="200" style="display: @(string.IsNullOrEmpty(Model.Logo)?"none":"block")" />
+
+                            @Html.HiddenFor(f => f.Logo, new { id = "imageUrl" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="140" align="right">产品规格：</td>
+                        <td>
+                            <div id="txt_product_apply_Spec" style="width: 750px;"></div>
+                            @Html.HiddenFor(f => f.Spec)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">编辑产品详细信息：</td>
+                        <td>
+                            <div id="txt_product_Details" style="width: 750px;"></div>
+                            @Html.HiddenFor(f => f.Desc)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td class="cl_ff3300">
+                            上传商品时，默认同意美速购各项条款，最终解释权归美速购所有！
+                            @if (string.IsNullOrEmpty(errMsg))
+                            {
+                                <br><br>
+                                <span style="font-weight: bold">@errMsg</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td class="per_button"><a href="javascript:;" id="btn_product_publish">立即发布</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="@Url.Content("~/Content/ueditor1_2_6_0-utf8-net/ueditor.all.min.js")"></script>
+    <script src="@Url.Content("~/Content/ueditor1_2_6_0-utf8-net/ueditor.config.js")"></script>
+
+    <script type="text/javascript">
+
+        var specOption = {
+            //这里可以选择自己需要的工具按钮名称,此处仅选择如下
+            toolbars: [['Undo', 'Redo', '|', 'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|', 'Preview']],
+            initialContent: '@Html.Raw(Model.Spec)',
+            autoHeightEnabled: true,//是否自动长高
+            autoFloatEnabled: false
+        };
+        ue_edit_spec = new baidu.editor.ui.Editor(specOption);
+        ue_edit_spec.render('txt_product_apply_Spec');
+
+
+        var detailOption = {
+            //这里可以选择自己需要的工具按钮名称,此处仅选择如下
+            toolbars: [['Undo', 'Redo', '|', 'Bold', 'Italic', 'Underline', '|', 'ForeColor', 'BackColor', 'FontFamily', 'FontSize', '|', 'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|', 'Link', 'Unlink', '|', 'InsertImage', 'Emotion', 'InsertVideo', 'Map', '|', 'wordimage', 'Preview']],
+            initialContent: '@Html.Raw(Model.Desc)',
+            autoHeightEnabled: true,//是否自动长高
+            autoFloatEnabled: false
+        };
+        ue_edit_detail = new baidu.editor.ui.Editor(detailOption);
+        ue_edit_detail.render('txt_product_Details');
+
+        $(function () {
+
+
+            //提交按钮
+            $("#btn_product_publish").bind("click", function () {
+                var logo = $("#imageUrl").val();
+                var name = $("#txt_product_apply_Name").val();
+                var price = $("#txt_product_apply_Price").val();
+                var quantity = $("#txt_product_apply_Quantity").val();
+                var cateId = $("#sel_cates").val();
+                var brandName = $("#txt_product_apply_BrandName");
+
+                if (isEmpty(logo)) {
+                    MsgDialog.Alert(false, "请上传Logo！");
+                    return;
+                }
+                if (isEmpty(name)) {
+                    MsgDialog.Alert(false, "请填写产品名称！");
+                    return;
+                }
+                if (isEmpty(price) || isNaN(price)) {
+                    MsgDialog.Alert(false, "价格填写错误！");
+                    return;
+                }
+
+                if (isEmpty(brandName)) {
+                    MsgDialog.Alert(false, "品牌名称必填！");
+                    return;
+                }
+
+                if (isEmpty(quantity) || isNaN(quantity)) {
+                    MsgDialog.Alert(false, "数量填写错误！");
+                    return;
+                }
+
+                if (isEmpty(cateId)) {
+                    MsgDialog.Alert(false, "请选择产品对应的品类！");
+                    return;
+                }
+
+                $("#Spec").val(ue_edit_spec.getContent());
+                $("#Desc").val(ue_edit_detail.getContent());
+
+                $("form").submit();
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        //重新实例化一个编辑器，防止在上面的editor编辑器中显示上传的图片或者文件
+        var _editor = UE.getEditor('upload_ue');
+        _editor.ready(function () {
+            //设置编辑器不可用
+            _editor.setDisabled();
+            //隐藏编辑器，因为不会用到这个编辑器实例，所以要隐藏
+            _editor.hide();
+            //侦听图片上传
+            _editor.addListener('beforeInsertImage', function (t, arg) {
+
+                if (arg[0].src != null || arg[0].src.length > 0) {
+                    $("#img_Cover").attr("src", arg[0].src);
+                    $("#img_Cover").show();
+                    var hasVal = $("#imageUrl").val();
+                    for (var i = 0, ci; ci = arg[i++];) {
+                        if (hasVal.length < 1) {
+                            hasVal = arg[0].src;
+                        } else {
+                            hasVal = hasVal + "|" + ci.src;
+                        }
+                    }
+
+                    $("#imageUrl").val(hasVal);
+                }
+            });
+            ////侦听文件上传
+            //_editor.addListener('afterUpfile', function (t, arg) {
+
+            //});
+
+        });
+
+
+        //弹出图片上传的对话框
+        function upImage() {
+            var myImage = _editor.getDialog("insertimage");
+            myImage.open();
+        }
+
+        //弹出文件上传的对话框
+        function upFiles() {
+            var myFiles = _editor.getDialog("attachment");
+            myFiles.open();
+        }
+    </script>
+
+    <script type="text/plain" id="upload_ue">
+    </script>
+}

@@ -1,0 +1,23 @@
+﻿@using Msg.Entities
+@model IQueryable<Msg.Entities.OrdersEntity>
+
+@{
+    ViewBag.Title = "我的订单";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+}
+
+<div class="per_right per_order">
+    <div class="order_h">
+        <div class="h_left">我的订单</div>
+        <div class="h_right">
+            <a href="javascript:;" onclick="myOrders.filterClick(-1,this);return false;" >全部订单</a><span>|</span>
+            <a href="javascript:;" onclick="myOrders.filterClick(@((int)OrderStatusEnum.UnPay),this);return false;" class=" over">未支付的订单</a><span>|</span>
+            <a href="javascript:;" onclick="myOrders.filterClick(@((int)OrderStatusEnum.Sended),this);return false;">未收货的订单</a><span>|</span>
+            <a href="javascript:;" onclick="myOrders.filterClick(@((int)OrderStatusEnum.Done),this);return false;">已完成的订单</a>
+        </div>
+    </div>
+    <div class="order_d">
+        @Html.Partial("_MyOrders", Model)    
+    </div>
+    <input type="hidden" value="" id="h_status" />
+</div>

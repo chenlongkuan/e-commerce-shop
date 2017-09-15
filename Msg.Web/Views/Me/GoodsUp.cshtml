@@ -1,0 +1,181 @@
+﻿@using Msg.Entities
+@model Msg.Entities.GoodsEntity
+
+@{
+    ViewBag.Title = Model.Id > 0 ? "编辑商品" : "上架商品";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+    var product = ViewBag.Product as ProductsEntity ?? new ProductsEntity();
+}
+@section head{
+    <link href="@Url.Content("~/Content/ueditor/themes/default/ueditor.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/My97DatePicker/skin/WdatePicker.css")" rel="stylesheet" />
+}
+
+<div class="per_right per_order">
+    <div class="order_h">
+        <div class="h_left">@(Model.Id > 0 ? "编辑商品" : "上架商品")</div>
+    </div>
+    <div class="entre_f">
+        <form id="fr_publish" method="POST" action="@Url.Action("GoodsUp", "Me")">
+            @Html.AntiForgeryToken()
+            <input type="hidden" value="@product.Id" name="productId" />
+            @Html.HiddenFor(f => f.Id)
+            <table cellpadding="0" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td width="140" align="right">产品名称：</td>
+                        <td>
+                            @Html.TextBoxFor(f => f.Product.Name, new { disabled = "disabled" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="140" align="right">短标题：</td>
+                        <td>
+                            @Html.TextBoxFor(f => f.ShortTitle, new { maxlength = "200", placeholder = "请输入短标题，200字以内" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="140" align="right">长标题：</td>
+                        <td>
+                            @Html.TextBoxFor(f => f.LongTitle, new { maxlength = "500", placeholder = "请输入长标题，200字以内" })
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="140" align="right">售价：</td>
+                        <td>
+                            @Html.TextBoxFor(f => f.SellPrice, new { maxlength = 10 })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="140" align="right">支付方式：</td>
+                        <td>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="cbx_cashOnline" checked="checked">线上支付
+                                @Html.CheckBoxFor(f => f.IsCashOnline)
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="cbx_cashDelivery">货到付款
+                                @Html.CheckBoxFor(f => f.IsCashDelivery)
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="120" align="right">是否特卖：</td>
+                        <td>
+                            <label class="radio-inline">
+                                <input type="radio" name="IsSaleOption" onchange=" saleRadioChangeEvent(); " id="rd_IsSale_true">是
+                                @Html.CheckBoxFor(f => f.IsSale)
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="IsSaleOption" id="rd_IsSale_false" checked="checked">否
+                            </label>
+                        </td>
+                    </tr>
+                    <tr class="tr_saleTime" style="display: none">
+                        <td width="120" align="right">开始时间：</td>
+                        <td>
+                            <input type="text" id="txt_startTime" name="SaleStartTime" class="Wdate" onclick=" WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '#F{$dp.$D(\'txt_endTime\')||\'2020-10-01\'}', alwaysUseStartDate: true, onpicked: clearFiltDate }) ">
+                        </td>
+                    </tr>
+                    <tr class="tr_saleTime" style="display: none">
+                        <td align="right" valign="top">结束时间：</td>
+                        <td>
+                            <input type="text" id="txt_endTime" name="SaleEndTime" class=" Wdate" onclick=" WdatePicker({ dateFmt: 'yyyy-MM-dd', maxDate: '2020-10-01', onpicked: clearFiltDate }) ">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td align="right">编辑产品详细信息：</td>
+                        <td>
+                            <div id="txt_Desc"></div>
+                            @Html.HiddenFor(f => f.Desc)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td class="cl_ff3300">
+                            上传商品时，默认同意美速购各项条款，最终解释权归美速购所有！
+                            @if (ViewBag.ErrMsg is string && !string.IsNullOrEmpty(ViewBag.ErrMsg))
+                            {
+                                <br><br>
+                                <span style="font-weight: bold">@ViewBag.ErrMsg</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><button type="reset" class="btn btn-default" onclick="javascript:$('form').reset();">重置</button></td>
+                        <td class="per_button">
+                            <button type="button" id="btn_submit" class="btn btn-default">提交</button>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="@Url.Content("~/Content/My97DatePicker/WdatePicker.js")"></script>
+    <script type="text/javascript">
+        var detailOption = {
+            //这里可以选择自己需要的工具按钮名称,此处仅选择如下
+            toolbars: [['Undo', 'Redo', 'Source', '|', 'Bold', 'Italic', 'Underline', '|', 'ForeColor', 'BackColor', 'FontFamily', 'FontSize', '|', 'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|', 'Link', 'Unlink', '|', 'InsertImage', 'Emotion', 'InsertVideo', 'Map', '|', 'wordimage', 'Preview']],
+            initialContent: '@Html.Raw(Model.Desc)',
+            autoHeightEnabled: true //是否自动长高
+        };
+        ue_edit_detail = new baidu.editor.ui.Editor(detailOption);
+        ue_edit_detail.render('txt_Desc');
+
+        $(function () {
+
+            //提交按钮
+            $("#btn_submit").bind("click", function () {
+                var shortTitle = $("#ShortTitle").val();
+                var longTitle = $("#LongTitle").val();
+                var sellPrice = $("#SellPrice").val();
+                var isSale = $("#rd_IsSale_true").is(":checked");
+                var saleStartTime = $("#txt_startTime").val();
+                var saleEndTime = $("#txt_endTime").val();
+                if (isEmpty(shortTitle)) {
+                    MsgDialog.Alert(false, "请填写短标题！");
+                    return;
+                }
+                if (isEmpty(longTitle)) {
+                    MsgDialog.Alert(false, "请填写长标题！");
+                    return;
+                }
+                if (isEmpty(sellPrice) || isNaN(sellPrice)) {
+                    MsgDialog.Alert(false, "价格填写错误！");
+                    return;
+                }
+                if (isSale) {
+                    if (isEmpty(saleEndTime) || isEmpty(saleStartTime)) {
+                        MsgDialog.Alert(false, "请选择特卖开始/结束时间！");
+                        return;
+                    }
+                }
+
+                $("#IsSale").val(isSale);
+                $("#IsCashOnline").val($("#cbx_cashOnline").is(":checked"));
+                $("#IsCashDelivery").val($("#cbx_cashDelivery").is(":checked"));
+                $("#Desc").val(ue_edit_detail.getContent());
+
+                $("form").submit();
+            });
+
+        });
+
+        function saleRadioChangeEvent() {
+            var isSale = $("#rd_IsSale_true").is(":checked");
+            if (isSale) {
+                $(".tr_saleTime").show();
+            } else {
+                $(".tr_saleTime").hide();
+            }
+        }
+
+    </script>
+
+}

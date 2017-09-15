@@ -1,0 +1,72 @@
+.boxy-mask { position:absolute; z-index:9999; background-color: #000; opacity: 0.10; filter: alpha(opacity=10); top:0px; left:0px; width:100%; }
+.boxy-wrapper { position: absolute; z-index:100000; }
+.boxy-wrapper.fixed { position: fixed; }
+/*table{border-collapse:none;border-spacing:0;}*/
+
+/* Modal */ 
+.boxy-modal-blackout { position: absolute; background-color: black; left: 0; top: 0; } 
+/* Border */
+.boxy-wrapper { empty-cells: show; }
+.boxy-wrapper .top-left,
+.boxy-wrapper .top-right,
+.boxy-wrapper .bottom-right,
+.boxy-wrapper .bottom-left { width: 5px; height: 5px; padding: 0 }
+	
+.boxy-wrapper .top-left { background: url('http://www.xunkoo.com/images/user_center_image_menu_tl.png'); }
+.boxy-wrapper .top-right { background: url('http://www.xunkoo.com/images/user_center_image_menu_tr.png');}
+.boxy-wrapper .bottom-right { background: url('http://www.xunkoo.com/images/user_center_image_menu_br.png');}
+.boxy-wrapper .bottom-left { background: url('http://www.xunkoo.com/images/user_center_image_menu_bl.png');}
+	
+/* IE6+7 hacks for the border. IE7 should support this natively but fails in conjuction with modal blackout bg. */
+/* NB: these must be absolute paths or URLs to your images */
+.boxy-wrapper .top-left{#background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://www.xunkoo.com/images/user_center_image_menu_tl.png');}
+.boxy-wrapper .top-right{#background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://www.xunkoo.com/images/user_center_image_menu_tr.png');}
+.boxy-wrapper .bottom-right{#background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://www.xunkoo.com/images/user_center_image_menu_br.png');}
+.boxy-wrapper .bottom-left{#background: none; #filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://www.xunkoo.com/images/user_center_image_menu_bl.png');}
+	
+.boxy-wrapper .top,
+.boxy-wrapper .bottom { line-height:0px;overflow: hidden; height: 5px; background-color: #000; opacity: 0.10; filter: alpha(opacity=10); padding: 0 }
+	
+.boxy-wrapper .leftx,
+.boxy-wrapper .rightx { line-height:0px;overflow: hidden; width: 5px; background-color: #000; opacity: 0.10; filter: alpha(opacity=10); padding: 0 }
+	
+/* Title bar */
+	
+	
+.boxy-wrapper .title-bar {
+        height: 40px;
+        background-color: #f8f8f8;
+        line-height: 40px;
+        padding: 0px 15px;
+        color: #666;
+        font-size: 16px;}
+.boxy-wrapper .title-bar.dragging { cursor: move; }
+    
+    
+.boxy-wrapper .title-bar .close {position: absolute;top: 15px;right: 16px;font-size: 90%;line-height: 1;	background-image: url(http://www.xunkoo.com/scripts/res/images/close.gif);background-repeat: no-repeat;height: 9px;width: 9px;}
+		
+/* Content Region */
+	
+.boxy-inner { background-color: white; padding: 0 ; background-color: #fff;}
+/* Question Boxes */
+
+.boxy-wrapper .question { width: 350px; min-height: 50px; font-size:12px; }
+.boxy-wrapper .answers { text-align: right; font-size:12px; }
+.boxy-wrapper form{ margin:0px; padding:5px;}
+    
+    /*confirm btn by zhangxinxu http://www.zhangxinxu.com*/
+.boxy-btn1,.boxy-btn2,.boxy-btn3{padding:3px 12px 1.9px; border-width:1px; border-style:solid; letter-spacing:1px; line-height:15px; cursor:pointer; overflow:visible;} 
+.boxy-btn1{background-color:#425f99; border-color:#5A7EC6 #2C3E5F #2C3E5F #5A7EC6; color:white;}
+.boxy-btn2{background-color:#ECE9D8; border-color:#eeeeee #bbbbbb #bbbbbb #eeeeee; color:#333333;}
+.boxy-btn3{background-color:#EAEAEA; border-color:#EAEAEA #aaaaaa #aaaaaa #EAEAEA; color:#333333; padding:3px 5px 1.9px;}
+.boxy-btn3:hover{background-color:#cad5eb; border-color:#CED8E3 #A2ADBC #A2ADBC #CED8E3;}
+
+
+.boxy-content{ padding: 20px;}
+
+
+
+
+
+
+

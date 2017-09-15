@@ -1,0 +1,80 @@
+﻿@using Msg.Bll.Models
+@model List<SchoolModel>
+@{
+    Layout = null;
+}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>注册-美速购 - 大学生专属O2O购物商城，零食、牛奶、休闲食品、在校自主创业、商企校园营销一站式平台。</title>
+    <link href="@Url.Content("~/Content/MobileTemplate/css/login.css")" rel="stylesheet" type="text/css">
+    <script src="@Url.Content("~/Scripts/jquery.2.1.3.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.js")"></script>
+</head>
+
+<body>
+    <div class="msg_c_t" style="top: 0">
+        <div class="c_t_1" id="errorMsg">@ViewBag.ErrMsg</div>
+    </div>
+    <div class="login_header">
+        <img src="@Url.Content("~/Content/MobileTemplate/images/logo.png")">
+    </div>
+    <form method="POST" action="@Url.Action("Regist")" id="registForm">
+        @Html.AntiForgeryToken()
+        <div class="login_input">
+            <input name="email" id="txt_regist_email" maxlength="50" type="text" placeholder="注册邮箱" />
+        </div>
+        <div class="login_input">
+            <input name="nickName" id="txt_regist_nickName" maxlength="10" type="text" placeholder="昵称" />
+        </div>
+        <div class="login_input">
+            <input name="pwd" id="txt_regist_pwd" type="password" maxlength="16" placeholder="密码" />
+        </div>
+        <div class="login_input">
+            <input name="" id="txt_regist_confirmPwd" type="password" maxlength="16" placeholder="确认密码" />
+        </div>
+        <div class="login_input">
+            <input name="mobile" id="txt_regist_mobile" maxlength="11" type="text" placeholder="手机号码" />
+        </div>
+        <div class="login_input">
+            <input type="hidden" name="regionId" id="regionId" value="@ViewBag.regionId">
+            <input type="text" placeholder="选择区域" id="sel_regist_region" readonly="readonly" value="@ViewBag.regionName">
+        </div>
+        <div class="login_input">
+            <input type="hidden" name="schoolId" id="schoolId" value="@ViewBag.schoolId">
+            <input type="text" placeholder="选择学校" id="sel_regist_school" readonly="readonly" value="@ViewBag.schoolName" />
+        </div>
+        <div class="login_input"><a href="JavaScript:;" id="btn_regist_submit" class="a1">注册</a></div>
+        <div class="login_input"><a href="@Url.Action("Login")" class="a2">已有账号，立即登录？</a></div>
+    </form>
+    <script src="@Url.Content("~/Scripts/jquery.cookie.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/mobileRegist.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#txt_regist_email").val($.cookie("email"));
+            $("#txt_regist_nickName").val($.cookie("nickName"));
+            $("#txt_regist_pwd").val($.cookie("pwd"));
+            $("#txt_regist_confirmPwd").val($.cookie("pwd"));
+            $("#txt_regist_mobile").val($.cookie("mobile"));
+
+            $("#sel_regist_region").bind("click", function () {
+                $.cookie("email", $.trim($("#txt_regist_email").val()));
+                $.cookie("nickName", $.trim($("#txt_regist_nickName").val()));
+                $.cookie("pwd", $.trim($("#txt_regist_pwd").val()));
+                $.cookie("mobile", $.trim($("#txt_regist_mobile").val()));
+                window.location.href = "@Url.Action("SelRegion", new { id = ViewBag.regionId, from = "/Mobile/account/Regist" })";
+            });
+            $("#sel_regist_school").bind("click", function () {
+                $.cookie("email", $.trim($("#txt_regist_email").val()));
+                $.cookie("nickName", $.trim($("#txt_regist_nickName").val()));
+                $.cookie("pwd", $.trim($("#txt_regist_pwd").val()));
+                $.cookie("mobile", $.trim($("#txt_regist_mobile").val()));
+                window.location.href = "/Mobile/account/SelSchool/" + $.trim($("#schoolId").val()) + "?regionId=" + $.trim($("#regionId").val()) + "&from=/Mobile/account/Regist";
+            });
+            window.setTimeout('$("#errorMsg").hide().text("");', 10000);
+        })
+    </script>
+</body>
+</html>

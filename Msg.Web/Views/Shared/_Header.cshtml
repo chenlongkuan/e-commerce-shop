@@ -1,0 +1,177 @@
+﻿@using Msg.Web.App_Start
+@{
+    var isNoNeedTopNav = ViewBag.NoNeedTopNav is bool ? (bool)ViewBag.NoNeedTopNav : false;
+    var isNoNeedTopAdvert = ViewBag.NoNeedTopAdvert is bool ? (bool)ViewBag.NoNeedTopAdvert : false;
+
+}
+
+
+<div class="msg_r_dh">
+    <div class="dh_1">
+        <div class="dh_1_p">
+            <a href="@Url.Action("Index", "Me")">我的小美</a>
+        </div>
+        <img src="@Url.Content("~/Content/images/wd.png")">
+    </div>
+    <div class="dh_2"></div>
+    <div class="dh_3 a3" id="shopCart">
+        <a href="@Url.Action("Cart", "Home")"><img src="@Url.Content("~/content/images/sea_z1.png")"><br>购<br>物<br>车<br><span class="cl_ff3300" id="sp_cart_right_quantity">(@UserAuth.CartCount)</span></a>
+    </div>
+    <div class="dh_2"></div>
+    <div class="dh_4">
+       
+        <a href="@Url.Action("Milk", "Home")">小美奶客</a>
+        <a href="@Url.Action("Snacks", "Home")">小美零食</a>
+        <a href="@Url.Action("DailyUse","Home")">小美日用</a>
+        <a href="@Url.Action("Live","Home")">小美生活</a>
+            <a href="@Url.Action("Market","Home")">创业集市</a>
+        <a href="@Url.Action("Index", "Exchanges")">积分兑换</a>
+    </div>
+    <div class="dh_2"></div>
+    <div class="dh_3">
+        <a href="JavaScript:;" class="top"><img src="@Url.Content("~/Content/images/top.png")"></a>
+    </div>
+</div>
+@if (!isNoNeedTopAdvert)
+{<!--顶部广告条 开始-->
+    <div class="header_gg">
+        @*   <a href="" target="_blank">
+            <img src="@Url.Content("~/Content/Imagesgg/header_gg.png")" /></a>*@
+    </div>
+}
+
+<!--顶部广告条 结束-->
+<!--顶部登录条 开始-->
+<div class="msg_header">
+    <div class="msg_w clearfix">
+        <div class="hea_left">您好，欢迎来到美速购！</div>
+        <div class="hea_right">
+            @if (UserAuth.IsAuthenticated)
+            {
+                <a href="@Url.Action("Index", "Me")" class="a1">@UserAuth.UserName</a>
+                <span>&nbsp; &nbsp;</span>
+                <a href="@Url.Action("LoginOut", "Account", new { returnUrl = Request.Url.ToString() })" class="a1">退出登录</a>
+            }
+            else
+            {
+                <a href="@Url.Action("Regist", "Account")" class="a1">注册</a><span>&nbsp; &nbsp;</span>
+                <a href="@Url.Action("Login", "Account", new {returnUrl = Request.Url == null ? "" : Request.Url.ToString()})" class="a1">登录</a><span>&nbsp; &nbsp;</span>
+            }
+
+            <img src="@Url.Content("~/Content/images/hea_right3.png")" />&nbsp;&nbsp;
+            <img src="@Url.Content("~/Content/images/hea_right1.png")" />
+            <a href="javascript:;" onclick="shoucang(); return false; ">加入收藏</a>&nbsp;&nbsp;&nbsp;
+            <img src="@Url.Content("~/Content/images/hea_right3.png")" />&nbsp;&nbsp;
+            <img src="@Url.Content("~/Content/images/hea_right2.png")" />
+            <a href="javascript:;" onclick="SetHome(this,'@Request.Url.Host.ToString()'); return false; ">设为首页</a>
+        </div>
+    </div>
+</div>
+<!--顶部登录条 结束-->
+<!--logo 开始-->
+<div class="msg_w">
+    <div class="msg_head clearfix">
+        <div class="logo">
+            <a href="/">
+                <img src="@Url.Content("~/Content/images/logo.png")" />
+            </a>
+        </div>
+        <div class="search clearfix">
+            <div class="sea_left">
+                <input name="" id="txt_head_search_key" type="text" value="亲，想要找点什么？" style="color: #999;" onfocus="if(value=='亲，想要找点什么？'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='亲，想要找点什么？'}" />
+            </div>
+            <div class="sea_b"><a href="javascript:;" id="btn_head_search">搜索</a></div>
+            <div class="sea_z">
+                <a href="@Url.Action("Cart","Home")">
+                    <img src="@Url.Content("~/Content/images/sea_z.png")" />去购物车结算
+                </a>
+            </div>
+            <div class="sea_g" id="div_cart_head_quantity">@UserAuth.CartCount</div>
+            <div class="sea_w clearfix">
+                <div class="sea_xl">
+                    <a href="@Url.Action("Index","Me")">我的小美</a>
+                    <a href="@Url.Action("MyOrders","Me")">我的订单</a>
+                    <a href="@Url.Action("MyCoupons","Me")">优惠券</a>
+                    <a href="@Url.Action("MyComments","Me")">咨询回复</a>
+
+                </div>
+                <div class="sea_w_left">
+                    <img src="@Url.Content("~/Content/images/sea_w_left.png")" />我的小美
+                </div>
+                <div class="sea_w_right"><a href="javascript:;"></a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--logo 结束-->
+@if (!isNoNeedTopNav)
+{
+  <!--导航 开始-->
+    <div class="msg_nav">
+        <div class="msg_w clearfix">
+            <div class="msg_nav_left clearfix">
+                <a href="@Url.Action("Index", "Home")">美速首页</a>
+                <a href="@Url.Action("Milk", "Home")">小美奶客</a>
+                <a href="@Url.Action("Snacks", "Home")">小美零食</a>
+                <a href="@Url.Action("DailyUse","Home")">小美日用</a>
+                <a href="@Url.Action("Live", "Home")">小美生活</a>
+                    <a href="@Url.Action("Market", "Home")">创业集市</a>
+                <a href="@Url.Action("Index", "Exchanges")">积分兑换</a>
+            </div>
+            <div class="msg_nav_right">
+                <ul class="clearfix">
+                    <li>
+                        <div class="img">
+                            <img src="@Url.Content("~/Content/images/hot1.png")" />
+                        </div>
+                        <div class="title">
+                            大学生专属<br />
+                            <span>专属特惠价格专属优质服务</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="img">
+                            <img src="@Url.Content("~/Content/images/hot2.png")" />
+                        </div>
+                        <div class="title">
+                            闪电发货<br />
+                            <span>下单后1小时内出库发货</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="img">
+                            <img src="@Url.Content("~/Content/images/hot3.png")" />
+                        </div>
+                        <div class="title">
+                            39元包邮<br />
+                            <span>全场满39元享直送寝室</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="img">
+                            <img src="@Url.Content("~/Content/images/hot4.png")" />
+                        </div>
+                        <div class="title">
+                            3小时到货<br />
+                            <span>大学城片区用户3小时到货</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--导航 结束-->
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#btn_head_search").bind("click", function () {
+            var key = $("#txt_head_search_key").val();
+            if (isEmpty(key) || key == '亲，想要找点什么？') {
+                alert("请输入要搜索的内容");
+                return;
+            }
+            window.location.href = '@Url.Action("Search","Home")?key=' + key;
+        });
+    })
+</script>

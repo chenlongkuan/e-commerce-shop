@@ -1,0 +1,119 @@
+﻿@using Msg.Utils
+@model IQueryable<Msg.Entities.GoodsEntity>
+@{
+    ViewBag.Title = "小美零食";
+}
+<div class="nk_list">
+    <div class="nk_list_li">
+        <!--<a href="javascript:;" class="nk_qh_l"><img src="images/left.png" /></a>
+        <a href="javascript:;" class="nk_qh_r"><img src="images/right.png" /></a>-->
+        <ul class="clearfix" style="width: 960px; margin: auto;">
+            <li class="@ViewBag.LeiSureOver">
+                <a href="@Url.Action("Snacks", "Home", new { cate = "leisure" })">
+                    <div class="li1 li1_1 @ViewBag.LeiSureOver">
+                        <b>休闲食品区</b><br />
+                        凤爪 薯片 开心果 瓜子 果冻 小零嘴等
+                    </div>
+                </a>
+            </li>
+
+            <li class="@ViewBag.InstantOver">
+                <a href="@Url.Action("Snacks", "Home", new { cate = "instant" })">
+                    <div class="li1 li1_3 @ViewBag.InstantOver">
+                        <b>方便食品区</b><br />
+                        方便面 蛋黄派 饼干 面包等
+                    </div>
+                </a>
+            </li>
+            <li class="@ViewBag.DrinksOver">
+                <a href="@Url.Action("Snacks", "Home", new { cate = "drinks" })">
+                    <div class="li1 li1_4 @ViewBag.DrinksOver">
+                        <b>冲泡饮料区</b><br />
+                        奶茶 咖啡 茶叶 果汁 蜂蜜等
+                    </div>
+                </a>
+            </li>
+            <li class="@ViewBag.NutsOver">
+                <a href="@Url.Action("Snacks", "Home", new { cate = "nuts" })">
+                    <div class="li1 li1_2 @ViewBag.NutsOver">
+                        <b>果干坚果区</b><br />
+                        核桃 枣子 葡萄干 杏仁 <br />腰果等
+                    </div>
+                </a>
+            </li>
+            @*<li class="@ViewBag.Specialty">
+                    <a href="@Url.Action("Snacks", "Home", new { cate = "specialty" })">
+                        <div class="li1 li1_5  @ViewBag.Specialty">
+                            <b>地域特产区</b><br />
+                            四川灯影牛肉 重庆米花糖 新疆大枣云南鲜花饼等
+                        </div>
+                    </a>
+                </li>*@
+        </ul>
+    </div>
+    <div class="list_main" style="display: block;">
+        <ul class="clearfix">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <li>
+                        <div class="li_img">
+                            <a href="@Url.Action("Details", "Home", new { id = item.Id })">
+                                <img class="lazy" data-original="@ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 220, 220, false)" width="220" height="220" />
+                            </a>
+                        </div>
+                        <div class="li1">￥@item.SellPrice.ToString("F")</div>
+                        <div class="li2">
+                            <a href="@Url.Action("Details", "Home", new { id = item.Id })">@item.ShortTitle</a>
+                        </div>
+                        <div class="li3 clearfix">
+                            <div class="li3_l">
+                                @if ((item.Product.Quantity - item.SoldCount) > 2)
+                                {
+                                    <span> 已售出 @(item.SoldCount + item.FakeSoldCount)</span>
+                                }
+                                else
+                                {
+                                    <span> 库存不足</span>
+                                }
+
+                            </div>
+                            <div class="li3_r">
+                                @if (item.IsOnSelling && item.Product.Quantity >= item.SoldCount)
+                                {
+                                    <a href="javascript:;" img="@ImagesHelper.GetImgWidthHeight(item.Product.MainLogo, 220, 220, false)" class="btnCart" onclick="updateCart(@item.Id, 1, 'add', null, this);return false; ">加入购物车</a>
+                                }
+                                else
+                                {
+                                    <a href="JavaScript:;" class="over" disabled="disabled">加入购物车</a>
+                                }
+                            </div>
+                        </div>
+
+                    </li>
+                }
+            }
+            @*<script type="text/javascript">
+                    var html = '<li>' +
+                                '<div class="li_img"><a href=""><img src="@Url.Content("~/Content/Imagesgg/gg3.png")" width="220" height="220" /></a></div>' +
+                                '<div class="li1">￥198.00</div>' +
+                                '<div class="li2"><a href="">铜欣祥 水晶招财树摆件黄水晶</a></div>' +
+                                '<div class="li3 clearfix">' +
+                                    '<div class="li3_l">已售出 3872</div>' +
+                                    '<div class="li3_r"><a href="">加入购物车</a></div>' +
+                                '</div>' +
+                            '</li>';
+                    for (var i = 1; i <= 29; i++) {
+                        document.write(html);
+                    }
+                </script>*@
+        </ul>
+
+    </div>
+    @*<div class="list_main">2</div>
+        <div class="list_main">3</div>
+        <div class="list_main">4</div>
+        <div class="list_main">5</div>*@
+    <div class="msg_f" style="padding: 20px 0;">@Html.Raw(ViewBag.Pager)</div>
+</div>

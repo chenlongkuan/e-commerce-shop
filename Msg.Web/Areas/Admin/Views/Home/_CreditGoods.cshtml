@@ -1,0 +1,88 @@
+﻿@using Msg.Utils
+@model System.Linq.IQueryable<Msg.Entities.CreditGoodsEntity>
+
+@{
+    ViewBag.Title = "_CreditGoods";
+}
+
+
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>编号</th>
+                <th>Logo</th>
+                <th>商品名称</th>
+                <th>所需积分</th>
+                <th>兑换次数</th>
+                <th>库存</th>
+                <th>虚拟产品</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>前台展示</th>
+                <th colspan="2">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+
+                foreach (var item in Model)
+                {
+  
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>
+                            <a href="@item.Logo" target="_blank">
+                                <img src="@ImagesHelper.GetImgWidthHeight(item.Logo, 25, 25, false)"  title="点击查看大图"></a>
+                        </td>
+                        <td>@item.Name</td>
+                        <td>@item.NeedCredits</td>
+                        <td>@item.ExchangeTimes</td>
+                        <td>@item.Quantity</td>
+                        @*操作*@
+                        @if (item.IsVirtual)
+                        {
+                            <td>是</td>
+
+                        }
+                        else
+                        {
+                            <td>否</td>
+                        }
+                        <td>@item.StartTime.ToString("yyyy-MM-dd")</td>
+                        <td>@item.EndTime.ToString("yyyy-MM-dd")</td>
+                        <td><a href="@Url.Action("Item","Exchanges",new { area= "" , id = item.Id} )">页面展示</a></td>
+                        <td><a href="@Url.Action("EditCreditGoods", "Home", new { area = "Admin", editId = item.Id, edittype = "Modify" })">编辑</a></td>
+                        <td><a  href="javascript:;" onclick="DelCoupon(@item.Id)">删除</a></td>@*href="@Url.Action("DealEditCreditGoods", "Home", new { area = "Admin", editId = item.Id, edittype = "Del" })"*@
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <div style="float: right">@Html.Raw(ViewBag.Pager)</div>
+    <!--/.pager-->
+</div>
+
+
+<script type="text/javascript">
+    function DelCoupon(itemid) {
+        // alert("OK2   ");
+        $.get("@Url.Action("DealEditCreditGoods", "Home", new { area = "Admin" })?t=" + Math.random() + "&edittype=Del" + "&editid=" + itemid, function (result) {
+             //alert("ok3");
+             //alert(result.isError);
+             if (result.status) {
+                 MsgDialog.Alert(true, "删除成功!", function () {
+                     location.href = "@Url.Action("CreditGoods","Home",new { area = "Admin"})?t=" + Math.random();
+                });
+
+            } else {
+                MsgDialog.Alert(false, result.msg);
+
+            }
+        });
+
+    }
+</script>
+

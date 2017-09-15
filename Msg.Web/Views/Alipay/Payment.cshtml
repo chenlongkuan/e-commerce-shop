@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "支付订单";
+    Layout = "~/Views/Shared/_CartLayout.cshtml";
+}
+
+<div class="msg_w" style="padding-bottom:50px;">
+    <div class="msg_shop">
+        <div class="shop_m clearfix">
+            <div class="shop_m_left"><img src="@Url.Content("~/Content/images/shop.png")">&nbsp;支付订单
+            </div>
+            @*<div class="shop_m_right"><div class="r_span" style="width:100%;"></div></div>*@
+        </div>
+        <div class="msg_fkcg" style="color: red">@Html.Raw(ViewBag.ErrMsg)！</div>
+        <div class="msg_fkcg1"><a href="/">继续购物&gt;&gt;</a>
+        </div>
+    </div>
+    @Html.Partial("_GuessLikeAndViewHistory")
+</div>

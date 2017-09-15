@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="NewFileUpload" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_INewFileUpload_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsoma:OptimizedMimeSerialization xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://file.meisugou.com/NewFileUpload.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://file.meisugou.com/NewFileUpload.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://file.meisugou.com/NewFileUpload.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WCF.Lib.File.Entity" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="INewFileUpload_SaveSmailImage_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveSmailImage" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_SaveSmailImage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveSmailImageResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_SaveSmailImageByQuality_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveSmailImageByQuality" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_SaveSmailImageByQuality_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveSmailImageByQualityResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSmailImageByHeightAndWidth_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSmailImageByHeightAndWidth" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSmailImageByHeightAndWidth_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSmailImageByHeightAndWidthResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSmailImageNoFillWidthByHeightAndWidth_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSmailImageNoFillWidthByHeightAndWidth" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSmailImageNoFillWidthByHeightAndWidth_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSmailImageNoFillWidthByHeightAndWidthResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSmailImageByMaxHeightAndMaxWidth_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSmailImageByMaxHeightAndMaxWidth" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSmailImageByMaxHeightAndMaxWidth_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSmailImageByMaxHeightAndMaxWidthResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSmailImageByMaxHeightAndMaxWidth_Tuan_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSmailImageByMaxHeightAndMaxWidth_Tuan" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSmailImageByMaxHeightAndMaxWidth_Tuan_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSmailImageByMaxHeightAndMaxWidth_TuanResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSmailImageByMaxWidth_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSmailImageByMaxWidth" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSmailImageByMaxWidth_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSmailImageByMaxWidthResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSquareImage_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSquareImage" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadAndMakeSquareImage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadAndMakeSquareImageResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFile" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadFileByOriginal_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFileByOriginal" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadFileByOriginal_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFileByOriginalResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadFile_Tuan_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFile_Tuan" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_UploadFile_Tuan_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFile_TuanResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_SaveSchoolLogo_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveSchoolLogo" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_SaveSchoolLogo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveSchoolLogoResponse" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_GetMaxImgWidthSrcAndMaxHeight_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMaxImgWidthSrcAndMaxHeight" />
+  </wsdl:message>
+  <wsdl:message name="INewFileUpload_GetMaxImgWidthSrcAndMaxHeight_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMaxImgWidthSrcAndMaxHeightResponse" />
+  </wsdl:message>
+  <wsdl:portType name="INewFileUpload">
+    <wsdl:operation name="SaveSmailImage">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/SaveSmailImage" message="tns:INewFileUpload_SaveSmailImage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/SaveSmailImageResponse" message="tns:INewFileUpload_SaveSmailImage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveSmailImageByQuality">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/SaveSmailImageByQuality" message="tns:INewFileUpload_SaveSmailImageByQuality_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/SaveSmailImageByQualityResponse" message="tns:INewFileUpload_SaveSmailImageByQuality_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSmailImageByHeightAndWidth">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByHeightAndWidth" message="tns:INewFileUpload_UploadAndMakeSmailImageByHeightAndWidth_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByHeightAndWidthResponse" message="tns:INewFileUpload_UploadAndMakeSmailImageByHeightAndWidth_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSmailImageNoFillWidthByHeightAndWidth">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageNoFillWidthByHeightAndWidth" message="tns:INewFileUpload_UploadAndMakeSmailImageNoFillWidthByHeightAndWidth_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageNoFillWidthByHeightAndWidthResponse" message="tns:INewFileUpload_UploadAndMakeSmailImageNoFillWidthByHeightAndWidth_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSmailImageByMaxHeightAndMaxWidth">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByMaxHeightAndMaxWidth" message="tns:INewFileUpload_UploadAndMakeSmailImageByMaxHeightAndMaxWidth_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByMaxHeightAndMaxWidthResponse" message="tns:INewFileUpload_UploadAndMakeSmailImageByMaxHeightAndMaxWidth_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSmailImageByMaxHeightAndMaxWidth_Tuan">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByMaxHeightAndMaxWidth_Tuan" message="tns:INewFileUpload_UploadAndMakeSmailImageByMaxHeightAndMaxWidth_Tuan_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByMaxHeightAndMaxWidth_TuanResponse" message="tns:INewFileUpload_UploadAndMakeSmailImageByMaxHeightAndMaxWidth_Tuan_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSmailImageByMaxWidth">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByMaxWidth" message="tns:INewFileUpload_UploadAndMakeSmailImageByMaxWidth_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByMaxWidthResponse" message="tns:INewFileUpload_UploadAndMakeSmailImageByMaxWidth_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSquareImage">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSquareImage" message="tns:INewFileUpload_UploadAndMakeSquareImage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/UploadAndMakeSquareImageResponse" message="tns:INewFileUpload_UploadAndMakeSquareImage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/UploadFile" message="tns:INewFileUpload_UploadFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/UploadFileResponse" message="tns:INewFileUpload_UploadFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadFileByOriginal">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/UploadFileByOriginal" message="tns:INewFileUpload_UploadFileByOriginal_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/UploadFileByOriginalResponse" message="tns:INewFileUpload_UploadFileByOriginal_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadFile_Tuan">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/UploadFile_Tuan" message="tns:INewFileUpload_UploadFile_Tuan_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/UploadFile_TuanResponse" message="tns:INewFileUpload_UploadFile_Tuan_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveSchoolLogo">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/SaveSchoolLogo" message="tns:INewFileUpload_SaveSchoolLogo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/SaveSchoolLogoResponse" message="tns:INewFileUpload_SaveSchoolLogo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxImgWidthSrcAndMaxHeight">
+      <wsdl:input wsaw:Action="http://tempuri.org/INewFileUpload/GetMaxImgWidthSrcAndMaxHeight" message="tns:INewFileUpload_GetMaxImgWidthSrcAndMaxHeight_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INewFileUpload/GetMaxImgWidthSrcAndMaxHeightResponse" message="tns:INewFileUpload_GetMaxImgWidthSrcAndMaxHeight_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSHttpBinding_INewFileUpload" type="tns:INewFileUpload">
+    <wsp:PolicyReference URI="#WSHttpBinding_INewFileUpload_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SaveSmailImage">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/SaveSmailImage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveSmailImageByQuality">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/SaveSmailImageByQuality" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSmailImageByHeightAndWidth">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByHeightAndWidth" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSmailImageNoFillWidthByHeightAndWidth">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageNoFillWidthByHeightAndWidth" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSmailImageByMaxHeightAndMaxWidth">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByMaxHeightAndMaxWidth" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSmailImageByMaxHeightAndMaxWidth_Tuan">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByMaxHeightAndMaxWidth_Tuan" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSmailImageByMaxWidth">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/UploadAndMakeSmailImageByMaxWidth" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadAndMakeSquareImage">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/UploadAndMakeSquareImage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadFile">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/UploadFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadFileByOriginal">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/UploadFileByOriginal" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UploadFile_Tuan">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/UploadFile_Tuan" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveSchoolLogo">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/SaveSchoolLogo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMaxImgWidthSrcAndMaxHeight">
+      <soap12:operation soapAction="http://tempuri.org/INewFileUpload/GetMaxImgWidthSrcAndMaxHeight" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NewFileUpload">
+    <wsdl:port name="WSHttpBinding_INewFileUpload" binding="tns:WSHttpBinding_INewFileUpload">
+      <soap12:address location="http://file.meisugou.com/NewFileUpload.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://file.meisugou.com/NewFileUpload.svc</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Dns>localhost</Dns>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

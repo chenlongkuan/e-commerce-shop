@@ -1,0 +1,41 @@
+﻿@model List<Msg.Bll.Models.CouponSendLogModel>
+@{
+    ViewBag.Title = "选择优惠卷";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+    var couponId = ViewBag.couponId;
+}
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#btnCouponOk").click(function() {
+                var parameter = $.trim($("#p").val());
+                var couponId = $("input[name='cbx_cart_coupons_item']:checked").val();
+                window.location.href = "/Mobile/home/CheckOut/" + couponId + "?p=" + encodeURIComponent(parameter);
+            });
+        })
+    </script>
+}
+<input type="hidden" id="h_currentCouponId" value="@couponId"/>
+<input type="hidden" id="p" value="@ViewBag.p"/>
+<div class="msg_zffs">
+    @if (Model != null && Model.Count > 0)
+    {
+        var couponLoopCount = 0;
+        foreach (var item in Model)
+        {
+            couponLoopCount++;
+        <div class="cl_ff3300">
+            @if (couponId == item.Id)
+            {
+                <input type="radio" id="GroupId@(item.Id)" name="cbx_cart_coupons_item" checked='checked' type="radio" couponvalue="@item.CouponValue" value="@item.Id"><label for="GroupId@(item.Id)">&nbsp;&nbsp;@item.CouponName</label>
+            }
+            else
+            {
+                <input type="radio" id="GroupId@(item.Id)" name="cbx_cart_coupons_item" @(couponLoopCount == 1 ? "checked='checked'" : "") type="radio" couponvalue="@item.CouponValue" value="@item.Id"><label for="GroupId@(item.Id)">&nbsp;&nbsp;@item.CouponName</label>
+            }
+        </div>
+        }
+    }
+</div>
+<div class="msg_zf_b"><a href="javascript:;" id="btnCouponOk">确认优惠劵</a></div>

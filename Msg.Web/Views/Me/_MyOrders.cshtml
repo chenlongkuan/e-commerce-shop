@@ -1,0 +1,81 @@
+﻿
+@using Msg.Entities
+@using Msg.Tools.Extensions
+@using Msg.Utils
+@model System.Linq.IQueryable<Msg.Entities.OrdersEntity>
+
+@{
+    decimal orderPrice = 0;
+}
+
+@if (Model != null && Model.Any())
+{
+    <table cellpadding="0" cellspacing="0" width="100%">
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th colspan="4">
+                        <span class="cl_0093dd">@(item.StatusDesc)</span>&nbsp;&nbsp;
+                        订单号：<a href="">@item.OrderNo</a><span class="span1">|</span>
+                        @item.Address.ReciverName<span class="span1">|</span>
+                        @item.CreateTime.ToZhTime()
+                    </th>
+                </tr>
+
+                <tr>
+                    <td class="td1">
+                        <ul>
+                            @foreach (var orderItems in item.Items)
+                            {
+                                <li class="clearfix">
+                                    <div class="li1">
+                                        <a href="@Url.Action("Details", "Home", new {id = orderItems.Goods.Id})"><img src="@ImagesHelper.GetImgWidthHeight(orderItems.Goods.Product.MainLogo, 80, 80, false)" width="80" height="80"></a>
+                                    </div>
+                                    <div class="li2">
+                                        <a href="@Url.Action("Details", "Home", new {id = orderItems.Goods.Id})">@(orderItems.Goods.ShortTitle)&nbsp;&nbsp; X@(orderItems.Quantity)</a>
+                                        <br>@(orderItems.SinglePrice)元
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </td>
+                    <td width="120">@(item.DisplayPrice)元<br>@item.PayWay</td>
+                    <td width="120"><a href="@Url.Action("MyOrder", "Me", new {no = item.OrderNo})" target="_blank">订单详情</a></td>
+                    @switch (item.Status)
+                    {
+                        case (int)OrderStatusEnum.UnPay:
+                            <td width="170" class="per_button">
+                                @if (item.PayWay.Equals(PayWayEnum.CashOnline.ToDescription()))
+                                {
+                                       <a href="@Url.Action("Payment", "Alipay", new { orderNo = item.OrderNo })" target="_blank">立即付款</a>
+                                }
+                                <a href="JavaScript:;" onclick="myOrders.cancelOrder('@item.Id');return false; ">取消订单</a>
+                            </td>
+                                break;
+                        case (int)OrderStatusEnum.Sended:
+                        <td width="170" class="per_button"><a href="JavaScript:;" onclick="myOrders.confirmReceipt('@item.Id')">确认收货</a></td>
+                                break;
+                        case (int)OrderStatusEnum.Payed:
+                        case (int)OrderStatusEnum.Outputing:
+                        case (int)OrderStatusEnum.Received:
+                        case (int)OrderStatusEnum.Done:
+                        case (int)OrderStatusEnum.Cancel:
+                        case (int)OrderStatusEnum.Expired:
+                        <td width="170" class="per_button"><a href="@Url.Action("Details", "Home", new {id = item.Items.FirstOrDefault().Goods.Id})">再次购买</a></td>
+                                break;
+                    }
+
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+    @Html.Raw(ViewBag.Pager)
+}
+else
+{
+    <div class="dd_list_w">暂无此类型订单，<a href="/" target="_blank">赶快去挑选喜欢的商品吧！</a></div>
+}

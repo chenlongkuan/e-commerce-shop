@@ -1,0 +1,17 @@
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\Msg.Redis.dll
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\Msg.Redis.pdb
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\Msg.Config.dll
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\ServiceStack.Common.dll
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\ServiceStack.Interfaces.dll
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\ServiceStack.Redis.dll
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\ServiceStack.Text.dll
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\Msg.Utils.dll
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\Msg.Config.pdb
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\ServiceStack.Common.xml
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\ServiceStack.Interfaces.xml
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\ServiceStack.Redis.xml
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\ServiceStack.Text.xml
+D:\xk_Projects\Meisugou\Msg.Redis\bin\Debug\Msg.Utils.pdb
+D:\xk_Projects\Meisugou\Msg.Redis\obj\Debug\Msg.Redis.csprojResolveAssemblyReference.cache
+D:\xk_Projects\Meisugou\Msg.Redis\obj\Debug\Msg.Redis.dll
+D:\xk_Projects\Meisugou\Msg.Redis\obj\Debug\Msg.Redis.pdb

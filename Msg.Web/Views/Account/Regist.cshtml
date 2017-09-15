@@ -1,0 +1,102 @@
+﻿@using Msg.Bll.Models
+@model System.Collections.Generic.List<Msg.Bll.Models.SchoolModel>
+
+@{
+    Layout = null;
+    var regions = ViewBag.Regions as List<RegionModel>;
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>注册账号 - 美速购 - 大学生专属O2O购物商城，零食、牛奶、休闲食品、在校自主创业、商企校园营销一站式平台。</title>
+    <link href="/fav.ico" mce_href="favicon.ico" rel="bookmark" type="image/x-icon" />
+    <link href="/fav.ico" mce_href="favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="/fav.ico" mce_href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/normalize.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/msg_main.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/login.css")" />
+
+    <link href="@Url.Content("~/Content/bootstrapdialog/dist/css/bootstrap-dialog.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/jquery.2.1.3.js")"></script>
+</head>
+
+<body>
+    <div class="msg_login">
+        <div class="login_t clearfix">
+            <div class="login_left"><a href="/"><img src="@Url.Content("~/Content/images/logo.png")" /></a></div>
+            <div class="login_right">欢迎注册</div>
+        </div>
+        <div class="msg_reg clearfix">
+            <div class="reg_left">
+                <form method="POST" action="@Url.Action("Regist")">
+                    @Html.AntiForgeryToken()
+                    <table cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td align="right">账户名 :</td>
+                            <td><input name="email" id="txt_regist_email" maxlength="50" type="text" class="input4" value="请输入注册邮箱" style="color: rgb(153, 153, 153);" onfocus="if (value == '请输入注册邮箱') { this.style.color = '#000'; value = '' }" onblur="    if (value == '') { this.style.color = '#999'; value = '请输入注册邮箱' }" /></td>
+                        </tr>
+                        <tr>
+                            <td width="135" align="right">昵称 :</td>
+                            <td><input name="nickName" id="txt_regist_nickName" maxlength="10" type="text" class="input1"  /></td>
+                        </tr>
+                        <tr>
+                            <td align="right">设置密码 :</td>
+                            <td><input name="pwd" id="txt_regist_pwd" type="password" maxlength="16" class="input2" /></td>
+                        </tr>
+                        <tr>
+                            <td align="right">重复密码 :</td>
+                            <td><input name="" id="txt_regist_confirmPwd" type="password" maxlength="16" class="input2" /></td>
+                        </tr>
+                        <tr>
+                            <td align="right">手机 :</td>
+                            <td><input name="mobile" id="txt_regist_mobile" maxlength="11" type="text" class="input3" /></td>
+                        </tr>
+
+                        <tr>
+                            <td align="right">选择学校 :</td>
+                            <td>
+                                <select name="regionId" id="sel_regist_region">
+                                    @if (regions != null && regions.Any())
+                                    {
+                                        foreach (var item in regions)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <select name="schoolId" id="sel_regist_school">
+                                    <option value="-1">-请选择所在学校-</option>
+                                    @if (Model != null && Model.Any())
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right" style="padding-top: 30px;">&nbsp;</td>
+                            <td><a href="JavaScript:;" id="btn_regist_submit" class="button1">立即注册</a></td>
+                        </tr>
+                    </table>
+                </form>
+                @if (!string.IsNullOrEmpty(ViewBag.ErrMsg))
+                {
+                    <span style="color: red">@ViewBag.ErrMsg</span>
+                }
+
+            </div>
+            <div class="reg_right" id="RegistImage">@*<img src="@Url.Content("~/content/images/login.png")" />*@</div>
+        </div>
+    </div>
+    @Html.Partial("_Footer")
+    <script src="@Url.Content("~/AdScript/web_regist.js")"></script>
+    <script src="@Url.Content("~/Content/bootstrapdialog/dist/js/bootstrap-dialog.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/Common.js")"></script>
+    <script src="@Url.Content("~/Scripts/regist.js")"></script>
+</body>
+</html>

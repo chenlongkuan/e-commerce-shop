@@ -1,0 +1,337 @@
+﻿@using Msg.Bll
+@using Msg.Bll.Models
+@using Msg.Entities
+@using Msg.Tools.Extensions
+@using Msg.Utils
+@using Msg.Web.App_Start
+@using EnumExtensions = Glimpse.Core.Extensions.EnumExtensions
+@model System.Collections.Generic.List<Msg.Bll.Models.CartModel>
+
+@{
+    ViewBag.Title = "核对订单信息";
+    Layout = "~/Views/Shared/_CartLayout.cshtml";
+    var regions = ViewBag.Regions as List<RegionModel>;
+    var schools = ViewBag.School as List<SchoolModel>;
+
+    var address = ViewBag.Address as IQueryable<UserAddressEntity>;
+    var coupons = ViewBag.Coupons as List<CouponSendLogModel>;
+    var addressId = 0;
+}
+
+<div class="msg_w" style="padding-bottom:50px;">
+    <div class="msg_shop">
+        <div class="shop_m clearfix">
+            <div class="shop_m_left">
+                <img src="@Url.Content("~/Content/images/shop.png")">&nbsp;我的购物车
+            </div>
+            <div class="shop_m_right">
+                <div class="r_span" style="width: 66%;"></div>
+            </div>
+        </div>
+        <div class="msg_fill1">填写并核对订单信息</div>
+
+        @if (Model != null && Model.Any())
+        {
+
+
+            <div class="msg_fill2" id="div_view_model" style="display: @((address != null && address.Any()) ? "none" : "block")">
+                <div class="fill2_1 a2">
+                    收货人信息&nbsp;&nbsp;<a href="JavaScript:;" id="btn_address_edit">[修改]</a>
+                </div>
+                <div id="div_view_model_address_container">
+                    @if (address != null && address.Any())
+                    {
+                        var defaultAddress = address.SingleOrDefault(f => f.IsDefult);
+                        if (defaultAddress != null)
+                        {
+                            <div class="fill2_2 a2"><span>&nbsp;</span>@defaultAddress.ReciverName <span>&nbsp;&nbsp;&nbsp;</span>@(defaultAddress.CityName)&nbsp;&nbsp;@(defaultAddress.RegionName)&nbsp;&nbsp;@(defaultAddress.SchoolName)&nbsp;&nbsp;@(defaultAddress.DetailAddress) <span>&nbsp;&nbsp;&nbsp;</span>@defaultAddress.ReciverTel <span>&nbsp;&nbsp;</span></div>
+                        }
+                        else
+                        {
+                            defaultAddress = address.FirstOrDefault();
+                            <div class="fill2_2 a2"><span>&nbsp;</span>@defaultAddress.ReciverName <span>&nbsp;&nbsp;&nbsp;</span>@(defaultAddress.CityName)&nbsp;&nbsp;@(defaultAddress.RegionName)&nbsp;&nbsp;@(defaultAddress.SchoolName)&nbsp;&nbsp;@(defaultAddress.DetailAddress) <span>&nbsp;&nbsp;&nbsp;</span>@defaultAddress.ReciverTel <span>&nbsp;&nbsp;</span></div>
+
+                        }
+                        addressId = defaultAddress.Id;
+                    }
+                </div>
+            </div>
+
+            <div class="msg_fill2" id="div_edit_model" style="display: @((address != null && address.Any()) ? "block" : "none")">
+                <div class="fill2_1">收货人信息</div>
+                <div class="fill2_2 a2" id="div_edit_model_existsAddress">
+                    @if (address != null && address.Any())
+                    {
+                        var loopCount = 0;
+                        foreach (var item in address)
+                        {
+                            loopCount++;
+                            <div class="div_edit" id="div_edit_model_existsAddress_item_@(item.Id)">
+                                @if (address.Any(f => f.IsDefult))
+                                {
+                                    <input name="cbx_cart_address_item" type="radio" value="@item.Id" @(item.IsDefult ? "checked='checked'" : "")>
+                                }
+                                else
+                                {
+                                    <input name="cbx_cart_address_item" type="radio" value="@item.Id" @(loopCount == 1 ? "checked='checked'" : "")>
+                                }
+                                <span id="div_cart_edit_model_address_@(item.Id)">
+                                    <span>&nbsp;</span>@item.ReciverName <span>&nbsp;&nbsp;&nbsp;</span>@(item.CityName)&nbsp;&nbsp;@(item.RegionName)&nbsp;&nbsp;@(item.SchoolName)&nbsp;&nbsp;@(item.DetailAddress) <span>&nbsp;&nbsp;&nbsp;</span>@item.ReciverTel <span>&nbsp;&nbsp;</span>
+                                </span>
+                                <span>&nbsp;&nbsp;</span>
+                                <a href="javascript:;" onclick="preOrder.editAddress(@item.Id, '@(item.ReciverName)' , '@(item.DetailAddress)' , '@(item.ReciverTel)' , @(item.RegionId), @(item.SchoolId));return false; ">编辑</a>
+                                <span>&nbsp;&nbsp;</span>
+                                <a href="JavaScript:;" class="btn_cart_edit_model_address_delete" addid="@item.Id">删除</a>
+                            </div>
+                        }
+                    }
+
+                </div>
+                <div class="fill2_2">
+                    <input name="cbx_cart_address_item" id="cbx_cart_address_new" type="radio" @((address != null && address.Any()) ? "" : "checked='checked'") value="new">&nbsp;使用新地址
+                </div>
+                <input type="hidden" id="h_address_Count" value="" />
+                <input type="hidden" id="h_isEditAddress" value="false" />
+                <input type="hidden" id="h_currentEditAddress_Id" value="0" />
+                <table cellpadding="0" cellspacing="0" width="100%" class="msg_fill3">
+                    <tbody>
+                        <tr>
+                            <td width="100" align="right">收货人：</td>
+                            <td><input id="txt_cart_address_new_receiver" maxlength="10" name="" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">联系电话：</td>
+                            <td><input id="txt_cart_address_new_mobile" type="text" style="width: 200px;"></td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">所在地区：</td>
+                            <td>
+                                <select id="sel_cart_address_new_ctiy">
+                                    <option>重庆市</option>
+                                </select>&nbsp;&nbsp;
+                                <select id="sel_cart_address_new_region">
+                                    <option value="-1">--请选择--</option>
+                                    @if (regions != null && regions.Any())
+                                    {
+                                        foreach (var item in regions)
+                                        {
+                                            if (item.Id == UserAuth.UserRegionId)
+                                            {
+                                                <option value="@item.Id" selected="selected">@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    }
+
+                                </select>&nbsp;&nbsp;
+                                <select id="sel_cart_address_new_school">
+                                    <option value="-1">--请选择--</option>
+                                    @if (schools != null && schools.Any())
+                                    {
+                                        foreach (var item in schools)
+                                        {
+                                            if (item.Id == UserAuth.SchoolId)
+                                            {
+                                                <option value="@item.Id" selected="selected">@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100" align="right">寝室楼栋门牌号：</td>
+                            <td><input id="txt_cart_address_new_detail" maxlength="100" type="text" style="width: 300px;"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div class="clearfix msg_fill4">
+                    <div class="msg_b2" style="float: left;">
+                        <a href="javascript:;" id="btn_cart_address_save">保存收货人信息</a>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" id="h_cart_address_id" value="@addressId" />
+
+            <div class="msg_fill2">
+                <div class="fill2_1">支付方式 </div>
+                <div class="fill2_2 a2">
+                    <input name="payway" type="radio" checked="checked" value="@PayWayEnum.CashOnline.ToString()">&nbsp;支付宝&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input name="payway" disabled="disabled" type="radio" value="@PayWayEnum.CashDelivery.ToString()"><span>&nbsp;货到付款&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所选商品仅支持在线支付</span>
+                    @*@if (Model.Count(f => f.IsCashDelivery)!=Model.Count)//一个以上商品如果有在线付款的仅支持在线付款
+                        {
+                            <input name="payway" disabled="disabled" type="radio" value="@PayWayEnum.CashDelivery.ToString()"><span>&nbsp;货到付款&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;所选商品仅支持在线支付</span>
+                        }
+                        else
+                        {
+                            <input name="payway" type="radio" value="@PayWayEnum.CashDelivery.ToString()"><span>&nbsp;货到付款</span>
+                        }*@
+                    <span style="color:gray"><span>&nbsp; &nbsp; </span>(大学城以外学校仅支持在线付款)</span>
+                </div>
+                <div class="fill2_1">配送方式</div>
+                <div class="fill2_2 a2">
+                    <input name="expressway" type="radio" checked="checked" value="@ExpressWayEnum.MsgExpress.ToString()">&nbsp;美速购快递&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    @*<input name="expressway" type="radio" value="@ExpressWayEnum.SelfGet.ToString()">&nbsp;自提*@
+                </div>
+                <div class="fill2_1">配送时间</div>
+                <div class="fill2_2 a2">
+
+                    <span>日期：</span><select id="sel_send_date">
+
+                        @{
+                                    var noonExpireTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 12, 0, 0);
+                                    var nightExpireTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 0, 0);
+
+                        }
+                        @for (int i = 0; i < 7; i++)
+                        {
+                            <option value="@DateTime.Now.AddDays(DateTime.Now >= nightExpireTime ? i + 1 : i).ToShortDateString()">@DateTime.Now.AddDays(DateTime.Now >= nightExpireTime ? i + 1 : i).ToString("M月dd日")</option>
+                        }
+                    </select>
+                    <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时间段：</span>
+                    @if (DateTime.Now < noonExpireTime || DateTime.Now >= nightExpireTime)
+                    {
+                        <input name="SendTimeBuckets" id="rd_timeBuckets_noon" type="radio" checked="checked" value="@SendTimeBucketsEnum.Noon.ToString()"><span>&nbsp;</span>@SendTimeBucketsEnum.Noon.ToDescription()
+                        <span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
+                        <input name="SendTimeBuckets" id="rd_timeBuckets_night" type="radio" value="@SendTimeBucketsEnum.AfterNoon.ToString()"><span>&nbsp;</span>@SendTimeBucketsEnum.AfterNoon.ToDescription()
+                    }
+                    else
+                    {
+                        <input name="SendTimeBuckets" id="rd_timeBuckets_noon" type="radio" disabled="disabled" value="@SendTimeBucketsEnum.Noon.ToString()"><span>&nbsp;</span>@SendTimeBucketsEnum.Noon.ToDescription()
+                        <span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
+                        <input name="SendTimeBuckets" id="rd_timeBuckets_night" checked="checked" type="radio" value="@SendTimeBucketsEnum.AfterNoon.ToString()"><span>&nbsp;</span>@SendTimeBucketsEnum.AfterNoon.ToDescription()
+                    }
+                    <span style="color:gray">&nbsp;&nbsp;(大学城以外学校每日17:00点统一发货，次日中午到货)</span>
+                    <input type="hidden" id="h_noonExpireTime" value="@noonExpireTime" />
+                    <input type="hidden" id="h_nightExpireTime" value="@nightExpireTime" />
+                </div>
+                @*<div class="clearfix msg_fill4">
+                        <div class="msg_b2" style="float: left;">
+                            <a href="">确认支付及配送方式</a>
+                        </div>
+                    </div>*@
+
+            </div>
+
+            <div class="msg_fill2" style="border-bottom: 0px;">
+                <div class="fill2_1 a2 clearfix">
+                    <div class="msg_l">商品清单</div>
+                    <div class="msg_r">
+                        <a href="@Url.Action("Cart","Home")">返回购物车修改</a>
+                    </div>
+                </div>
+                <table cellpadding="0" cellspacing="0" width="100%" class="shop_tab" style="padding-top: 20px;">
+                    <tbody>
+                        <tr>
+                            <th width="82">商品</th>
+                            <th>&nbsp;</th>
+                            <th width="100">价格</th>
+                            <th width="120">数量</th>
+                            <th width="80">库存状态</th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><img class="lazy" data-original="@ImagesHelper.GetImgWidthHeight(item.GoodsLogo, 82, 82, false)" width="82" height="82"></td>
+                                <td style="text-align: left;"><a href="@Url.Action("Details","Home", new {id = item.GoodsId})" target="_blank">@item.GoodsShortTitle</a></td>
+                                <td>@item.SinglePrice.ToString("F")</td>
+                                <td>@item.Quantity</td>
+                                <td><a href="javascript:;">@(item.Buyable ? "有货" : item.UnBuyableDesc)</a></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+            <input type="hidden" id="h_cart_coupons_count" value="@(coupons.Count)" />
+
+            if (coupons != null && coupons.Any())
+            {
+                var couponLoopCount = 0;
+                <div class="msg_fill2">
+                    <div class="fill2_1">使用优惠券抵消部分总额</div>
+                    <div class="msg_fill5">
+                        <ul class="clearfix">
+
+                            @foreach (var item in coupons)
+                            {
+                                couponLoopCount++;
+                                var couponLogo = item.Logo == "null" ? Url.Content("~/Content/images/coupon_" + item.CouponValue.ToString("####") + ".png") : ImagesHelper.GetImgWidthHeight(item.Logo, 260, 105, false, 100);
+                                <li>
+                                    <img src="@couponLogo">
+                                    <div class="li1">
+                                        <input name="cbx_cart_coupons_item" @(couponLoopCount == 1 ? "checked='checked'" : "") type="radio" couponvalue="@item.CouponValue" value="@item.Id">&nbsp;剩余@(item.LeftNum)张
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+
+            var sumPrice = Model.Sum(s => s.SellPrice);
+            var expressCost = Model.Sum(s => s.SellPrice) >= ConfigModel.HowmuchToFreeExpressCost ? 0 : ConfigModel.DefaultExpressCost;
+
+            <input type="hidden" id="h_cart_default_express_cost" value="@ConfigModel.DefaultExpressCost" />
+            <input type="hidden" id="h_cart_default_free_express_cost" value="@ConfigModel.HowmuchToFreeExpressCost" />
+            <div class="msg_fill6">
+                <span class="cl_ff3300">@Model.Count</span> 件商品，总商品金额：￥@sumPrice.ToString("F")<br>
+                运费： ￥<span id="sp_submit_order_expresscost">@(expressCost.ToString("F"))</span><br>
+                优惠券：￥<span id="sp_submitOrder_coupon_value">0.00</span><br>
+            </div>
+
+            <div class="msg_fill7 clearfix">
+                <div class="fill7_1 msg_b2">
+                    @if (Model.Any(f => !f.Buyable))
+                    {
+                        <a href="javascript:;" disabled="disabled" style="background: none repeat scroll 0 0 gray;">提交订单</a>
+                    }
+                    else
+                    {
+                        <a href="javascript:;" id="btn_submit_order">提交订单</a>
+                    }
+
+                </div>
+                <div class="fill7_1">应付总额：<span>￥<span id="sp_submitOrder_shouldpay">@((sumPrice + expressCost).ToString("F"))</span></span></div>
+            </div>
+        }
+        else
+        {
+
+            <div class="msg_fkcg">@ViewBag.ErrMsg</div>
+            <div class="msg_fkcg1"><a href="/">继续购物&gt;&gt;</a></div>
+
+        }
+    </div>
+    @Html.Partial("_GuessLikeAndViewHistory")
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#sel_send_date").bind("change", function () {
+                var nowDate = new Date();
+                var noonTime = new Date($("#h_noonExpireTime").val().replace(/-/g, "/"));
+                var nightTime = new Date($("#h_nightExpireTime").val().replace(/-/g, "/"));
+                var selectedDate = new Date($(this).val().replace(/-/g, "/"));
+                if (nowDate < selectedDate) {
+                    $("input[name='SendTimeBuckets']").removeAttr("disabled");
+                } else if (nowDate < noonTime || nowDate >= nightTime) {
+                    $("input[name='SendTimeBuckets']").removeAttr("disabled");
+                } else {
+                    $("#rd_timeBuckets_noon").prop("disabled", "disabled");
+                }
+            });
+        });
+
+    </script>
+}

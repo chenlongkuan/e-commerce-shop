@@ -1,0 +1,210 @@
+﻿@using Msg.Bll.Helpers
+@using Msg.Entities
+@model System.Linq.IQueryable<Msg.Entities.SuppliersEntity>
+
+@{
+    ViewBag.Title = "创业者管理";
+    ViewBag.InnerTopTitle = "创业者管理";
+}
+
+
+
+<div class="col-lg-6" style="width: 100%">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="height: 50px;">
+
+            <div class="form-group" style="float: left; margin-left: 25px;">
+                <label>用户名</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" value="" id="txt_search_UserName">
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 25px;">
+                <label>联系人电话</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" value="" id="txt_search_LinkTel">
+                </label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 25px;">
+                <label>联系人</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" value="" id="txt_search_LinkMan">
+                </label>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <button type="button" class="btn btn-default" onclick="paging(1)">搜索</button>
+            </div>
+            <div style="float: right; margin-left: 15px;">
+                <button type="button" class="btn btn-default" onclick="reset()">重置</button>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>用户名</th>
+                            <th>联系人</th>
+                            <th>联系电话</th>
+                            <th>已库存数量</th>
+                            <th>申请商品数量</th>
+                            <th>申请原因</th>
+                            <th>审核结果</th>
+                            <th>回复内容</th>
+                            <th>申请时间</th>
+                            <th colspan="2">
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+
+                            foreach (var item in Model)
+                            {
+
+                                <tr>
+                                    <td>
+                                        @item.User.NickName
+                                    </td>
+                                    <td>@item.LinkMan</td>
+                                    <td>@item.LinkTel</td>
+                                    <td>
+                                        <a href="@Url.Action("Products", "Home", new {area = "Admin"})?supplierId=@item.Id">
+                                            @ProductsHelper.Instance.GetSuppliersProductCount(item.Id)
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("ProductAuthority", "Home", new { area = "Admin" })?supplierName=@item.User.NickName">
+                                            @item.ProductsApply.Count(f => f.IsUseable && f.ApplyStatus != (int)ApplyStatusEnum.ApplyFailed)
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.Reason) && item.Reason.Length > 10)
+                                        {
+                                            <span id="ReasonSignle">
+                                                @item.Reason.Substring(0, 10) <a onclick="$('#ReasonDetail').show();$('#ReasonSignle').hide();">展开</a>
+                                            </span>
+
+                                            <div style="word-wrap: break-word;" id="ReasonDetail" style="display: none">@item.Reason<a onclick="$('#ReasonDetail').hide();$('#ReasonSignle').show();">收起</a></div>
+                                        }
+                                        else
+                                        {
+                                            <div id="ReasonDetail">@item.Reason</div>
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @if (string.IsNullOrEmpty(item.RefusedReason))
+                                        {
+                                            Html.Raw(item.IsVerified ? "未通过" : "通过");
+                                        }
+                                        else
+                                        {
+                                            Html.Raw("未审核");
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.RefusedReason))
+                                        {
+                                            if (item.RefusedReason.Length > 10)
+                                            {
+                                                <span id="RefusedReasonSignle">
+                                                    @item.RefusedReason.Substring(0, 10) <a onclick=" $('#RefusedReasonDetail').show();$('#RefusedReasonSignle').hide(); ">展开</a>
+                                                </span>
+                                                <div style="word-wrap: break-word;" id="RefusedReasonDetail" style="display: none">@item.RefusedReason<a onclick=" $('#RefusedReasonDetail').hide();$('#RefusedReasonSignle').show(); "></a></div>
+                                            }
+                                            else
+                                            {
+                                                <div id="RefusedReasonDetail">@item.RefusedReason</div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <input class="form-control" id="SuppliersRefusedReason" value="" />
+                                        }
+                                    </td>
+                                    <td>@item.CreateTime.ToString("yyyy-MM-dd")</td>
+                                    @if (!item.IsVerified)
+                                    {
+                                        <td>
+                                            <a href="javascript:;" onclick="DelCoupon('@item.Id',true)">通过</a>
+                                        </td>
+                                        <td>
+                                            <a href="javascript:;" onclick="DelCoupon('@item.Id',false)">拒绝</a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>--</td>
+                                        <td>--</td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+                <div style="float: right">@Html.Raw(ViewBag.Pager)</div>
+                <!--/.pager-->
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+
+<script type="text/javascript">
+    function DelCoupon(itemid, type) {
+        var rfuseReason = "通过";
+        if (type) {
+            if ($("#SuppliersRefusedReason").val() != "") {
+                rfuseReason = $("#SuppliersRefusedReason").val();
+            } else {
+                MsgDialog.Alert(false, "请填写审核回复内容");
+                return;
+            }
+        }
+        // alert("OK2   ");
+        $.get("@Url.Action("EditSupplierApply", "Home", new { area = "Admin" })?t=" + Math.random() + "&refusdReadon" + rfuseReason + "&type=" + type + "&id=" + itemid, function (result) {
+            //alert("ok3");
+            //alert(result.isError);
+            MsgDialog.Alert(result.status, result.msg, function () {
+                if (result.status) {
+                    location.href = location.href;
+                }
+            });
+
+        });
+
+    }
+
+
+
+
+    function paging(page) {
+        var txtprotect = $("#txt_search_protect").val();
+        var txtUserName = $("#txt_search_UserName").val();
+        var txtLinkName = $("#txt_search_LinkMan").val();
+        var txtLinkTel = $("#txt_search_LinkTel").val();
+
+        $(".panel-body").showLoading();
+        //_Orders(int state, DateTime? date, int? brandsId, int page = 1, int pagesize = 10, string orderBy = "", string nickName = "", string goodName = "", string mobile = "")
+        location.href = "@Url.Action("SuppliersEntity", "Home", new { area = "Admin" })?product=" + txtprotect + "&userName=" + txtUserName + "&linkMan=" + txtLinkName + "&linkTel=" + txtLinkTel
+            + "&t=" + Math.random();
+    }
+
+
+
+
+    function reset() {
+        // $("#txt_search_Name").val("");
+        location.href = "@Url.Action("SuppliersEntity", "Home", new { area = "Admin" })";
+    }
+
+</script>

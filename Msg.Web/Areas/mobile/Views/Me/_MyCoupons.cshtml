@@ -1,0 +1,9 @@
+﻿@model  IQueryable<Msg.Entities.CouponSendLogsEntity>
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        var couponLogo = item.Coupon.Logo == "null" ? Url.Content("~/Content/images/coupon_" + item.Coupon.CouponValue.ToString("####") + ".png") : item.Coupon.Logo;
+    <img src="@couponLogo" />
+    }
+}

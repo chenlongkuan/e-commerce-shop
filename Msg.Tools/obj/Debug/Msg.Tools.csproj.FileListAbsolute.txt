@@ -1,0 +1,7 @@
+D:\xk_Projects\Meisugou\Msg.Tools\bin\Debug\Msg.Tools.dll
+D:\xk_Projects\Meisugou\Msg.Tools\bin\Debug\Msg.Tools.pdb
+D:\xk_Projects\Meisugou\Msg.Tools\bin\Debug\NLog.dll
+D:\xk_Projects\Meisugou\Msg.Tools\bin\Debug\NLog.xml
+D:\xk_Projects\Meisugou\Msg.Tools\obj\Debug\Msg.Tools.dll
+D:\xk_Projects\Meisugou\Msg.Tools\obj\Debug\Msg.Tools.pdb
+D:\xk_Projects\Meisugou\Msg.Tools\obj\Debug\Msg.Tools.csprojResolveAssemblyReference.cache

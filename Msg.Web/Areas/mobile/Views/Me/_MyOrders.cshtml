@@ -1,0 +1,86 @@
+﻿@using Msg.Entities
+@using Msg.Tools.Extensions
+@using Msg.Utils
+@model IQueryable<Msg.Entities.OrdersEntity>
+@if (Model != null && Model.Any())
+{
+    var img = "";
+    <ul>
+        @foreach (var item in Model)
+        {
+            var i = 0;
+            <li>
+                @foreach (var orderItems in item.Items)
+                {
+                    <div class="clearfix">
+                        <div class="li_left_i">
+                            @if (i == 0)
+                            {
+                                switch (item.Status)
+                                {
+                                    case (int)OrderStatusEnum.Sended:
+                                    case (int)OrderStatusEnum.Payed:
+                                    case (int)OrderStatusEnum.Outputing:
+                                    case (int)OrderStatusEnum.Received:
+                                    case (int)OrderStatusEnum.Done:
+                                    case (int)OrderStatusEnum.Cancel:
+                                    case (int)OrderStatusEnum.Expired:
+                                <input type="checkbox" disabled="disabled" />
+                                        break;
+                                    default:
+                                <input type="checkbox" name="cbx_myOrder_item" value="@item.Id"/>
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                <span style="width: 13px; height: 13px; display: block"></span>
+                            }
+                        </div>
+                        <div class="li_left">
+                            <a href="@Url.Action("Details", "Home", new { id = orderItems.Goods.Id })">
+                                <img src="@orderItems.Goods.Product.MainLogo"></a>
+                        </div>
+                        <div class="li_right">
+                            <div class="right_t">
+                                <div class="wor1"><a href="@Url.Action("Details", "Home", new { id = orderItems.Goods.Id })">@(orderItems.Goods.ShortTitle)</a></div>
+                                <div class="wor2">￥@(orderItems.SinglePrice.ToString("F"))</div>
+                                <div class="clearfix">
+                                    <div class="wor3"></div>
+                                    <div class="wor4">共@(orderItems.Quantity)件商品&nbsp;&nbsp;<span class="cl_ff3300">合计：@((orderItems.Quantity * orderItems.SinglePrice).ToString("F"))元</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                            i++;
+                }
+                <div class="li1 clearfix">
+                    <div class="li1_lw">@(item.StatusDesc)</div>
+                    <div class="li1_r">
+                        @switch (item.Status)
+                        {
+                            case (int)OrderStatusEnum.UnPay:
+                                if (item.PayWay.Equals(PayWayEnum.CashOnline.ToDescription()))
+                                {
+                            <a href="/Alipay/Payment?orderNo=@(item.OrderNo)" class="a1">立即付款</a>
+                                }
+                            <a href="JavaScript:;" onclick="myOrders.cancelOrder('@item.Id');return false; " class="a1">取消订单</a>
+                                break;
+                            case (int)OrderStatusEnum.Sended:
+                            <a href="JavaScript:;" onclick="myOrders.confirmReceipt('@item.Id')" class="a1">确认收货</a>
+                                break;
+                            case (int)OrderStatusEnum.Payed:
+                            case (int)OrderStatusEnum.Outputing:
+                            case (int)OrderStatusEnum.Received:
+                            case (int)OrderStatusEnum.Done:
+                            case (int)OrderStatusEnum.Cancel:
+                            case (int)OrderStatusEnum.Expired:
+                            <a href="@Url.Action("Details", "Home", new { id = item.Items.FirstOrDefault().Goods.Id })" class="a1">再次购买</a>
+                                break;
+                        }
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+}

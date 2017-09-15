@@ -1,0 +1,89 @@
+﻿@using Msg.Utils
+@model System.Linq.IQueryable<Msg.Entities.CommentsEntity>
+
+@{
+    ViewBag.Title = "我的评论";
+    Layout = "~/Views/Shared/_UCenterLayout.cshtml";
+}
+
+<div class="per_right per_order">
+    <div class="order_h">
+        <div class="h_left">我的评论</div>
+    </div>
+    <div class="order_d">
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <tbody>
+                <tr>
+                    <th colspan="6">
+                        全部评论
+                    </th>
+                </tr>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        if (item.Goods != null)
+                        {
+                            <tr>
+                                <td class="td1">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="li1">
+                                                <a href="@Url.Action("Details", "Home", new {id = item.Goods.Id})" target="_blank">
+                                                    <img alt="@item.Goods.ShortTitle" src="@ImagesHelper.GetImgWidthHeight(item.Goods.Product.MainLogo, 80, 80, false)" width="80" height="80">
+                                                </a>
+                                            </div>
+                                            <div class="li2">
+                                                @*<a href="@Url.Action("Details", "Home", new {id = item.Goods.Id})" target="_blank">@item.Goods.ShortTitle</a>*@
+                                                @item.Content
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                                @*<td width="70">数量<br>×&nbsp;@item.Goods</td>*@
+                                <td width="130">评论时间<br>@item.CreateTime.ToShortDateString()<br>@item.CreateTime.ToLongTimeString()</td>
+                                <td width="150">
+                                    <a href="@Url.Action("Details", "Home", new {id = item.Goods.Id})#comments_@(item.Id)">查看</a>
+                                    &nbsp;&nbsp;&nbsp;已评论&nbsp;&nbsp;&nbsp;
+                                    <a href="javascript:;" onclick="myComments.deleteComment(@item.Id);return false;">删除</a><br>
+                                    <a href="@Url.Action("Details", "Home", new {id = item.Goods.Id})">再次购买</a>
+                                </td>
+                            </tr>
+                        }
+                        else if (item.CreditGoods != null)
+                        {
+                            <tr>
+                                <td class="td1">
+                                    <ul>
+                                        <li class="clearfix">
+                                            <div class="li1">
+                                                <a href="@Url.Action("Item", "Exchanges", new {id = item.CreditGoods.Id})" target="_blank">
+                                                    <img alt="@item.CreditGoods.Name" src="@ImagesHelper.GetImgWidthHeight(item.CreditGoods.Logo, 80, 80, false)" width="80" height="80">
+                                                </a>
+                                            </div>
+                                            <div class="li2">
+                                                @*<a href="@Url.Action("Details", "Home", new {id = item.Goods.Id})" target="_blank">@item.Goods.ShortTitle</a>*@
+                                                @item.Content
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </td>
+                                @*<td width="70">数量<br>×&nbsp;@item.Goods</td>*@
+                                <td width="130">评论时间<br>@item.CreateTime.ToShortDateString()<br>@item.CreateTime.ToLongTimeString()</td>
+                                <td width="150">
+                                    <a href="@Url.Action("Item", "Exchanges", new { id = item.CreditGoods.Id })#comments_@(item.Id)">查看</a>
+                                    &nbsp;&nbsp;&nbsp;已评论&nbsp;&nbsp;&nbsp;
+                                    <a href="javascript:;" onclick="myComments.deleteComment(@item.Id);return false;">删除</a><br>
+                                    <a href="@Url.Action("Item", "Exchanges", new { id = item.CreditGoods.Id })">再次兑换</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                }
+
+            </tbody>
+        </table>
+    </div>
+    <div class="per_f">@Html.Raw(ViewBag.Pager)</div>
+</div>

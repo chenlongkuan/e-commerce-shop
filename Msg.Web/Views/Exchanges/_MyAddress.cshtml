@@ -1,0 +1,15 @@
+﻿@model System.Linq.IQueryable<Msg.Entities.UserAddressEntity>
+
+<div class="msg_fill2">
+    <div class="fill2_1 a2">
+        收货人信息&nbsp;&nbsp;<a href="@Url.Action("MyAddresses", "Me")">[修改/添加]</a>
+    </div>
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <input name="rd_exchange_address" type="radio" value="@item.Id" @(item.IsDefult ? "checked='checked'" : "")><div class="fill2_2 a2">@item.ReciverName&nbsp;&nbsp;&nbsp;@item.DetailAddress&nbsp;&nbsp;&nbsp;@item.ReciverTel</div>
+        }
+    }
+    <input type="hidden" id="h_address_Count" value="@(Model==null?0:Model.Count())" />
+</div>

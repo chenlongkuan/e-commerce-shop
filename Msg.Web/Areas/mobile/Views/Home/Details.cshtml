@@ -1,0 +1,92 @@
+﻿@using System.Text.RegularExpressions
+@using Msg.Bll
+@using Msg.Utils
+@model Msg.Entities.GoodsEntity
+@{
+    ViewBag.Title = Model.ShortTitle + " :: 商品详情";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+}
+@section Head
+{
+    <style>
+        body {
+            padding-bottom: 60px;
+        }
+    </style>
+}
+@section Scripts
+{
+    <script src="~/Areas/Mobile/Scripts/MobileDetails.js"></script>
+}
+@if (Model != null)
+{
+    var content = Model.Desc;
+    content = content.Replace("src", "data-original");
+    <!--详细页面专用 开始-->
+    <div class="msg_q_gwc">
+        <a href="@Url.Action("Cart", "Home")">
+            <img src="@Url.Content("/Content/MobileTemplate/images/gwc.png")"></a>
+    </div>
+    <!--详细页面专用 开始-->
+    <!--切换广告 开始-->
+    <div class="addWrap">
+        <div class="swipe" id="mySwipe">
+            <div class="swipe-wrap">
+                @foreach (var item in Model.Product.LogoList)
+                {
+                    <div>
+                        <a href="javascript:;">
+                            <img class="img-responsive" src="@ImagesHelper.GetImgWidthHeight(item, 350, 350, false)" /></a>
+                    </div>
+                }
+            </div>
+        </div>
+        <ul id="position">
+        </ul>
+    </div>
+    <script src="@Url.Content("/Content/MobileTemplate/js/swipe.js")"></script>
+    <script type="text/javascript">
+        var bullets = document.getElementById('position').getElementsByTagName('li');
+        var banner = Swipe(document.getElementById('mySwipe'), {
+            auto: 2000,
+            continuous: true,
+            disableScroll: false,
+            callback: function (pos) {
+                var i = bullets.length;
+                while (i--) {
+                    bullets[i].className = ' ';
+                }
+            }
+        });
+    </script>
+    <!--切换广告 结束-->
+    <!--详情 开始-->
+    <div class="msg_det">
+        <div class="title">@Model.ShortTitle</div>
+        <div class="wor1"><span class="span1">￥</span>@Model.SellPrice.ToString("F")<span class="span2">原价：@Model.MarketPrice.ToString("F")</span></div>
+        <div class="wor2 clearfix">
+            <div class="span1">满@(ConfigModel.HowmuchToFreeExpressCost)元包邮</div>
+            <div class="span2">@(Model.SoldCount + Model.FakeSoldCount)人购买</div>
+        </div>
+    </div>
+    <div class="msg_main" style="margin-top: 10px;">
+        <div class="msg_main_t">商品详情</div>
+        <div class="msg_xq_n">
+            @Html.Raw(content)
+        </div>
+    </div>
+    <!--详情 结束-->
+    <!--加入购物车 开始-->
+    <div class="msg_gwc clearfix">
+        <div class="msg_gwc_l">
+            <a href="javascript:;" onclick="MobileDetails.UpdateCart(@Model.Id,1,'add',null,this);return false;">加入购物车</a>
+        </div>
+        <div class="msg_gwc_r"><a href="JavaScript:;" onclick="MobileDetails.BuyImmediately();return false;">立即购买</a></div>
+    </div>
+    <input type="hidden" id="h_detail_goodsId" value="@Model.Id" />
+    <!--加入购物车 结束-->
+    <div id="addCartOk" style="display: none">
+        <div class="msg_q_z">成功加入购物车！</div>
+        <div class="msg_q_j"></div>
+    </div>
+}

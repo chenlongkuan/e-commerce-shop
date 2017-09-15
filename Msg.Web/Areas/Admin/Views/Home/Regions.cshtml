@@ -1,0 +1,176 @@
+﻿@model System.Linq.IQueryable<Msg.Entities.RegionEntity>
+
+@{
+    ViewBag.Title = "区域管理";
+    ViewBag.InnerTopTitle = "区域管理";
+}
+
+<div class="col-lg-6" style="width: 100%">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a href="javascript:;" onclick="addOrModifyDialog(0);return false;" class="btn btn-default">添加区域</a>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>名称</th>
+                            <th>拼音简码</th>
+                            <th>学校数量</th>
+                            <th>是否可用</th>
+                            <th>添加时间</th>
+                            <th colspan="3">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+
+                            foreach (var item in Model)
+                            {
+
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Name</td>
+                                    <td>
+                                        @(item.PinyinCode)
+                                    </td>
+                                    <td>@item.Schools.Count</td>
+                                    <td>@(item.IsUsable ? "可用" : "不可用")</td>
+                                    <td>@item.CreateTime</td>
+                                    <td>
+                                        <a href="javascript:;" onclick="addOrModifyDialog(@item.Id, '@item.Name','@item.PinyinCode', @(item.IsUsable));return false; ">编辑</a>
+                                    </td>
+                                    <td><a href="javascript:;" onclick="disableRegion(@item.Id);return false; ">@(item.IsUsable ? "禁用" : "启用")</a></td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+                <div style="float: right">@Html.Raw(ViewBag.Pager)</div>
+                <!--/.pager-->
+            </div>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function disableRegion(id) {
+        MsgDialog.Confirm("确定要禁用/启用此学校吗?", function () {
+            $.get("@Url.Action("ToggleRegionUseable", "Home", new { area = "Admin" })?t=" + Math.random(), { id: id }, function (data) {
+                MsgDialog.Alert(data.status, data.msg, function () {
+                    if (data.status) {
+                        window.location.href = window.location.href;
+                    }
+                });
+            });
+        });
+
+    }
+
+
+    function addOrModifyDialog(id, name, firstCode, isUsable) {
+        var title = "编辑区域";
+        if (id == 0) {
+            title = "新增区域";
+        }
+        var html = '<div><div class="form-group"><label>名称</label><input type="text" class="form-control" maxlength="10" id="txt_region_name" placeholder="输入区域名称"/>';
+        html += '</div><div class="form-group"><label>拼音简码</label><input type="text" class="form-control" maxlength="10" id="txt_pinyin_code" placeholder="输入区域名称拼音简码"/>';
+        html += '</div>';
+        html += '<div class="form-group"><label>是否可用</label>';
+        html += '<label class="radio-inline"><input type="radio" name="IsUseable" id="rd_IsUseable_true" checked="checked" value="true">是</label><label class="radio-inline">';
+        html += '<input type="radio" name="IsUseable" id="rd_IsUseable_false" value="false">否</label></div></div>';
+        BootstrapDialog.show({
+            title: title,
+            message: $(html),
+            closable: false,
+            onshown: function () {
+
+                if (id > 0) {
+                    $("#txt_region_name").val(name);
+                    $("#txt_pinyin_code").val(firstCode);
+                    if (isUsable) {
+                        $("input[name='IsUseable']:checked").removeAttr("checked");
+                        $("#rd_IsUseable_true").prop("checked", "checked");
+                    } else {
+                        $("input[name='IsUseable']:checked").removeAttr("checked");
+                        $("#rd_IsUseable_false").prop("checked", "checked");
+                    }
+                }
+            },
+            buttons: [{
+                id: "btn_submit",
+                icon: 'glyphicon glyphicon-send',
+                label: 'Save',
+                cssClass: 'btn-primary',
+                autospin: true,
+                action: function (dialogRef) {
+                    dialogRef.enableButtons(false);
+                    dialogRef.setClosable(false);
+                    var $button = dialogRef.getButton('btn_submit');
+
+                    name = $("#txt_region_name").val();
+                    firstCode = $("#txt_pinyin_code").val();
+                    isUsable = $("input[name='IsUseable']:checked").val();
+
+                    if (name.length < 1) {
+                        MsgDialog.Alert(false, "请输入学校名称！");
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                        return;
+                    }
+                    if (firstCode.length < 1) {
+                        MsgDialog.Alert(false, "请上输入拼音简码！");
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                        return;
+                    }
+
+                    var url = "@Url.Action("SaveRegion", "Home", new { area = "Admin" })?t=" + Math.random();
+
+                    $.get(url, { Id: id, Name: name, PinyinCode: firstCode, IsUsable: isUsable }, function (data) {
+
+                        MsgDialog.Alert(data.status, data.msg, function () {
+                            if (data.status) {
+                                window.location.href = window.location.href;
+                            }
+                        });
+
+
+                        $button.stopSpin();
+                        dialogRef.enableButtons(true);
+                        dialogRef.setClosable(true);
+                    });
+                }
+            }, {
+                label: 'Close',
+                action: function (dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
+
+
+    }
+
+</script>

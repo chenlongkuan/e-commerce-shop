@@ -1,0 +1,107 @@
+﻿@model System.Linq.IQueryable<Msg.Entities.CreditGoodsEntity>
+@{
+    ViewBag.Title = "CreditGoods";
+    ViewBag.InnerTopTitle = "积分商品";
+}
+
+
+@section Head{
+    <link href="@Url.Content("~/Content/ueditor/themes/default/ueditor.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/My97DatePicker/skin/WdatePicker.css")" rel="stylesheet" />
+}
+
+<div class="col-lg-6" style="width: 100%">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="height: 120px;" id="dayinArea">
+            <div style="float: left;">
+                <a href="@Url.Action("EditCreditGoods", "Home", new { area = "Admin",edittype="Add" })" class="btn btn-default">新增积分商品</a>
+            </div>
+            <br/><br/><br>
+            <div class="form-group" style="float: left">
+                @*//int page,DateTime? date,bool? isVirtual, string cgoods = ""*@
+                <label>商品名称</label>
+                <label>
+                    <input class="form-control" style="width: 140px;" id="txt_search_Name"></label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px;">
+                <label>有效日期</label>
+               <label> <input type="text" id="txt_searh_dateTime" readonly="readonly" class="form-control" value="" name="txt_search_date" class="Wdate" onclick="WdatePicker()"></label>
+            </div>
+            <div class="form-group" style="float: left; margin-left: 15px">
+                <label>虚拟产品</label>
+                <label>
+                    <select class="form-control" id="sel_search_State">
+                        <option value="">全部</option>
+                        <option value=true>是</option>
+                        <option value=false >否</option>
+                    </select>
+                </label>
+            </div>
+   
+            <div style="float: right; margin-left: 15px;">
+ 
+                <div style="float: right; margin-left: 15px;">
+                    <button type="button" class="btn btn-default" onclick="paging(1);
+    ">
+                        搜索</button>
+                </div>
+                <div style="float: right; margin-left: 15px;">
+                    <button type="button" class="btn btn-default" onclick="reset();
+    ">
+                        重置</button>
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            @Html.Partial("_CreditGoods", Model)
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+
+<script type="text/javascript">
+    function paging(page) {
+        // alert(page);
+        var searchnickName = $("#txt_search_Name").val();
+        var searchdateTime = $("#txt_searh_dateTime").val();
+        var selsearchState = $("#sel_search_State").val();
+      
+        // var orderBy = $("#sel_search_orderBy").val();
+
+
+        //alert(searchnickName + "searchnickName");
+        //alert(searchdateTime + "searchdateTime");
+        //alert(searchbrand + "searchbrand");
+        //alert(searchgoodName + "searchgoodName");
+        //alert(searchState + "searchState");
+
+        //alert(orderBy);
+        //alert("Over");
+
+
+        $(".panel-body").showLoading();
+        //_Orders(int state, DateTime? date, int? brandsId, int page = 1, int pagesize = 10, string orderBy = "", string nickName = "", string goodName = "", string mobile = "")
+        $.get("@Url.Action("_CreditGoods", "Home", new { area = "Admin" })?t=" + Math.random(), { date: searchdateTime, cgoods: searchnickName, isVirtual: selsearchState,page :page }, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+
+
+
+
+    function reset() {
+        $("#txt_search_Name").val("");
+        $("#txt_searh_dateTime").val("");
+         $("#sel_search_State").val("");
+        $(".panel-body").showLoading();
+        $.get("@Url.Action("_CreditGoods", "Home", new { area = "Admin" })?t=" + Math.random(), {  }, function (data) {
+            $(".panel-body").html(data);
+            $(".panel-body").hideLoading();
+        });
+    }
+</script>

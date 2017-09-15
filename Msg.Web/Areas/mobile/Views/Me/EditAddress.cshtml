@@ -1,0 +1,75 @@
+﻿@model Msg.Entities.UserAddressEntity
+@{
+    ViewBag.Title = "收货地址";
+    Layout = "~/Areas/Mobile/Views/Shared/_MobileLayout.cshtml";
+}
+@section Head
+{
+    <link href="@Url.Content("~/Content/MobileTemplate/css/login.css")" rel="stylesheet" type="text/css">
+}
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/Common.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.cookie.js")" type="text/javascript"></script>
+    <script src="@Url.Content("/Areas/Mobile/Scripts/MobileAddress.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#txt_cart_address_new_receiver").bind("blur", function () {
+                $.cookie("receiverName", $.trim($("#txt_cart_address_new_receiver").val()));
+            });
+            $("#txt_cart_address_new_mobile").bind("blur", function () {
+                $.cookie("mobile", $.trim($("#txt_cart_address_new_mobile").val()));
+            });
+            $("#txt_cart_address_new_detail").bind("blur", function () {
+                $.cookie("detail", $.trim($("#txt_cart_address_new_detail").val()));
+            });
+            $("#sel_cart_address_new_region").click(function () {
+                $.cookie("receiverName", $.trim($("#txt_cart_address_new_receiver").val()));
+                $.cookie("mobile", $.trim($("#txt_cart_address_new_mobile").val()));
+                $.cookie("detail", $.trim($("#txt_cart_address_new_detail").val()));
+                window.location.href = "@Url.Action("SelRegion", "Account", new { id = ViewBag.regionId, from = Request.Url.ToString() })";
+            });
+            $("#sel_cart_address_new_school").click(function () {
+                $.cookie("receiverName", $.trim($("#txt_cart_address_new_receiver").val()));
+                $.cookie("mobile", $.trim($("#txt_cart_address_new_mobile").val()));
+                $.cookie("detail", $.trim($("#txt_cart_address_new_detail").val()));
+                window.location.href = "/Mobile/account/SelSchool/" + $.trim($("#schoolId").val()) + "?regionId=" + $.trim($("#regionId").val()) + "&from=/Mobile/me/EditAddress/" + $.trim($("#h_currentEditAddress_Id").val()) + "?p=" + encodeURIComponent($.trim($("#p").val()));
+            });
+        })
+    </script>
+    @if (ViewBag.id <= 0)
+    {
+        <script type="text/javascript">
+            $(function () {
+                $("#txt_cart_address_new_receiver").val($.cookie("receiverName"));
+                $("#txt_cart_address_new_mobile").val($.cookie("mobile"));
+                $("#txt_cart_address_new_detail").val($.cookie("detail"));
+            });
+        </script>
+    }
+}
+<input type="hidden" id="h_currentEditAddress_Id" value="@Model.Id"/>
+<input type="hidden" id="p" value="@ViewBag.p"/>
+<input type="hidden" id="couponId" value="@ViewBag.couponId"/>
+<div style="padding-top: 20px;">
+    <div class="login_input">
+        <input type="text" placeholder="姓名" id="txt_cart_address_new_receiver" maxlength="10" value="@Model.ReciverName">
+    </div>
+    <div class="login_input">
+        <input type="text" placeholder="手机号码" id="txt_cart_address_new_mobile" value="@Model.ReciverTel">
+    </div>
+    <input type="hidden" id="sel_cart_address_new_ctiy" value="重庆市" />
+    <div class="login_input">
+        <input type="hidden" name="regionId" id="regionId" value="@ViewBag.regionId">
+        <input type="text" placeholder="选择区域" id="sel_cart_address_new_region" readonly="readonly" value="@ViewBag.regionName">
+    </div>
+    <div class="login_input">
+        <input type="hidden" name="schoolId" id="schoolId" value="@ViewBag.schoolId">
+        <input type="text" placeholder="选择学校" id="sel_cart_address_new_school" readonly="readonly" value="@ViewBag.schoolName" />
+    </div>
+    <div class="login_input">
+        <input id="txt_cart_address_new_detail" maxlength="100" type="text" placeholder="寝室楼栋门牌号" value="@Model.DetailAddress">
+    </div>
+    <div id="errorMsg" style="color: red"></div>
+    <div class="login_input"><a href="javascript:;" onclick="MobileAddress.SaveMobileAddress();return false;" class="a1">保存收货地址</a></div>
+</div>
